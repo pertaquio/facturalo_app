@@ -9,6 +9,8 @@ import Chat from './assets/vue/pages/chat.vue';
 import Vuex from './assets/vue/pages/vuex.vue';
 
 import Documents from './assets/vue/pages/documents.vue';
+import FormDocument from './assets/vue/pages/form-document.vue';
+
 
 
 export default [
@@ -47,5 +49,9 @@ export default [
   {
     path: '/documents/',
     component: Documents
+  },
+  {
+    path: '/form-document/',
+    component: FormDocument
   },
 ];

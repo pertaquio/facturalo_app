@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar>
+    <!--<f7-navbar>
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
@@ -18,7 +18,7 @@
         search-in="a"
         expandable
       ></f7-searchbar>
-    </f7-navbar>
+    </f7-navbar> -->
     <f7-block-title>Inicio de Session</f7-block-title>
 
     <f7-list inline-labels no-hairlines-md>

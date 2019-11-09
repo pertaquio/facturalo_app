@@ -228,7 +228,27 @@ export default {
   },
 
   methods: {
-    send() {},
+    send() {
+      const self = this;
+
+      self.$f7.preloader.show();
+
+      this.$http
+        .post(`${url}/documents`, this.form)
+        .then(response => {
+          let data = response.data;
+          if (data.success) {
+            
+          } else {
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .then(() => {
+          self.$f7.preloader.hide();
+        });
+    },
     selectDocumentType() {
       if (this.form.codigo_tipo_documento == "01") {
         this.form.serie_documento = "F001";

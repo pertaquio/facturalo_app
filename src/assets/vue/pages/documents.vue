@@ -1,10 +1,13 @@
 <template>
   <f7-page>
-    <!--<f7-navbar title="Lista de Documentos" back-link="Back"></f7-navbar> -->
-    <div class="block block-strong"></div>
+    <f7-navbar>
+      <f7-nav-left>
+        <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
+      </f7-nav-left>
+      <div class="title">Lista Documentos</div>
+    </f7-navbar>
 
     <div class="list media-list">
-
       <f7-link href="/form-document/">Nuevo</f7-link>
       <ul id="documents-lists">
         <li>
@@ -30,6 +33,7 @@
         </li>
       </ul>
     </div>
+     <f7-link href="/form-document/">Nuevo</f7-link>
   </f7-page>
 </template>
 <script>

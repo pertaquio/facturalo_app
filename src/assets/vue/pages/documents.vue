@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar title="Lista de Documentos" back-link="Back"></f7-navbar>
+    <!--<f7-navbar title="Lista de Documentos" back-link="Back"></f7-navbar> -->
     <div class="block block-strong"></div>
 
     <div class="list media-list">

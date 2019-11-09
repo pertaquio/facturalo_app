@@ -238,8 +238,12 @@ export default {
         .then(response => {
           let data = response.data;
           if (data.success) {
-            
+            alert('Compra registrada')
+            self.$f7router.navigate("/documents/");
           } else {
+
+            alert('No se registro la Compra')
+
           }
         })
         .catch(err => {

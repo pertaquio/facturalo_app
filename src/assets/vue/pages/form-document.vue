@@ -1,9 +1,7 @@
 <template>
   <f7-page>
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
-    <div class="block block-strong">
-      <!--  <p></p> -->
-    </div>
+   
     <form class="list form-store-data" id="demo-form">
       <ul>
         <li class="item-content item-input">
@@ -69,69 +67,27 @@
           </div>
         </li>
 
+        
         <li class="item-content item-input">
           <div class="item-inner">
-            <div class="item-title item-label">URL</div>
+            <div class="item-title item-label">Orden de Compra</div>
             <div class="item-input-wrap">
-              <input name="url" type="url" placeholder="URL" />
+              <input name="phone" v-model="form.numero_orden_de_compra" type="text" />
               <span class="input-clear-button"></span>
             </div>
           </div>
         </li>
+       
         <li class="item-content item-input">
           <div class="item-inner">
-            <div class="item-title item-label">Phone</div>
+            <div class="item-title item-label">Fecha Vencimiento</div>
             <div class="item-input-wrap">
-              <input name="phone" type="tel" placeholder="Your phone number" />
-              <span class="input-clear-button"></span>
+              <input name="date" v-model="form.fecha_de_vencimiento" type="date" placeholder="Please choose..." />
             </div>
           </div>
         </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Gender</div>
-            <div class="item-input-wrap">
-              <select name="gender" placeholder="Please choose...">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Birthday</div>
-            <div class="item-input-wrap">
-              <input name="birthday" type="date" value="2014-04-30" placeholder="Please choose..." />
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Date time</div>
-            <div class="item-input-wrap">
-              <input name="date" type="datetime-local" placeholder="Please choose..." />
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Range</div>
-            <div class="item-input-wrap">
-              <div class="range-slider range-slider-init" data-label="true">
-                <input name="range" type="range" value="50" min="0" max="100" step="1" />
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">About you</div>
-            <div class="item-input-wrap">
-              <textarea name="bio" class="resizable" placeholder="Bio"></textarea>
-            </div>
-          </div>
-        </li>
+ 
+   
       </ul>
     </form>
     <f7-sheet
@@ -190,19 +146,7 @@
           </form>
         </div>
       </div>
-      <!-- Rest of the sheet content that will opened with swipe -->
-      <f7-block-title medium class="margin-top">Your order:</f7-block-title>
-      <f7-list no-hairlines>
-        <f7-list-item title="Item 1">
-          <b slot="after" class="text-color-black">$200</b>
-        </f7-list-item>
-        <f7-list-item title="Item 2">
-          <b slot="after" class="text-color-black">$180</b>
-        </f7-list-item>
-        <f7-list-item title="Delivery">
-          <b slot="after" class="text-color-black">$120</b>
-        </f7-list-item>
-      </f7-list>
+  
     </f7-sheet>
   </f7-page>
 </template>

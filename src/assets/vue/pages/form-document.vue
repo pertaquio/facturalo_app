@@ -56,13 +56,13 @@
               </thead>
               <tbody>
                 <tr v-for="(item, index) in form.items" :key="index">
-                  <td class="label-cell">1</td>
-                  <td class="numeric-cell">159</td>...
-                  <td class="medium-only">I like it!</td>
+                  <td class="label-cell">{{index + 1 }}</td>
+                  <td class="numeric-cell">{{item.descripcion}}</td>
+                  <td class="numeric-cell">{{item.cantidad}}</td>
 
-                  <td class="medium-only">I like it!</td>
-                  <td class="medium-only">I like it!</td>
-                  <td class="medium-only">I like it!</td>
+                  <td class="numeric-cell">{{item.precio_unitario}}</td>
+                  <td class="numeric-cell">{{item.total_item}}</td>
+                  <td class="numeric-cell">{{item.total_item}}</td>
                 </tr>
               </tbody>
             </table>
@@ -223,7 +223,7 @@ export default {
   },
   async created() {
     await this.initForm();
-    this.initFormItem()
+    this.initFormItem();
     this.getTables();
   },
 
@@ -251,9 +251,8 @@ export default {
     },
     selectCustomer() {
       let row = this.customers.find(x => x.id == this.form.customer_id);
-      if(!row)
-        return false
-      
+      if (!row) return false;
+
       this.form.datos_del_cliente_o_receptor = {
         codigo_tipo_documento_identidad: row.identity_document_type_id,
         numero_documento: row.number,

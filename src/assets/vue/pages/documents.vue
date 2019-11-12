@@ -8,7 +8,7 @@
     </f7-navbar>
 
     <div class="list media-list">
-      <f7-link href="/form-document/">Nuevo</f7-link>
+      <!-- <f7-link href="/form-document/">Nuevo</f7-link> -->
       <ul id="documents-lists">
         <li>
           <div v-for="item in source" :key="item.id" class="item-content row">

@@ -181,7 +181,7 @@
 const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
-import { calculateRowItem } from "../../js/helpers/functions";
+import { calculateRowItem } from "js_/helpers/functions";
 
 export default {
   components: {},

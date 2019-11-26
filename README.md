@@ -11,6 +11,10 @@ Para conocer el proceso de instalación , visite la documentación
 
 
 
+## RUN DEV
+cordova run android -- --lr
+cordova run browser -- --live-reload
+phonegap run ios -- --lr
 
 
 

@@ -1,38 +1,40 @@
 <template>
   <f7-page>
-    <f7-navbar>
-      <f7-nav-left>
-        <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
-      </f7-nav-left>
-      <div class="title">Lista Documentos</div>
-    </f7-navbar>
+    <f7-navbar title="Lista Documentos" back-link="Back"></f7-navbar>
+    <!-- <f7-block-title>Documentos</f7-block-title> -->
+    <form class="searchbar">
+      <div class="searchbar-inner">
+        <div class="searchbar-input-wrap">
+          <input type="search" placeholder="Search" />
+          <i class="searchbar-icon"></i>
+          <span class="input-clear-button"></span>
+        </div>
+        <span class="searchbar-disable-button">Cancel</span>
+      </div>
+    </form>
 
-    <div class="list media-list">
-      <ul id="documents-lists">
-        <li>
-          <div v-for="item in source" :key="item.id" class="item-content row">
-            <div class="col-33">
-              <p class="text-align-left size-12">{{ item.number }}</p>
-              <p class="text-align-left size-12">{{ item.document_type_description }}</p>
-              <p class="text-align-left size-12">
-                <span class="badge color-green">{{ item.state_type_description }}</span>
-              </p>
-            </div>
+    <f7-block>
+      <f7-card v-for="item in source" :key="item.id" class="demo-card-header-pic">
+        <f7-card-header
+          class="no-border"
+          valign="bottom"
+          style="background: darkgrey;"
+        > {{ item.document_type_description }} : {{ item.number }} </f7-card-header>
+        <f7-card-content>
+          <p class="date">Estado:  {{ item.state_type_description }}</p>
+          <p>{{ item.created_at }}</p>
+          <p>{{ item.total }}</p>
+          <p>RUC: {{ item.customer_number }}</p>
+          <p>{{ item.customer_name }}</p>
+        </f7-card-content>
+        <!--<f7-card-footer>
+          <f7-link>Like</f7-link>
+          <f7-link>Read more</f7-link>
+        </f7-card-footer> -->
+      </f7-card>
+    </f7-block>
 
-            <div class="col-66">
-              <div class="item-title-row">
-                <div class="item-title">{{ item.created_at }}</div>
-                <div class="item-after">{{ item.total }}</div>
-              </div>
-
-              <div class="item-subtitle">RUC: {{ item.customer_number }}</div>
-              <div class="item-text">{{ item.customer_name }}</div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-     <f7-link href="/form-document/">Nuevo</f7-link>
+    <!-- <f7-link href="/form-document/">Nuevo</f7-link> -->
   </f7-page>
 </template>
 <script>

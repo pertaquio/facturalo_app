@@ -62,7 +62,8 @@
   "displayName": "facturalo",
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-barcodescanner": {}
     },
     "platforms": [
       "browser",

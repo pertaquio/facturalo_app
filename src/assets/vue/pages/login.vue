@@ -36,7 +36,7 @@
 
 <script>
 const url = "https://demo.facturador.pro/api";
-const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
+//const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
 
 export default {
   components: {},

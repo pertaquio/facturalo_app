@@ -59,40 +59,8 @@ export default {
         //self.$f7router.navigate("/documents/");
           self.$f7router.navigate("/login/");
       }
-    },
-    saveToken(token, name, email) {
-      localStorage.api_token = token;
-      localStorage.user_name = name;
-      localStorage.user_email = email;
-    },
-    login() {
-      const self = this;
-
-      self.$f7.preloader.show();
-
-      let form = {
-        email: this.user,
-        password: this.password
-      };
-
-      this.$http
-        .post(`${url}/login`, form)
-        .then(response => {
-          let data = response.data;
-          if (data.success) {
-            this.saveToken(data.token, data.name, data.email);
-            self.$f7router.navigate("/documents/");
-          } else {
-            alert("Usuario o Password incorrectos.");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .then(() => {
-          self.$f7.preloader.hide();
-        });
     }
+    
   }
 };
 </script>

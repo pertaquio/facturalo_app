@@ -19,13 +19,13 @@
 
     <f7-list class="components-list searchbar-found">
       <f7-list-item link="/documents/" title="Listado Comprobantes" panel-close>
-        <f7-icon slot="media" ios="f7:info" md="material:info"></f7-icon>
+        <f7-icon slot="media" ios="f7:receipt" md="material:receipt"></f7-icon>
       </f7-list-item>
       <f7-list-item link="/form-document/" title="Nuevo Comprobante" panel-close>
-        <f7-icon slot="media" ios="f7:info" md="material:info"></f7-icon>
+        <f7-icon slot="media" ios="f7:filter_1" md="material:filter_1"></f7-icon>
       </f7-list-item>
       <f7-list-item link="/cpe/" title="Consulta CPE" panel-close>
-        <f7-icon slot="media" ios="f7:info" md="material:info"></f7-icon>
+        <f7-icon slot="media" ios="f7:scanner" md="material:scanner"></f7-icon>
       </f7-list-item>
     </f7-list>
   </f7-page>

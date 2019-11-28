@@ -59,6 +59,7 @@ export default {
   },
   mounted()
   {
+    
      setTimeout(this.verifytoken, 2500);
   },
   methods: {
@@ -67,7 +68,6 @@ export default {
       const self = this;
       if (!localStorage.api_token) {
         this.splash = false
-        //self.$f7router.navigate("/documents/");
         self.$f7router.navigate("/login/");
       }
       else{

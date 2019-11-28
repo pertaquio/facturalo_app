@@ -3,6 +3,7 @@
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list form-store-data" id="demo-form">
+    
         <ul>
           <li class="item-content item-input">
             <div class="item-inner">
@@ -168,6 +169,7 @@
                   </div>
                 </div>
               </li>
+              
             </form>
           </div>
         </div>
@@ -206,6 +208,9 @@ export default {
   },
 
   methods: {
+    demo(){
+      console.log('de')
+    },
     changeItem() {
       this.form_item.item = _.find(this.items, { id: this.form_item.item_id });
       /*this.form_item.item_unit_types = _.find(this.items, {

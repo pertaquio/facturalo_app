@@ -2,13 +2,22 @@
   <f7-page>
     <f7-navbar title="Login Facturalo"></f7-navbar>
 
-    <form class="list form-store-data" id="demo-form"> <br> <br>
+    <form class="list form-store-data" id="demo-form">
+      <br />
+      <br />
       <ul>
         <li class="item-content item-input">
           <div class="item-inner">
             <div class="item-title item-label">Usuario</div>
             <div class="item-input-wrap">
-              <input name="name" required validate type="text" v-model="email" placeholder="Ingrese usuario" />
+              <input
+                name="name"
+                required
+                validate
+                type="text"
+                v-model="email"
+                placeholder="Ingrese usuario"
+              />
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -17,7 +26,14 @@
           <div class="item-inner">
             <div class="item-title item-label">Password</div>
             <div class="item-input-wrap">
-              <input name="password" required validate v-model="password" type="password" placeholder="Ingrese password" />
+              <input
+                name="password"
+                required
+                validate
+                v-model="password"
+                type="password"
+                placeholder="Ingrese password"
+              />
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -58,10 +74,8 @@ export default {
       localStorage.user_email = email;
     },
     login() {
-
-      if(!this.email || !this.password)
-      {
-        return
+      if (!this.email || !this.password) {
+        return;
       }
 
       const self = this;

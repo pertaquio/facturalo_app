@@ -41,6 +41,7 @@
 const url = "https://demo.facturador.pro/api";
 
 export default {
+  name: 'documents',
   components: {},
   data: function() {
     // Must return an object
@@ -52,6 +53,7 @@ export default {
   },
   created() {
     this.getData();
+    console.log(this.$f7route)
   },
   methods: {
 

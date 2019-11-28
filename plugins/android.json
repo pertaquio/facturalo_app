@@ -12,6 +12,9 @@
     },
     "cordova-plugin-barcodescanner": {
       "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "com.example.facturalo"
     }
   },
   "dependent_plugins": {

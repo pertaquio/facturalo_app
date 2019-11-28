@@ -63,8 +63,6 @@ export default {
   },
   methods: {
 
-
-
     verifytoken() {
       const self = this;
       if (!localStorage.api_token) {

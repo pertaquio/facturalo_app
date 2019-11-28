@@ -8,7 +8,7 @@
           <div class="item-inner">
             <div class="item-title item-label">Usuario</div>
             <div class="item-input-wrap">
-              <input name="name" type="text" v-model="email" placeholder="Your name" />
+              <input name="name" required validate type="text" v-model="email" placeholder="Ingrese usuario" />
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -17,7 +17,7 @@
           <div class="item-inner">
             <div class="item-title item-label">Password</div>
             <div class="item-input-wrap">
-              <input name="password" v-model="password" type="password" placeholder="Your password" />
+              <input name="password" required validate v-model="password" type="password" placeholder="Ingrese password" />
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -58,6 +58,12 @@ export default {
       localStorage.user_email = email;
     },
     login() {
+
+      if(!this.email || !this.password)
+      {
+        return
+      }
+
       const self = this;
 
       self.$f7.preloader.show();

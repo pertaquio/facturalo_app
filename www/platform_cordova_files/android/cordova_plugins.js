@@ -39,11 +39,20 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "cordova.plugins.barcodeScanner"
       ]
+    },
+    {
+      "id": "cordova-plugin-android-permissions.Permissions",
+      "file": "plugins/cordova-plugin-android-permissions/www/permissions.js",
+      "pluginId": "cordova-plugin-android-permissions",
+      "clobbers": [
+        "cordova.plugins.permissions"
+      ]
     }
   ];
   module.exports.metadata = {
     "cordova-plugin-camera": "4.1.0",
     "cordova-plugin-whitelist": "1.3.4",
-    "cordova-plugin-barcodescanner": "0.7.4"
+    "cordova-plugin-barcodescanner": "0.7.4",
+    "cordova-plugin-android-permissions": "1.0.2"
   };
 });

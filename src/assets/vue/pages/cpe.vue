@@ -1,7 +1,9 @@
 <template>
   <f7-page>
     <f7-navbar title="CPE" back-link="Back"></f7-navbar>
-    <f7-block-title> <p>Escanea Qr y Codigo de Barras.</p></f7-block-title>
+    <f7-block-title>
+      <p>Escanea Qr y Codigo de Barras.</p>
+    </f7-block-title>
 
     <f7-block>
       <f7-row>
@@ -66,6 +68,10 @@ export default {
   created() {
     this.initReport();
   },
+  mounted() {
+    
+    
+  },
   methods: {
     initReport() {
       this.report = {
@@ -84,17 +90,6 @@ export default {
       cordova.plugins.barcodeScanner.scan(
         function(result) {
           self.sendApi(result.text);
-          /*alert(
-            "We got a barcode\n" +
-              "Result: " +
-              result.text +
-              "\n" +
-              "Format: " +
-              result.format +
-              "\n" +
-              "Cancelled: " +
-              result.cancelled
-          );*/
         },
         function(error) {
           alert(

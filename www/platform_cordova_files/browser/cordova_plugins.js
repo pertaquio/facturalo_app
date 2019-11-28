@@ -59,6 +59,14 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.barcodeScanner"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-android-permissions/www/permissions-dummy.js",
+        "id": "cordova-plugin-android-permissions.Permissions",
+        "pluginId": "cordova-plugin-android-permissions",
+        "clobbers": [
+            "cordova.plugins.permissions"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -68,7 +76,8 @@ module.exports.metadata =
     "cordova-plugin-qrscanner": "3.0.1",
     "cordova-plugin-camera": "4.1.0",
     "cordova-plugin-compat": "1.2.0",
-    "cordova-plugin-barcodescanner": "0.7.4"
+    "cordova-plugin-barcodescanner": "0.7.4",
+    "cordova-plugin-android-permissions": "1.0.2"
 }
 // BOTTOM OF METADATA
 });

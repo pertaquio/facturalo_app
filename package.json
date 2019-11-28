@@ -48,6 +48,7 @@
     "axios": "^0.19.0",
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
+    "cordova-plugin-android-permissions": "^1.0.2",
     "fastclick": "^1.0.6",
     "framework7": "^4.5.1",
     "framework7-icons": "^2.3.1",
@@ -63,7 +64,8 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-barcodescanner": {}
+      "cordova-plugin-barcodescanner": {},
+      "cordova-plugin-android-permissions": {}
     },
     "platforms": [
       "browser",

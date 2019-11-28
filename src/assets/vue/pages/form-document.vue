@@ -9,10 +9,10 @@
               <div class="item-title item-label">Tipo Comprobante</div>
               <div class="item-input-wrap">
                 <select
+                  required
+                  validate
                   @change="selectDocumentType"
                   v-model="form.codigo_tipo_documento"
-                  name="gender"
-                  placeholder="Please choose..."
                 >
                   <option :value="'01'">Factura</option>
                   <option :value="'03'">Boleta</option>
@@ -25,6 +25,8 @@
               <div class="item-title item-label">Cliente</div>
               <div class="item-input-wrap">
                 <select
+                  required
+                  validate
                   @change="selectCustomer"
                   v-model="form.customer_id"
                   name="gender"
@@ -71,7 +73,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Orden de Compra</div>
               <div class="item-input-wrap">
-                <input name="phone" v-model="form.numero_orden_de_compra" type="text" />
+                <input required validate v-model="form.numero_orden_de_compra" type="text" />
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -81,12 +83,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Fecha Vencimiento</div>
               <div class="item-input-wrap">
-                <input
-                  name="date"
-                  v-model="form.fecha_de_vencimiento"
-                  type="date"
-                  placeholder="Please choose..."
-                />
+                <input name="date" v-model="form.fecha_de_vencimiento" type="date" />
               </div>
             </div>
           </li>
@@ -120,7 +117,7 @@
           </li>
         </ul>
 
-        <f7-button outline @click="send">Generar</f7-button>
+        <f7-button outline v-if="form.items.length > 0" @click="send">Generar</f7-button>
       </form>
       <f7-sheet
         class="demo-sheet"
@@ -137,7 +134,7 @@
               <b>Precio Unitario:</b>
             </div>
             <div style="font-size: 22px">
-              <b>S/. {{form_item.sale_unit_price}}</b>
+              <b>S/. {{form_item.unit_price_value }}</b>
             </div>
           </div>
           <div class="padding-horizontal padding-bottom">
@@ -199,6 +196,9 @@ export default {
       exchangeRateSale: 3.353
     };
   },
+  computed:{
+
+  },
   async created() {
     await this.initForm();
     this.initFormItem();
@@ -211,7 +211,7 @@ export default {
       /*this.form_item.item_unit_types = _.find(this.items, {
         id: this.form_item.item_id
       }).item_unit_types;*/
-      this.form_item.sale_unit_price = this.form_item.item.sale_unit_price;
+      this.form_item.unit_price_value = this.form_item.item.sale_unit_price;
 
       this.form_item.has_igv = this.form_item.item.has_igv;
       this.form_item.affectation_igv_type_id = this.form_item.item.sale_affectation_igv_type_id;
@@ -272,23 +272,25 @@ export default {
         .then(response => {
           let data = response.data;
           if (data.success) {
-            alert("Compra registrada");
+            
+            alert(`Compra registrada: ${data.data.number}`)
+
             self.$f7router.navigate("/documents/");
           } else {
             alert("No se registro la Compra");
           }
         })
         .catch(err => {
-          console.log(err);
+          alert(`${err.message}`)
         })
         .then(() => {
           self.$f7.preloader.hide();
         });
     },
     selectDocumentType() {
-      if (this.form.codigo_tipo_documento == "01") {
+      if (this.form.codigo_tipo_documento == '01') {
         this.form.serie_documento = "F001";
-      } else if (this.form.codigo_tipo_documento == "03") {
+      } else if (this.form.codigo_tipo_documento == '03') {
         this.form.serie_documento = "B001";
       }
     },
@@ -411,7 +413,7 @@ export default {
         total_plastic_bag_taxes: 0,
         total_igv: 0,
         total: 0,
-        serie_documento: "",
+        serie_documento: "F001",
         numero_documento: "#",
         fecha_de_emision: moment().format("YYYY-MM-DD"),
         hora_de_emision: moment().format("HH:mm:ss"),

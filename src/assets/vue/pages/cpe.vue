@@ -1,7 +1,7 @@
 <template>
   <f7-page>
-    <f7-navbar title="Color Themes" back-link="Back"></f7-navbar>
-    <f7-block-title>Escanea Qr y Codigo de Barras de comprobantes de venta.</f7-block-title>
+    <f7-navbar title="CPE" back-link="Back"></f7-navbar>
+    <f7-block-title> <p>Escanea Qr y Codigo de Barras.</p></f7-block-title>
 
     <f7-block>
       <f7-row>

@@ -1,8 +1,8 @@
 <template>
   <f7-page>
-    <f7-navbar title="Login"></f7-navbar>
+    <f7-navbar title="Login Facturalo"></f7-navbar>
 
-    <form class="list form-store-data" id="demo-form">
+    <form class="list form-store-data" id="demo-form"> <br> <br>
       <ul>
         <li class="item-content item-input">
           <div class="item-inner">
@@ -27,13 +27,18 @@
     <f7-block>
       <f7-row>
         <f7-col>
-          <f7-button @click="login" outline>Ingresar</f7-button>
+          <f7-button color="green" @click="login" outline>Ingresar</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
   </f7-page>
 </template>
-
+<style scoped>
+.item-label {
+  font-size: 17px;
+  font-weight: bold;
+}
+</style>
 <script>
 const url = "https://demo.facturador.pro/api";
 //const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";

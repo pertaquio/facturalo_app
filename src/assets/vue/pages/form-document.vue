@@ -1,180 +1,181 @@
 <template>
   <f7-page>
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
+    <f7-block>
+      <form class="list form-store-data" id="demo-form">
+        <ul>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Tipo Comprobante</div>
+              <div class="item-input-wrap">
+                <select
+                  @change="selectDocumentType"
+                  v-model="form.codigo_tipo_documento"
+                  name="gender"
+                  placeholder="Please choose..."
+                >
+                  <option :value="'01'">Factura</option>
+                  <option :value="'03'">Boleta</option>
+                </select>
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Cliente</div>
+              <div class="item-input-wrap">
+                <select
+                  @change="selectCustomer"
+                  v-model="form.customer_id"
+                  name="gender"
+                  placeholder="Please choose..."
+                >
+                  <option v-for="item in customers" :key="item.id" :value="item.id">{{item.name}}</option>
+                </select>
+              </div>
+            </div>
+          </li>
 
-    <form class="list form-store-data" id="demo-form">
-      <ul>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Tipo Comprobante</div>
-            <div class="item-input-wrap">
-              <select
-                @change="selectDocumentType"
-                v-model="form.codigo_tipo_documento"
-                name="gender"
-                placeholder="Please choose..."
-              >
-                <option :value="'01'">Factura</option>
-                <option :value="'03'">Boleta</option>
-              </select>
+          <f7-button outline @click="formAddItem = !formAddItem">Agregar Producto</f7-button>
+          <li class="item-content item-input">
+            <br />
+            <div class="data-table card">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="label-cell">#</th>
+                    <th class="numeric-cell">Descripcion</th>
+                    <th class="medium-only">Cantidad</th>
+
+                    <th class="medium-only">Precio</th>
+                    <th class="medium-only">Subtotal</th>
+                    <th class="medium-only">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(row, index) in form.items" :key="index">
+                    <td class="label-cell">{{index + 1 }}</td>
+                    <td class="numeric-cell">{{row.item.description}}</td>
+                    <td class="numeric-cell">{{row.quantity}}</td>
+
+                    <td class="numeric-cell">S/. {{ Number(row.unit_price).toFixed(2)}}</td>
+                    <td class="numeric-cell">S/. {{row.total_value}}</td>
+                    <td class="numeric-cell">S/. {{row.total}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Orden de Compra</div>
+              <div class="item-input-wrap">
+                <input name="phone" v-model="form.numero_orden_de_compra" type="text" />
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Vencimiento</div>
+              <div class="item-input-wrap">
+                <input
+                  name="date"
+                  v-model="form.fecha_de_vencimiento"
+                  type="date"
+                  placeholder="Please choose..."
+                />
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">IGV</div>
+              <div class="item-input-wrap">
+                <input
+                  :disabled="true"
+                  name="date"
+                  v-model="form.total_igv"
+                  type="text"
+                  placeholder="Please choose..."
+                />
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">TOTAL A PAGAR</div>
+              <div class="item-input-wrap">
+                <input
+                  :disabled="true"
+                  name="date"
+                  v-model="form.total"
+                  type="text"
+                  placeholder="Please choose..."
+                />
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <f7-button outline @click="send">Generar</f7-button>
+      </form>
+      <f7-sheet
+        class="demo-sheet"
+        :opened="formAddItem"
+        style="height:auto; --f7-sheet-bg-color: #fff;"
+        swipe-to-close
+        swipe-to-step
+        backdrop
+      >
+        <!-- Initial swipe step sheet content -->
+        <div class="sheet-modal-swipe-step">
+          <div class="display-flex padding justify-content-space-between align-items-center">
+            <div style="font-size: 18px">
+              <b>Precio Unitario:</b>
+            </div>
+            <div style="font-size: 22px">
+              <b>S/. {{form_item.sale_unit_price}}</b>
             </div>
           </div>
-        </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Cliente</div>
-            <div class="item-input-wrap">
-              <select
-                @change="selectCustomer"
-                v-model="form.customer_id"
-                name="gender"
-                placeholder="Please choose..."
-              >
-                <option v-for="item in customers" :key="item.id" :value="item.id">{{item.name}}</option>
-              </select>
-            </div>
-          </div>
-        </li>
-
-        <f7-button fill @click="formAddItem = !formAddItem">Agregar Producto</f7-button>
-        <li class="item-content item-input">
-          <br />
-          <div class="data-table card">
-            <table>
-              <thead>
-                <tr>
-                  <th class="label-cell">#</th>
-                  <th class="numeric-cell">Descripcion</th>
-                  <th class="medium-only">Cantidad</th>
-
-                  <th class="medium-only">Precio</th>
-                  <th class="medium-only">Subtotal</th>
-                  <th class="medium-only">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(row, index) in form.items" :key="index">
-                  <td class="label-cell">{{index + 1 }}</td>
-                  <td class="numeric-cell">{{row.item.description}}</td>
-                  <td class="numeric-cell">{{row.quantity}}</td>
-
-                  <td class="numeric-cell">S/. {{ Number(row.unit_price).toFixed(2)}}</td>
-                  <td class="numeric-cell">S/. {{row.total_value}}</td>
-                  <td class="numeric-cell">S/. {{row.total}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </li>
-
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Orden de Compra</div>
-            <div class="item-input-wrap">
-              <input name="phone" v-model="form.numero_orden_de_compra" type="text" />
-              <span class="input-clear-button"></span>
-            </div>
-          </div>
-        </li>
-
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">Fecha Vencimiento</div>
-            <div class="item-input-wrap">
-              <input
-                name="date"
-                v-model="form.fecha_de_vencimiento"
-                type="date"
-                placeholder="Please choose..."
-              />
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">IGV</div>
-            <div class="item-input-wrap">
-              <input
-                :disabled="true"
-                name="date"
-                v-model="form.total_igv"
-                type="text"
-                placeholder="Please choose..."
-              />
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input">
-          <div class="item-inner">
-            <div class="item-title item-label">TOTAL A PAGAR</div>
-            <div class="item-input-wrap">
-              <input
-                :disabled="true"
-                name="date"
-                v-model="form.total"
-                type="text"
-                placeholder="Please choose..."
-              />
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <f7-button fill @click="send">Generar</f7-button>
-    </form>
-    <f7-sheet
-      class="demo-sheet"
-      :opened="formAddItem"
-      style="height:auto; --f7-sheet-bg-color: #fff;"
-      swipe-to-close
-      swipe-to-step
-      backdrop
-    >
-      <!-- Initial swipe step sheet content -->
-      <div class="sheet-modal-swipe-step">
-        <div class="display-flex padding justify-content-space-between align-items-center">
-          <div style="font-size: 18px">
-            <b>Precio Unitario:</b>
-          </div>
-          <div style="font-size: 22px">
-            <b>S/. {{form_item.sale_unit_price}}</b>
+          <div class="padding-horizontal padding-bottom">
+            <f7-button v-show="form_item.item_id" @click="addItem" large outline>Agregar</f7-button>
+            <form class="list form-store-data" id="demo-form-item">
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Producto</div>
+                  <div class="item-input-wrap">
+                    <select
+                      @change="changeItem"
+                      v-model="form_item.item_id"
+                      placeholder="Please choose..."
+                    >
+                      <option v-for="item in items" :key="item.id" :value="item.id">{{item.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Cantidad</div>
+                  <div class="item-input-wrap">
+                    <select v-model="form_item.quantity" placeholder="Please choose...">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+            </form>
           </div>
         </div>
-        <div class="padding-horizontal padding-bottom">
-          <f7-button v-show="form_item.item_id" @click="addItem" large fill>Agregar</f7-button>
-          <form class="list form-store-data" id="demo-form-item">
-            <li class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">Producto</div>
-                <div class="item-input-wrap">
-                  <select
-                    @change="changeItem"
-                    v-model="form_item.item_id"
-                    placeholder="Please choose..."
-                  >
-                    <option v-for="item in items" :key="item.id" :value="item.id">{{item.name}}</option>
-                  </select>
-                </div>
-              </div>
-            </li>
-            <li class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">Cantidad</div>
-                <div class="item-input-wrap">
-                  <select v-model="form_item.quantity" placeholder="Please choose...">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                </div>
-              </div>
-            </li>
-          </form>
-        </div>
-      </div>
-    </f7-sheet>
+      </f7-sheet>
+    </f7-block>
   </f7-page>
 </template>
 <script>
@@ -210,7 +211,7 @@ export default {
       /*this.form_item.item_unit_types = _.find(this.items, {
         id: this.form_item.item_id
       }).item_unit_types;*/
-      this.form_item.unit_price_value = this.form_item.item.sale_unit_price;
+      this.form_item.sale_unit_price = this.form_item.item.sale_unit_price;
 
       this.form_item.has_igv = this.form_item.item.has_igv;
       this.form_item.affectation_igv_type_id = this.form_item.item.sale_affectation_igv_type_id;
@@ -417,7 +418,7 @@ export default {
         codigo_tipo_operacion: "0101",
         codigo_tipo_documento: "01",
         codigo_tipo_moneda: "PEN",
-        fecha_de_vencimiento: moment().format('YYYY-MM-DD'),
+        fecha_de_vencimiento: moment().format("YYYY-MM-DD"),
         numero_orden_de_compra: "",
         informacion_adicional: "",
         datos_del_cliente_o_receptor: {},

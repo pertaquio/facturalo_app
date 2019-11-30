@@ -22,6 +22,7 @@
     <allow-intent href="geo:*"/>
     <platform name="android">
         <allow-intent href="market:*"/>
+         <icon src="res/icon/icon.png"/>
     </platform>
     <platform name="ios">
         <splash src="res/screen/ios/Default@2x~universal~anyany.png"/>

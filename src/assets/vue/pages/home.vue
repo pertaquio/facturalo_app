@@ -11,10 +11,10 @@
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
-      <div class="title">App Facuralo</div>
+      <div class="title">App Factúralo Perú</div>
     </f7-navbar>
     <f7-block inner>
-      <p>App de Facturalo Perú.</p>
+      <p>App de Factúralo Perú.</p>
     </f7-block>
 
     <f7-list class="components-list searchbar-found">

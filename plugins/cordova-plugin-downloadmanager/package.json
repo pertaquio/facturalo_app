@@ -1,0 +1,47 @@
+{
+  "_from": "git+https://github.com/vasani-arpit/cordova-plugin-downloadmanager.git",
+  "_id": "cordova-plugin-downloadmanager@0.0.1",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/cordova-plugin-downloadmanager",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager",
+    "rawSpec": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager",
+    "saveSpec": "git+https://github.com/vasani-arpit/cordova-plugin-downloadmanager.git",
+    "fetchSpec": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/vasani-arpit/cordova-plugin-downloadmanager.git#278e7da3909c618deae16ed407d6bb94fbcba366",
+  "_spec": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager",
+  "_where": "D:\\Proyectos\\softwarefactory\\facturalo_app",
+  "author": {
+    "name": "Arpit Vasani"
+  },
+  "bugs": {
+    "url": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-downloadmanager",
+    "platforms": []
+  },
+  "deprecated": false,
+  "description": "A plugin to start system's default download manager.",
+  "homepage": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager#readme",
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "license": "ISC",
+  "name": "cordova-plugin-downloadmanager",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasani-arpit/cordova-plugin-downloadmanager.git"
+  },
+  "version": "0.0.1"
+}

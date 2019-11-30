@@ -15,11 +15,32 @@
     },
     "cordova-plugin-android-permissions": {
       "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-file-downloader": {
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-downloadmanager": {
+      "PACKAGE_NAME": "com.example.facturalo"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-camera": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-zip": {
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-file-md5": {
       "PACKAGE_NAME": "com.example.facturalo"
     }
   }

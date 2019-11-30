@@ -9,7 +9,7 @@
           <i class="searchbar-icon"></i>
           <span @click="clean" class="input-clear-button"></span>
         </div>
-        <span  class="searchbar-disable-button">Cancel</span>
+        <span class="searchbar-disable-button">Cancel</span>
       </div>
     </form>
 
@@ -21,27 +21,31 @@
           style="background: darkgrey;"
         >{{ item.document_type_description }} : {{ item.number }}</f7-card-header>
         <f7-card-content>
-          <p class="date">Estado: {{ item.state_type_description }}</p>
+          <p>
+            Estado:
+            <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+          </p>
           <p>{{ item.created_at }}</p>
-          <p>{{ item.total }}</p>
+          <p>
+            Total:
+            <f7-badge color="orange">{{ item.total }}</f7-badge>
+          </p>
           <p>RUC: {{ item.customer_number }}</p>
           <p>{{ item.customer_name }}</p>
         </f7-card-content>
-        <!--<f7-card-footer>
-          <f7-link>Like</f7-link>
-          <f7-link>Read more</f7-link>
-        </f7-card-footer>-->
+        <f7-card-footer>
+          <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
+          <f7-button outline @click="download(item.download_xml)" color="blue">XML</f7-button>
+        </f7-card-footer>
       </f7-card>
     </f7-block>
-
-    <!-- <f7-link href="/form-document/">Nuevo</f7-link> -->
   </f7-page>
 </template>
 <script>
 const url = "https://demo.facturador.pro/api";
 
 export default {
-  name: 'documents',
+  name: "documents",
   components: {},
   data: function() {
     // Must return an object
@@ -53,12 +57,20 @@ export default {
   },
   created() {
     this.getData();
-    console.log(this.$f7route)
+    
+  },
+  mounted()
+  {
+   
   },
   methods: {
 
-    clean()
+    download(download)
     {
+      cordova.plugins.DownloadManager.download(download, function(status) { alert('Se descargó el archivo correctamente. Carpeta Download.') }, function(err){ alert(err) });
+    },
+
+    clean() {
       this.source = this.sourceClone;
     },
     search() {

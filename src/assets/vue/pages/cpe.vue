@@ -89,12 +89,12 @@ export default {
       const self = this;
       cordova.plugins.barcodeScanner.scan(
         function(result) {
-          self.sendApi(result.text);
+           if(result.text) {
+             self.sendApi(result.text);
+           }
         },
         function(error) {
-          alert(
-            "Conceda los permisos de la aplicacion. Intente ejecutar el Scan de nuevo."
-          );
+         
         }
       );
     },

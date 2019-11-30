@@ -49,6 +49,13 @@
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-android-permissions": "^1.0.2",
+    "cordova-plugin-downloadmanager": "git+https://github.com/vasani-arpit/cordova-plugin-downloadmanager.git",
+    "cordova-plugin-file": "^6.0.2",
+    "cordova-plugin-file-downloader": "^0.4.0",
+    "cordova-plugin-file-md5": "^0.3.3",
+    "cordova-plugin-file-transfer": "^1.7.1",
+    "cordova-plugin-network-information": "^2.0.2",
+    "cordova-plugin-zip": "^3.1.0",
     "fastclick": "^1.0.6",
     "framework7": "^4.5.1",
     "framework7-icons": "^2.3.1",
@@ -65,7 +72,9 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-barcodescanner": {},
-      "cordova-plugin-android-permissions": {}
+      "cordova-plugin-android-permissions": {},
+      "cordova-plugin-file-downloader": {},
+      "cordova-plugin-downloadmanager": {}
     },
     "platforms": [
       "browser",

@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar title="Login Facturalo"></f7-navbar>
+    <f7-navbar title="Login Factúralo"></f7-navbar>
 
     <form class="list form-store-data" id="demo-form">
       <br />

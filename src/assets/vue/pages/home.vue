@@ -35,7 +35,8 @@
               <span>
                 <f7-icon f7="bag" size="44px" color="blue"></f7-icon>
               </span>
-              <p>Nuevo Documento</p>
+              <p>Nuevo Comprobante</p>
+              
             </f7-card-content>
           </f7-card>
         </f7-col>

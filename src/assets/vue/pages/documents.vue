@@ -39,6 +39,13 @@
         </f7-card-footer>
       </f7-card>
     </f7-block>
+    <f7-fab position="right-bottom" slot="fixed" color="orange">
+      <f7-icon ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+      <f7-icon ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
+      <f7-fab-buttons position="top">
+        <f7-fab-button @click="go" label="Nuevo">+</f7-fab-button>
+      </f7-fab-buttons>
+    </f7-fab>
   </f7-page>
 </template>
 <script>
@@ -57,17 +64,15 @@ export default {
   },
   created() {
     this.getData();
-    
   },
-  mounted()
-  {
-   
-  },
+  mounted() {},
   methods: {
-
-    download(download)
+    go()
     {
-      var ref = cordova.InAppBrowser.open(download, '_blank', 'location=yes');
+       this.$f7router.navigate("/form-document/");
+    },
+    download(download) {
+      var ref = cordova.InAppBrowser.open(download, "_blank", "location=yes");
       //cordova.plugins.DownloadManager.download(download, function(status) { alert('Se descargó el archivo correctamente. Carpeta Download.') }, function(err){ alert(err) });
     },
 

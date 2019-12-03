@@ -1,6 +1,6 @@
 <template>
     <div class="chart-line-container">
-        <canvas ref="canvas"></canvas>
+        <canvas style="height:270px" ref="canvas"></canvas>
     </div>
 </template>
 
@@ -30,6 +30,7 @@
             this.title = 'Comprobantes';
         },
         mounted() {
+            this.createChart()
         },
         watch: {
             allData() {
@@ -38,6 +39,7 @@
         },
         methods: {
             createChart() {
+                 console.log('entr')
                 if (this.chart) {
                     this.chart.destroy();
                 }

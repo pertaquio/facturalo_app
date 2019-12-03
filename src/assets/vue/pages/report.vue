@@ -2,8 +2,22 @@
   <f7-page>
     <f7-navbar title="Reporte" back-link="Back"></f7-navbar>
     <f7-block-title>
-      <p>Reporte</p>
+      <p>Reporte de Ventas</p>
     </f7-block-title>
+
+    <f7-list>
+      <f7-list-item title="Total
+notas de venta" :badge="general.totals.total_sale_notes">
+        <f7-icon slot="media" icon="demo-list-icon"></f7-icon>
+      </f7-list-item>
+      <f7-list-item title="Total
+comprobantes" :badge="general.totals.total_documents">
+        <f7-icon slot="media" icon="demo-list-icon"></f7-icon>
+      </f7-list-item>
+      <f7-list-item title="Total" :badge="general.totals.total">
+        <f7-icon slot="media" icon="demo-list-icon"></f7-icon>
+      </f7-list-item>
+    </f7-list>
 
     <f7-block>
       <f7-row>
@@ -20,7 +34,7 @@ const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
 import xGraphLine from "components/graph/GraphLine.vue";
 
 export default {
-  components: {xGraphLine},
+  components: { xGraphLine },
   data() {
     return {
       report: {},

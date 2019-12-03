@@ -17,17 +17,52 @@
       <p>App de Factúralo Perú.</p>
     </f7-block>
 
-    <f7-list class="components-list searchbar-found">
-      <f7-list-item link="/documents/" title="Listado Comprobantes" panel-close>
-        <f7-icon slot="media" ios="f7:receipt" md="material:receipt"></f7-icon>
-      </f7-list-item>
-      <f7-list-item link="/form-document/" title="Nuevo Comprobante" panel-close>
-        <f7-icon slot="media" ios="f7:filter_1" md="material:filter_1"></f7-icon>
-      </f7-list-item>
-      <f7-list-item link="/cpe/" title="Consulta CPE" panel-close>
-        <f7-icon slot="media" ios="f7:scanner" md="material:scanner"></f7-icon>
-      </f7-list-item>
-    </f7-list>
+    <f7-block>
+      <f7-row>
+        <f7-col>
+          <f7-card @click.native="go('ls_doc')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon f7="folder" size="44px" color="blue"></f7-icon>
+              </span>
+              <p>Listado Documentos</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+        <f7-col>
+          <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon f7="bag" size="44px" color="blue"></f7-icon>
+              </span>
+              <p>Nuevo Documento</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+      </f7-row>
+      <f7-row>
+        <f7-col>
+          <f7-card @click.native="go('report')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon f7="calendar_today" size="44px" color="blue"></f7-icon>
+              </span>
+              <p>Reportes</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+        <f7-col>
+          <f7-card @click.native="go('cpe')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon f7="lessthan_circle_fill" size="44px" color="blue"></f7-icon>
+              </span>
+              <p>Validar CPE</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+      </f7-row>
+    </f7-block>
   </f7-page>
 </template>
 <style scoped>
@@ -38,9 +73,12 @@
   margin-right: auto;
   width: 70%;
 }
+.center_ic {
+  text-align: center;
+}
 </style>
 <script>
-import logo from 'assets/images/logo9_b.png'
+import logo from "assets/images/logo9_b.png";
 const url = "https://demo.facturador.pro/api";
 const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
 export default {
@@ -51,31 +89,41 @@ export default {
       logoban: logo,
       user: "",
       password: "",
-      splash:true
+      splash: true
     };
   },
   created() {
-   // this.verifytoken();
+    // this.verifytoken();
   },
-  mounted()
-  {
-    
-     setTimeout(this.verifytoken, 2500);
+  mounted() {
+    setTimeout(this.verifytoken, 2500);
   },
   methods: {
-
+    go(name) {
+      const self = this;
+      switch (name) {
+        case "ls_doc":
+          self.$f7router.navigate("/documents/");
+          break;
+        case "nw_doc":
+          self.$f7router.navigate("/form-document/");
+          break;
+        case "report":
+          self.$f7router.navigate("/report/");
+          break;
+        case "cpe":
+          self.$f7router.navigate("/cpe/");
+          break;
+      }
+    },
     verifytoken() {
       const self = this;
       if (!localStorage.api_token) {
-        this.splash = false
+        this.splash = false;
         self.$f7router.navigate("/login/");
+      } else {
+        this.splash = false;
       }
-      else{
-        this.splash = false
-      }
-
-
-
     }
   }
 };

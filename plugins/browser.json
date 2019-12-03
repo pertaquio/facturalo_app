@@ -21,6 +21,12 @@
     },
     "cordova-plugin-downloadmanager": {
       "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.example.facturalo"
     }
   },
   "dependent_plugins": {
@@ -28,9 +34,6 @@
       "PACKAGE_NAME": "com.example.facturalo"
     },
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.example.facturalo"
-    },
-    "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "com.example.facturalo"
     },
     "cordova-plugin-network-information": {

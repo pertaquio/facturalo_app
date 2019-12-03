@@ -42,9 +42,9 @@
   "cordova-plugin-file-transfer": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-file-transfer@>=1.6.3"
+      "id": "cordova-plugin-file-transfer@^1.7.1"
     },
-    "is_top_level": false,
+    "is_top_level": true,
     "variables": {}
   },
   "cordova-plugin-network-information": {
@@ -75,6 +75,14 @@
     "source": {
       "type": "registry",
       "id": "https://github.com/vasani-arpit/cordova-plugin-downloadmanager"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-inappbrowser": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-inappbrowser@3.1.0"
     },
     "is_top_level": true,
     "variables": {}

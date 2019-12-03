@@ -35,7 +35,7 @@
         </f7-card-content>
         <f7-card-footer>
           <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
-          <f7-button outline @click="download(item.download_xml)" color="blue">XML</f7-button>
+          <!--<f7-button outline @click="download(item.download_xml)" color="blue">XML</f7-button> -->
         </f7-card-footer>
       </f7-card>
     </f7-block>
@@ -67,7 +67,8 @@ export default {
 
     download(download)
     {
-      cordova.plugins.DownloadManager.download(download, function(status) { alert('Se descargó el archivo correctamente. Carpeta Download.') }, function(err){ alert(err) });
+      var ref = cordova.InAppBrowser.open(download, '_blank', 'location=yes');
+      //cordova.plugins.DownloadManager.download(download, function(status) { alert('Se descargó el archivo correctamente. Carpeta Download.') }, function(err){ alert(err) });
     },
 
     clean() {

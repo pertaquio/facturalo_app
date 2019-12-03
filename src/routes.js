@@ -12,6 +12,8 @@ import Documents from './assets/vue/pages/documents.vue';
 import FormDocument from './assets/vue/pages/form-document.vue';
 import Cpe from './assets/vue/pages/cpe.vue';
 import Login from './assets/vue/pages/login.vue';
+import Report from './assets/vue/pages/report.vue';
+
 
 
 
@@ -65,5 +67,9 @@ export default [
   {
     path: '/login/',
     component: Login
+  },
+  {
+    path: '/report/',
+    component: Report
   },
 ];

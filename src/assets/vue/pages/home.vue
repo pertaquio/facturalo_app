@@ -13,9 +13,6 @@
       </f7-nav-left>
       <div class="title">App Factúralo Perú</div>
     </f7-navbar>
-    <f7-block inner>
-      <p>App de Factúralo Perú.</p>
-    </f7-block>
 
     <f7-block>
       <f7-row>
@@ -23,9 +20,9 @@
           <f7-card @click.native="go('ls_doc')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="folder" size="44px" color="blue"></f7-icon>
+                <f7-icon f7="folder" size="44px" color="orange"></f7-icon>
               </span>
-              <p>Listado Documentos</p>
+              <p>Listado de comprobantes</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
@@ -33,10 +30,31 @@
           <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="bag" size="44px" color="blue"></f7-icon>
+                <f7-icon f7="square_list" size="44px" color="green"></f7-icon>
               </span>
-              <p>Nuevo Comprobante</p>
-              
+              <p>Factura electrónica</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+      </f7-row>
+      <f7-row>
+        <f7-col>
+          <f7-card @click.native="go('cpe')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon f7="lessthan_circle_fill" size="44px" color="orange"></f7-icon>
+              </span>
+              <p>Validar CPE</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+        <f7-col>
+          <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon f7="square_list" size="44px" color="green"></f7-icon>
+              </span>
+              <p>Boleta electrónica</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
@@ -46,19 +64,19 @@
           <f7-card @click.native="go('report')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="calendar_today" size="44px" color="blue"></f7-icon>
+                <f7-icon f7="calendar_today" size="44px" color="orange"></f7-icon>
               </span>
               <p>Reportes</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
         <f7-col>
-          <f7-card @click.native="go('cpe')" class="demo-card-header-pic">
+          <f7-card @click.native="go('sale_note')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="lessthan_circle_fill" size="44px" color="blue"></f7-icon>
+                <f7-icon f7="square_list" size="44px" color="green"></f7-icon>
               </span>
-              <p>Validar CPE</p>
+              <p>Nota de Venta</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
@@ -97,7 +115,7 @@ export default {
     // this.verifytoken();
   },
   mounted() {
-    setTimeout(this.verifytoken, 2500);
+    setTimeout(this.verifytoken, 1000); // 2500);
   },
   methods: {
     go(name) {
@@ -114,6 +132,9 @@ export default {
           break;
         case "cpe":
           self.$f7router.navigate("/cpe/");
+          break;
+        case "sale_note":
+          self.$f7router.navigate("/form-sale-note/");
           break;
       }
     },

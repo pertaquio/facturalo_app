@@ -1,9 +1,15 @@
 <template>
   <f7-page>
+    <f7-fab v-if="form.items.length > 0"  @click="send" position="right-bottom" slot="fixed" color="green">
+      <f7-icon ios="f7:save" aurora="f7:save" md="material:save"></f7-icon>
+    </f7-fab>
+    <f7-fab position="left-bottom" @click="cancel" slot="fixed" color="red">
+      <f7-icon ios="f7:cancel" aurora="f7:cancel" md="material:cancel"></f7-icon>
+    </f7-fab>
+
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
     <f7-block>
-      <form class="list form-store-data" id="demo-form">
-    
+      <form class="list no-hairlines-md" id="demo-form">
         <ul>
           <li class="item-content item-input">
             <div class="item-inner">
@@ -21,7 +27,31 @@
               </div>
             </div>
           </li>
-          <li class="item-content item-input">
+
+          <li>
+            <a
+              class="item-link smart-select smart-select-init"
+              data-open-in="popup"
+              data-searchbar="true"
+              data-searchbar-placeholder="buscar cliente"
+            >
+              <select
+                required
+                validate
+                @change="selectCustomer"
+                v-model="form.customer_id"
+                placeholder="Seleccione un cliente..."
+              >
+                <option v-for="item in customers" :key="item.id" :value="item.id">{{item.name}}</option>
+              </select>
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Cliente</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <!--<li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">Cliente</div>
               <div class="item-input-wrap">
@@ -37,9 +67,9 @@
                 </select>
               </div>
             </div>
-          </li>
+          </li>-->
 
-          <f7-button outline @click="formAddItem = !formAddItem">Agregar Producto</f7-button>
+          <f7-button small outline @click="formAddItem = !formAddItem">Agregar Producto</f7-button>
           <li class="item-content item-input">
             <br />
             <div class="data-table card">
@@ -93,6 +123,7 @@
               <div class="item-title item-label">IGV</div>
               <div class="item-input-wrap">
                 <input
+                 style="text-align: center; font-weight: bold;"
                   :disabled="true"
                   name="date"
                   v-model="form.total_igv"
@@ -107,6 +138,7 @@
               <div class="item-title item-label">TOTAL A PAGAR</div>
               <div class="item-input-wrap">
                 <input
+                style="text-align: center; font-weight: bold;"
                   :disabled="true"
                   name="date"
                   v-model="form.total"
@@ -118,7 +150,7 @@
           </li>
         </ul>
 
-        <f7-button outline v-if="form.items.length > 0" @click="send">Generar</f7-button>
+        <!-- <f7-button outline v-if="form.items.length > 0" @click="send">Generar</f7-button> -->
       </form>
       <f7-sheet
         class="demo-sheet"
@@ -139,8 +171,8 @@
             </div>
           </div>
           <div class="padding-horizontal padding-bottom">
-            <f7-button v-show="form_item.item_id" @click="addItem" large outline>Agregar</f7-button>
-            <form class="list form-store-data" id="demo-form-item">
+            <f7-button v-show="form_item.item_id" @click="addItem" small outline>Agregar</f7-button>
+            <form style="margin-top:3%;" class="list no-hairlines-md" id="demo-form-item">
               <li class="item-content item-input">
                 <div class="item-inner">
                   <div class="item-title item-label">Producto</div>
@@ -150,7 +182,11 @@
                       v-model="form_item.item_id"
                       placeholder="Please choose..."
                     >
-                      <option v-for="item in items" :key="item.id" :value="item.id">{{item.name}}</option>
+                      <option
+                        v-for="item in items"
+                        :key="item.id"
+                        :value="item.id"
+                      >{{item.description}}</option>
                     </select>
                   </div>
                 </div>
@@ -158,18 +194,25 @@
               <li class="item-content item-input">
                 <div class="item-inner">
                   <div class="item-title item-label">Cantidad</div>
-                  <div class="item-input-wrap">
-                    <select v-model="form_item.quantity" placeholder="Please choose...">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                    </select>
+                  <div style="width: 120%; text-align:center;">
+                    <div class="stepper stepper-init">
+                      <div class="stepper-button-minus"></div>
+                      <div class="stepper-input-wrap">
+                        <input
+                          type="text"
+                          v-model="form_item.quantity"
+                          value="0"
+                          min="0"
+                          max="100"
+                          step="1"
+                          readonly
+                        />
+                      </div>
+                      <div class="stepper-button-plus"></div>
+                    </div>
                   </div>
                 </div>
               </li>
-              
             </form>
           </div>
         </div>
@@ -198,9 +241,7 @@ export default {
       exchangeRateSale: 3.353
     };
   },
-  computed:{
-
-  },
+  computed: {},
   async created() {
     await this.initForm();
     this.initFormItem();
@@ -208,8 +249,12 @@ export default {
   },
 
   methods: {
-    demo(){
-      console.log('de')
+    cancel()
+    {
+      this.initForm()
+      this.initFormItem()
+      this.$f7router.navigate("/");
+
     },
     changeItem() {
       this.form_item.item = _.find(this.items, { id: this.form_item.item_id });
@@ -270,6 +315,11 @@ export default {
     send() {
       const self = this;
 
+      if (!this.form.customer_id) {
+        alert("Debe seleccionar un cliente.");
+        return false;
+      }
+
       self.$f7.preloader.show();
 
       this.$http
@@ -277,25 +327,25 @@ export default {
         .then(response => {
           let data = response.data;
           if (data.success) {
-            
-            alert(`Compra registrada: ${data.data.number}`)
-
+            this.initForm();
+            this.initFormItem();
+            alert(`Compra registrada: ${data.data.number}`);
             self.$f7router.navigate("/documents/");
           } else {
             alert("No se registro la Compra");
           }
         })
         .catch(err => {
-          alert(`${err.message}`)
+          alert(`${err.message}`);
         })
         .then(() => {
           self.$f7.preloader.hide();
         });
     },
     selectDocumentType() {
-      if (this.form.codigo_tipo_documento == '01') {
+      if (this.form.codigo_tipo_documento == "01") {
         this.form.serie_documento = "F001";
-      } else if (this.form.codigo_tipo_documento == '03') {
+      } else if (this.form.codigo_tipo_documento == "03") {
         this.form.serie_documento = "B001";
       }
     },

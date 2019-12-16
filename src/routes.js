@@ -10,6 +10,8 @@ import Vuex from './assets/vue/pages/vuex.vue';
 
 import Documents from './assets/vue/pages/documents.vue';
 import FormDocument from './assets/vue/pages/form-document.vue';
+import FormSaleNote from './assets/vue/pages/form-sale-note.vue';
+
 import Cpe from './assets/vue/pages/cpe.vue';
 import Login from './assets/vue/pages/login.vue';
 import Report from './assets/vue/pages/report.vue';
@@ -72,4 +74,11 @@ export default [
     path: '/report/',
     component: Report
   },
+  {
+    path: '/form-sale-note/',
+    component: FormSaleNote
+  },
+
+
+
 ];

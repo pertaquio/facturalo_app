@@ -72,8 +72,8 @@ export default {
        this.$f7router.navigate("/form-document/");
     },
     download(download) {
-      var ref = cordova.InAppBrowser.open(download, "_blank", "location=yes");
-      //cordova.plugins.DownloadManager.download(download, function(status) { alert('Se descargó el archivo correctamente. Carpeta Download.') }, function(err){ alert(err) });
+     // var ref = cordova.InAppBrowser.open(download, "_blank", "location=yes");
+      cordova.plugins.DownloadManager.download('https://demo.facturador.pro/print/document/3b0358b0-02b6-4272-a7dd-05932a7dcabb/a4', function(status) { alert('Se descargó el archivo correctamente. Carpeta Download.') }, function(err){ alert(err) });
     },
 
     clean() {

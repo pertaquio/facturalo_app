@@ -16,6 +16,8 @@
 
     <f7-block>
       <f7-row>
+
+        <p v-if="isOffline" style="color:red;">SIN ACCESO A INTERNET, VERIFICA TU CONEXION.</p>
         <f7-col>
           <f7-card @click.native="go('ls_doc')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
@@ -108,18 +110,34 @@ export default {
       logoban: logo,
       user: "",
       password: "",
-      splash: true
+      splash: true,
+      isOffline: false
     };
   },
   created() {
     // this.verifytoken();
+    var self = this;
+    window.addEventListener("online", function() {
+      self.isOffline = false;
+    });
+    window.addEventListener("offline", function() {
+      self.isOffline = true;
+    });
   },
   mounted() {
     setTimeout(this.verifytoken, 1000); // 2500);
   },
   methods: {
     go(name) {
+
+
       const self = this;
+
+      if(self.isOffline)
+      {
+        return false
+      }
+
       switch (name) {
         case "ls_doc":
           self.$f7router.navigate("/documents/");

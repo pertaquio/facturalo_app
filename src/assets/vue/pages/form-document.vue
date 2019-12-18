@@ -1,10 +1,16 @@
 <template>
   <f7-page>
-    <f7-fab v-if="form.items.length > 0"  @click="send" position="right-bottom" slot="fixed" color="green">
-      <f7-icon ios="f7:save" aurora="f7:save" md="material:save"></f7-icon>
+    <f7-fab
+      v-if="form.items.length > 0"
+      @click="send"
+      position="right-bottom"
+      slot="fixed"
+      color="green"
+    >
+      <f7-icon size="35px" color="white" material="create_new_folder"></f7-icon>
     </f7-fab>
     <f7-fab position="left-bottom" @click="cancel" slot="fixed" color="red">
-      <f7-icon ios="f7:cancel" aurora="f7:cancel" md="material:cancel"></f7-icon>
+      <f7-icon ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
     </f7-fab>
 
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
@@ -68,11 +74,18 @@
               </div>
             </div>
           </li>-->
-
-          <f7-button small outline @click="formAddItem = !formAddItem">Agregar Producto</f7-button>
           <li class="item-content item-input">
+            <f7-button
+              style="width: 100%;"
+              small
+              outline
+              @click="formAddItem = !formAddItem"
+            >Agregar Producto</f7-button>
+          </li>
+
+          <li style="margin-bottom: 5%;" class="item-content item-input">
             <br />
-            <div class="data-table card">
+            <div class="data-table">
               <table>
                 <thead>
                   <tr>
@@ -123,7 +136,7 @@
               <div class="item-title item-label">IGV</div>
               <div class="item-input-wrap">
                 <input
-                 style="text-align: center; font-weight: bold;"
+                  style="text-align: center; font-weight: bold;"
                   :disabled="true"
                   name="date"
                   v-model="form.total_igv"
@@ -138,7 +151,7 @@
               <div class="item-title item-label">TOTAL A PAGAR</div>
               <div class="item-input-wrap">
                 <input
-                style="text-align: center; font-weight: bold;"
+                  style="text-align: center; font-weight: bold;"
                   :disabled="true"
                   name="date"
                   v-model="form.total"
@@ -249,12 +262,10 @@ export default {
   },
 
   methods: {
-    cancel()
-    {
-      this.initForm()
-      this.initFormItem()
+    cancel() {
+      this.initForm();
+      this.initFormItem();
       this.$f7router.navigate("/");
-
     },
     changeItem() {
       this.form_item.item = _.find(this.items, { id: this.form_item.item_id });

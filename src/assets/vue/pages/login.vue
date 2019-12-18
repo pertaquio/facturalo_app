@@ -1,10 +1,10 @@
 <template>
   <f7-page>
-    <f7-navbar title="Login Factúralo"></f7-navbar>
+    <f7-navbar title="App Facturador"></f7-navbar>
+
+    <f7-block-title class="title">Inicio de Sesión</f7-block-title>
 
     <form class="list form-store-data" id="demo-form">
-      <br />
-      <br />
       <ul>
         <li class="item-content item-input">
           <div class="item-inner">
@@ -54,6 +54,13 @@
   font-size: 17px;
   font-weight: bold;
 }
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 20%;
+}
 </style>
 <script>
 const url = "https://demo.facturador.pro/api";
@@ -63,8 +70,8 @@ export default {
   components: {},
   data: function() {
     return {
-      email: "",
-      password: ""
+      email: "demo@gmail.com",
+      password: "123456"
     };
   },
   methods: {

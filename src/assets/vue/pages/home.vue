@@ -11,35 +11,45 @@
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
-      <div class="title">App Factúralo Perú</div>
+      <div class="title">App Facturador</div>
     </f7-navbar>
 
     <f7-block>
       <f7-row>
-
         <p v-if="isOffline" style="color:red;">SIN ACCESO A INTERNET, VERIFICA TU CONEXION.</p>
+        <f7-col>
+          <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon size="44px" color="green" material="note_add"></f7-icon>
+              </span>
+              <p>Factura <br> electrónica</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+
         <f7-col>
           <f7-card @click.native="go('ls_doc')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="folder" size="44px" color="orange"></f7-icon>
+                <f7-icon size="44px" color="orange" material="create_new_folder"></f7-icon>
               </span>
               <p>Listado de comprobantes</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
+      </f7-row>
+      <f7-row>
         <f7-col>
           <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="square_list" size="44px" color="green"></f7-icon>
+                <f7-icon size="44px" color="green" material="note_add"></f7-icon>
               </span>
-              <p>Factura electrónica</p>
+              <p>Boleta electrónica</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
-      </f7-row>
-      <f7-row>
         <f7-col>
           <f7-card @click.native="go('cpe')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
@@ -50,35 +60,25 @@
             </f7-card-content>
           </f7-card>
         </f7-col>
-        <f7-col>
-          <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
-              <span>
-                <f7-icon f7="square_list" size="44px" color="green"></f7-icon>
-              </span>
-              <p>Boleta electrónica</p>
-            </f7-card-content>
-          </f7-card>
-        </f7-col>
       </f7-row>
       <f7-row>
-        <f7-col>
-          <f7-card @click.native="go('report')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
-              <span>
-                <f7-icon f7="calendar_today" size="44px" color="orange"></f7-icon>
-              </span>
-              <p>Reportes</p>
-            </f7-card-content>
-          </f7-card>
-        </f7-col>
         <f7-col>
           <f7-card @click.native="go('sale_note')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="square_list" size="44px" color="green"></f7-icon>
+                <f7-icon size="44px" color="green" material="note_add"></f7-icon>
               </span>
-              <p>Nota de Venta</p>
+              <p>Nota de venta</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+        <f7-col>
+          <f7-card @click.native="go('report')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon size="44px" color="orange" material="insert_chart"></f7-icon>
+              </span>
+              <p>Reportes</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
@@ -129,13 +129,10 @@ export default {
   },
   methods: {
     go(name) {
-
-
       const self = this;
 
-      if(self.isOffline)
-      {
-        return false
+      if (self.isOffline) {
+        return false;
       }
 
       switch (name) {

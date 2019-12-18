@@ -75,7 +75,7 @@ export default {
     };
   },
   methods: {
-    yara() {
+    whatsapp() {
       window.open("https://wa.me/51961721647/?text=hola", "_system");
     },
     saveToken(token, name, email) {

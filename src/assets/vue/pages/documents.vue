@@ -55,7 +55,7 @@
               </f7-card-content>
               <f7-card-footer>
                 <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
-                <f7-button @click="whatsap(item.download_pdf)" outline color="green">
+                <f7-button @click="whatsap(item.customer_telephone, item.external_id)" outline color="green">
                   <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
                 </f7-button>
                 <f7-button @click="email(item.download_pdf)" outline color="blue">
@@ -88,7 +88,7 @@
               </f7-card-content>
               <f7-card-footer>
                 <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
-                <f7-button @click="whatsap(item.download_pdf)" outline color="green">
+                <f7-button @click="whatsap(item.customer_telephone, item.external_id)" outline color="green">
                   <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
                 </f7-button>
                 <f7-button @click="email(item.download_pdf)" outline color="blue">
@@ -126,7 +126,7 @@
               </f7-card-content>
               <f7-card-footer>
                 <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
-                <f7-button @click="whatsap(item.download_pdf)" outline color="green">
+                <f7-button @click="whatsap(item.customer_telephone, item.external_id)" outline color="green">
                   <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
                 </f7-button>
                 <f7-button @click="email(item.download_pdf)" outline color="blue">
@@ -167,7 +167,16 @@ export default {
   },
   mounted() {},
   methods: {
-    whatsap() {},
+    whatsap(phone, external_id) {
+      if (phone.length == 9) {
+        let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
+        let message = `Hola, revisa tu comprobante ingresa a este link ${link_pdf}`;
+        let message_ = message.split(" ").join("%20");
+        window.open(`https://wa.me/51${phone}/?text=${message_}`, "_system");
+      } else {
+        alert("El numero telefonico no cuenta con WhatsApp");
+      }
+    },
     email() {},
     applyFilters() {
       this.source_fact = _.filter(this.source, { document_type_id: "01" });

@@ -75,6 +75,9 @@ export default {
     };
   },
   methods: {
+    yara() {
+      window.open("https://wa.me/51961721647/?text=hola", "_system");
+    },
     saveToken(token, name, email) {
       localStorage.api_token = token;
       localStorage.user_name = name;

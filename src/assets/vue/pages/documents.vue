@@ -55,10 +55,14 @@
               </f7-card-content>
               <f7-card-footer>
                 <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
-                <f7-button @click="whatsap(item.customer_telephone, item.external_id)" outline color="green">
+                <f7-button
+                  @click="whatsap(item.customer_telephone, item.external_id)"
+                  outline
+                  color="green"
+                >
                   <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
                 </f7-button>
-                <f7-button @click="email(item.download_pdf)" outline color="blue">
+                <f7-button @click="email(item.id)" outline color="blue">
                   <f7-icon size="30px" color="blue" material="email"></f7-icon>
                 </f7-button>
               </f7-card-footer>
@@ -88,10 +92,14 @@
               </f7-card-content>
               <f7-card-footer>
                 <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
-                <f7-button @click="whatsap(item.customer_telephone, item.external_id)" outline color="green">
+                <f7-button
+                  @click="whatsap(item.customer_telephone, item.external_id)"
+                  outline
+                  color="green"
+                >
                   <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
                 </f7-button>
-                <f7-button @click="email(item.download_pdf)" outline color="blue">
+                <f7-button @click="email(item.id)" outline color="blue">
                   <f7-icon size="30px" color="blue" material="email"></f7-icon>
                 </f7-button>
               </f7-card-footer>
@@ -126,10 +134,14 @@
               </f7-card-content>
               <f7-card-footer>
                 <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
-                <f7-button @click="whatsap(item.customer_telephone, item.external_id)" outline color="green">
+                <f7-button
+                  @click="whatsap(item.customer_telephone, item.external_id)"
+                  outline
+                  color="green"
+                >
                   <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
                 </f7-button>
-                <f7-button @click="email(item.download_pdf)" outline color="blue">
+                <f7-button @click="email(item.id)" outline color="blue">
                   <f7-icon size="30px" color="blue" material="email"></f7-icon>
                 </f7-button>
 
@@ -140,6 +152,44 @@
         </div>
       </div>
     </div>
+
+    <f7-sheet
+      class="demo-sheet"
+      :opened="sendMailOpen"
+      @sheet:closed="sendMailOpen = false; initformEmail()"
+    >
+      <f7-toolbar>
+        <div class="left"></div>
+        <div class="right">
+          <f7-link sheet-close>Cancelar</f7-link>
+        </div>
+      </f7-toolbar>
+      <!-- Scrollable sheet content -->
+      <f7-page-content>
+        <f7-block>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">E-mail</div>
+                  <div class="item-input-wrap">
+                    <input v-model="form_email.email" type="email" placeholder="Your e-mail" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-inner">
+                  <div class="item-input-wrap">
+                    <f7-button style="width: 104%;" @click="sendEmail" outline>Enviar</f7-button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </f7-block>
+      </f7-page-content>
+    </f7-sheet>
   </div>
 </template>
 
@@ -154,30 +204,77 @@ export default {
   data: function() {
     // Must return an object
     return {
+      sendMailOpen: false,
       source: [],
       sourceClone: [],
       text_seacrh: "",
       source_fact: [],
       source_bol: [],
-      source_nota: []
+      source_nota: [],
+      form_email: {}
     };
   },
   created() {
+    this.initformEmail();
     this.getData();
   },
   mounted() {},
   methods: {
+    initformEmail() {
+      this.form_email = {
+        email: null,
+        id: null
+      };
+    },
     whatsap(phone, external_id) {
       if (phone.length == 9) {
         let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
-        let message = `Hola, revisa tu comprobante ingresa a este link ${link_pdf}`;
+        let message = `Hola, revisa tu comprobante ingresando a este link ${link_pdf}`;
         let message_ = message.split(" ").join("%20");
         window.open(`https://wa.me/51${phone}/?text=${message_}`, "_system");
       } else {
         alert("El numero telefonico no cuenta con WhatsApp");
       }
     },
-    email() {},
+
+    validateEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+    sendEmail() {
+      if (!this.form_email.email) {
+        alert("Ingrese Email.");
+        return false;
+      }
+
+      if (!this.validateEmail(this.form_email.email)) {
+        alert("Ingrese Essmail.");
+        return false;
+      }
+
+      const self = this;
+      self.$f7.preloader.show();
+
+      this.$http
+        .post(`${url}/document/email`, this.form_email, this.getHeaderConfig())
+        .then(response => {
+          if (response.data.success) {
+            alert(`${response.data.message}`);
+            this.initformEmail();
+          }
+        })
+        .catch(err => {
+          alert("Sucedio un error.");
+        })
+        .then(() => {
+          self.$f7.preloader.hide();
+          self.sendMailOpen = false;
+        });
+    },
+    email(id) {
+      this.form_email.id = id;
+      this.sendMailOpen = true;
+    },
     applyFilters() {
       this.source_fact = _.filter(this.source, { document_type_id: "01" });
       this.source_bol = _.filter(this.source, { document_type_id: "03" });

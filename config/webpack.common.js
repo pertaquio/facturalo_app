@@ -21,6 +21,7 @@ module.exports = function (options) {
         'pages': path.resolve(__dirname, '../src/assets/vue/pages/'),
         'components': path.resolve(__dirname, '../src/assets/vue/components'),
         'js_': path.resolve(__dirname, '../src/assets/js'),
+        'mixins_': path.resolve(__dirname, '../src/assets/vue/mixins'),
       }
     },
 

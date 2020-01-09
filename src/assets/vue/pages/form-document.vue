@@ -7,11 +7,15 @@
       slot="fixed"
       color="green"
     >
-      <f7-icon size="35px" color="white" material="create_new_folder"></f7-icon>
+      <f7-icon size="35px" color="white" material="check"></f7-icon>
     </f7-fab>
     <f7-fab position="left-bottom" @click="cancel" slot="fixed" color="red">
       <f7-icon ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
     </f7-fab>
+
+    <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
+      <items-form @addItemsCar="addItems"></items-form>
+    </f7-popup>
 
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
     <f7-block>
@@ -57,29 +61,13 @@
               </div>
             </a>
           </li>
-          <!--<li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">Cliente</div>
-              <div class="item-input-wrap">
-                <select
-                  required
-                  validate
-                  @change="selectCustomer"
-                  v-model="form.customer_id"
-                  name="gender"
-                  placeholder="Please choose..."
-                >
-                  <option v-for="item in customers" :key="item.id" :value="item.id">{{item.name}}</option>
-                </select>
-              </div>
-            </div>
-          </li>-->
+
           <li class="item-content item-input">
             <f7-button
               style="width: 100%;"
               small
               outline
-              @click="formAddItem = !formAddItem"
+              @click="popupOpened = true"
             >Agregar Producto</f7-button>
           </li>
 
@@ -162,74 +150,7 @@
             </div>
           </li>
         </ul>
-
-        <!-- <f7-button outline v-if="form.items.length > 0" @click="send">Generar</f7-button> -->
       </form>
-      <f7-sheet
-        class="demo-sheet"
-        :opened="formAddItem"
-        style="height:auto; --f7-sheet-bg-color: #fff;"
-        swipe-to-close
-        swipe-to-step
-        backdrop
-      >
-        <!-- Initial swipe step sheet content -->
-        <div class="sheet-modal-swipe-step">
-          <div class="display-flex padding justify-content-space-between align-items-center">
-            <div style="font-size: 18px">
-              <b>Precio Unitario:</b>
-            </div>
-            <div style="font-size: 22px">
-              <b>S/. {{form_item.unit_price_value }}</b>
-            </div>
-          </div>
-          <div class="padding-horizontal padding-bottom">
-            <f7-button v-show="form_item.item_id" @click="addItem" small outline>Agregar</f7-button>
-            <form style="margin-top:3%;" class="list no-hairlines-md" id="demo-form-item">
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Producto</div>
-                  <div class="item-input-wrap">
-                    <select
-                      @change="changeItem"
-                      v-model="form_item.item_id"
-                      placeholder="Please choose..."
-                    >
-                      <option
-                        v-for="item in items"
-                        :key="item.id"
-                        :value="item.id"
-                      >{{item.description}}</option>
-                    </select>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Cantidad</div>
-                  <div style="width: 120%; text-align:center;">
-                    <div class="stepper stepper-init">
-                      <div class="stepper-button-minus"></div>
-                      <div class="stepper-input-wrap">
-                        <input
-                          type="text"
-                          v-model="form_item.quantity"
-                          value="0"
-                          min="0"
-                          max="100"
-                          step="1"
-                          readonly
-                        />
-                      </div>
-                      <div class="stepper-button-plus"></div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </form>
-          </div>
-        </div>
-      </f7-sheet>
     </f7-block>
   </f7-page>
 </template>
@@ -237,46 +158,39 @@
 const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
-import { calculateRowItem } from "js_/helpers/functions";
+import ItemsForm from "components/document/ItemsForm";
+import { auth } from "mixins_/auth";
 
 export default {
-  components: {},
+  name: 'FormDocument',
+  components: { ItemsForm },
+  mixins: [auth],
   data: function() {
     // Must return an object
     return {
+      search_item: "",
       customers: [],
-      items: [],
       form: {},
-      form_item: {},
-      formAddItem: false,
-      affectation_igv_types: [],
-      row: {},
-      exchangeRateSale: 3.353
+      popupOpened: false
     };
   },
   computed: {},
-  async created() {
-    await this.initForm();
-    this.initFormItem();
+  created() {
+    this.initForm();
     this.getTables();
   },
 
   methods: {
+    addItems(rows) {
+      this.form.items = rows;
+      this.calculateTotal();
+      this.popupOpened = false;
+    },
     cancel() {
       this.initForm();
-      this.initFormItem();
       this.$f7router.navigate("/");
     },
-    changeItem() {
-      this.form_item.item = _.find(this.items, { id: this.form_item.item_id });
-      /*this.form_item.item_unit_types = _.find(this.items, {
-        id: this.form_item.item_id
-      }).item_unit_types;*/
-      this.form_item.unit_price_value = this.form_item.item.sale_unit_price;
 
-      this.form_item.has_igv = this.form_item.item.has_igv;
-      this.form_item.affectation_igv_type_id = this.form_item.item.sale_affectation_igv_type_id;
-    },
     getFormatter() {
       return {
         serie_documento: this.form.serie_documento,
@@ -339,7 +253,6 @@ export default {
           let data = response.data;
           if (data.success) {
             this.initForm();
-            this.initFormItem();
             alert(`Compra registrada: ${data.data.number}`);
             self.$f7router.navigate("/documents/");
           } else {
@@ -424,56 +337,6 @@ export default {
       };
     },
 
-    addItem() {
-      this.formAddItem = false;
-
-      let unit_price = this.form_item.has_igv
-        ? this.form_item.unit_price_value
-        : this.form_item.unit_price_value * 1.18;
-
-      this.form_item.unit_price = unit_price;
-      this.form_item.item.unit_price = unit_price;
-      this.form_item.item.presentation = null;
-
-      this.form_item.charges = [];
-      this.form_item.discounts = [];
-      this.form_item.attributes = [];
-      this.form_item.affectation_igv_type = _.find(this.affectation_igv_types, {
-        id: this.form_item.affectation_igv_type_id
-      });
-
-      // console.log(this.form_item)
-      this.row = calculateRowItem(
-        this.form_item,
-        this.form.currency_type_id,
-        this.exchangeRateSale
-      );
-      this.form.items.push(this.row);
-      this.initFormItem();
-      this.calculateTotal();
-    },
-
-    initFormItem() {
-      this.form_item = {
-        item_id: null,
-        item: {},
-        affectation_igv_type_id: null,
-        affectation_igv_type: {},
-        has_isc: false,
-        system_isc_type_id: null,
-        calculate_quantity: false,
-        percentage_isc: 0,
-        suggested_price: 0,
-        quantity: 1,
-        aux_quantity: 1,
-        unit_price_value: 0,
-        unit_price: 0,
-        charges: [],
-        discounts: [],
-        attributes: [],
-        has_igv: null
-      };
-    },
     initForm() {
       this.form = {
         total_plastic_bag_taxes: 0,
@@ -494,28 +357,14 @@ export default {
         items: []
       };
     },
-    getHeaderConfig() {
-      let token = localStorage.api_token;
-      let axiosConfig = {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`
-        }
-      };
-
-      return axiosConfig;
-    },
     getTables() {
       const self = this;
       self.$f7.preloader.show();
       this.$http
-        .get(`${url}/document/tables`, this.getHeaderConfig())
+        .get(`${this.returnBaseUrl()}/document/customers`, this.getHeaderConfig())
         .then(response => {
           let source = response.data.data;
           self.customers = source.customers;
-          self.items = source.items;
-          self.affectation_igv_types = source.affectation_types;
         })
         .catch(err => {
           console.log(err);

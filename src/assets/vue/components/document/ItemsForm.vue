@@ -166,7 +166,7 @@ export default {
         item.quantity = 1;
       }
     },
-    converItems() {
+    initItems() {
       this.items_car = this.items.map(x => {
         return {
           description: x.description,
@@ -187,7 +187,7 @@ export default {
           let source = response.data.data;
           self.items = source.items;
           self.affectation_igv_types = source.affectation_types;
-          self.converItems();
+          self.initItems();
         })
         .catch(err => {})
         .then(() => {

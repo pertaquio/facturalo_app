@@ -14,7 +14,7 @@
     </f7-fab>
 
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
-      <items-form @addItemsCar="addItems"></items-form>
+      <items-form ref="form_items_car" @addItemsCar="addItems"></items-form>
     </f7-popup>
 
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
@@ -26,7 +26,7 @@
               <div class="item-title item-label">Tipo Comprobante</div>
               <div class="item-input-wrap">
                 <select
-                  readonly
+                  disabled
                   required
                   validate
                   @change="selectDocumentType"
@@ -41,7 +41,7 @@
 
           <li>
             <a
-              data-popup-close-link-text=""
+              data-popup-close-link-text
               class="item-link smart-select smart-select-init"
               data-open-in="popup"
               data-searchbar="true"
@@ -256,7 +256,11 @@ export default {
           let data = response.data;
           if (data.success) {
             this.initForm();
-            alert(`Compra registrada: ${data.data.number}`);
+
+            self.$f7.dialog.alert(
+              `Compra registrada: ${data.data.number}`,
+              "App Facturador"
+            );
             self.$f7router.navigate("/documents/");
           } else {
             alert("No se registro la Compra");
@@ -346,7 +350,7 @@ export default {
         total_plastic_bag_taxes: 0,
         total_igv: 0,
         total: 0,
-        serie_documento: "F001",
+        serie_documento: "",
         numero_documento: "#",
         fecha_de_emision: moment().format("YYYY-MM-DD"),
         hora_de_emision: moment().format("HH:mm:ss"),
@@ -371,7 +375,18 @@ export default {
         )
         .then(response => {
           let source = response.data.data;
-          self.customers = source.customers;
+         // self.customers = source.customers;
+          let code_type = self.$f7route.params.cod
+          if(code_type == '01')
+          {
+            self.customers = source.customers.filter(o=>o.identity_document_type_id == '6') 
+          }
+          else if(code_type == '03')
+          {
+            self.customers = source.customers.filter(o=>o.identity_document_type_id == '1') 
+
+          }
+
         })
         .catch(err => {
           console.log(err);

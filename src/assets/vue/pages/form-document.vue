@@ -26,6 +26,7 @@
               <div class="item-title item-label">Tipo Comprobante</div>
               <div class="item-input-wrap">
                 <select
+                  readonly
                   required
                   validate
                   @change="selectDocumentType"
@@ -178,6 +179,9 @@ export default {
   created() {
     this.initForm();
     this.getTables();
+    this.selectDocumentType()
+
+    
   },
 
   methods: {
@@ -347,7 +351,7 @@ export default {
         fecha_de_emision: moment().format("YYYY-MM-DD"),
         hora_de_emision: moment().format("HH:mm:ss"),
         codigo_tipo_operacion: "0101",
-        codigo_tipo_documento: "01",
+        codigo_tipo_documento: this.$f7route.params.cod,
         codigo_tipo_moneda: "PEN",
         fecha_de_vencimiento: moment().format("YYYY-MM-DD"),
         numero_orden_de_compra: "",

@@ -59,7 +59,7 @@ export default [
     component: Documents
   },
   {
-    path: '/form-document/',
+    path: '/form-document/:cod',
     component: FormDocument
   },
   {

@@ -41,7 +41,7 @@
       </f7-row>
       <f7-row>
         <f7-col>
-          <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
+          <f7-card @click.native="go('nw_docb')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
                 <f7-icon size="44px" color="green" material="note_add"></f7-icon>
@@ -140,7 +140,10 @@ export default {
           self.$f7router.navigate("/documents/");
           break;
         case "nw_doc":
-          self.$f7router.navigate("/form-document/");
+          self.$f7router.navigate("/form-document/01");
+          break;
+        case "nw_docb":
+          self.$f7router.navigate("/form-document/03");
           break;
         case "report":
           self.$f7router.navigate("/report/");

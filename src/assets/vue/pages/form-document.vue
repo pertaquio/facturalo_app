@@ -64,14 +64,24 @@
             </a>
           </li>
 
-          <li class="item-content item-input">
+          <li>
+            <a class="item-link" @click="popupOpened = true">
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">Agregar producto</div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+          <!--<li class="item-content item-input">
             <f7-button
               style="width: 100%;"
               small
               outline
               @click="popupOpened = true"
             >Agregar Producto</f7-button>
-          </li>
+          </li>-->
 
           <li style="margin-bottom: 5%;" class="item-content item-input">
             <br />
@@ -121,36 +131,6 @@
               </div>
             </div>
           </li>
-          <!--<li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">IGV</div>
-              <div class="item-input-wrap">
-                <input
-                  style="text-align: center; font-weight: bold;"
-                  :disabled="true"
-                  name="date"
-                  v-model="form.total_igv"
-                  type="text"
-                  placeholder="Please choose..."
-                />
-              </div>
-            </div>
-          </li>-->
-          <!--<li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">TOTAL A PAGAR</div>
-              <div class="item-input-wrap">
-                <input
-                  style="text-align: center; font-weight: bold;"
-                  :disabled="true"
-                  name="date"
-                  v-model="form.total"
-                  type="text"
-                  placeholder="Please choose..."
-                />
-              </div>
-            </div>
-          </li>-->
         </ul>
       </form>
     </f7-block>
@@ -168,8 +148,7 @@
 </template>
 
 <style scoped>
-
-.footer-text{
+.footer-text {
   position: absolute;
   margin-top: 2%;
   width: 50%;

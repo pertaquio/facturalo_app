@@ -41,6 +41,7 @@
 
           <li>
             <a
+              data-popup-close-link-text=""
               class="item-link smart-select smart-select-init"
               data-open-in="popup"
               data-searchbar="true"
@@ -163,7 +164,7 @@ import ItemsForm from "components/document/ItemsForm";
 import { auth } from "mixins_/auth";
 
 export default {
-  name: 'FormDocument',
+  name: "FormDocument",
   components: { ItemsForm },
   mixins: [auth],
   data: function() {
@@ -179,9 +180,7 @@ export default {
   created() {
     this.initForm();
     this.getTables();
-    this.selectDocumentType()
-
-    
+    this.selectDocumentType();
   },
 
   methods: {
@@ -326,6 +325,7 @@ export default {
       this.form.total = _.round(total + this.form.total_plastic_bag_taxes, 2);
     },
     selectCustomer() {
+      this.$f7.smartSelect.close(".smart-select");
       let row = this.customers.find(x => x.id == this.form.customer_id);
       if (!row) return false;
 
@@ -365,7 +365,10 @@ export default {
       const self = this;
       self.$f7.preloader.show();
       this.$http
-        .get(`${this.returnBaseUrl()}/document/customers`, this.getHeaderConfig())
+        .get(
+          `${this.returnBaseUrl()}/document/customers`,
+          this.getHeaderConfig()
+        )
         .then(response => {
           let source = response.data.data;
           self.customers = source.customers;

@@ -54,7 +54,7 @@
                 <p>{{ item.customer_name }}</p>
               </f7-card-content>
               <f7-card-footer>
-                <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
+                <f7-button @click="download(item.external_id)" outline color="blue">PDF</f7-button>
                 <f7-button
                   @click="whatsap(item.customer_telephone, item.external_id)"
                   outline
@@ -91,7 +91,7 @@
                 <p>{{ item.customer_name }}</p>
               </f7-card-content>
               <f7-card-footer>
-                <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
+                <f7-button @click="download(item.external_id)" outline color="blue">PDF</f7-button>
                 <f7-button
                   @click="whatsap(item.customer_telephone, item.external_id)"
                   outline
@@ -133,7 +133,7 @@
                 <p>{{ item.customer_name }}</p>
               </f7-card-content>
               <f7-card-footer>
-                <f7-button @click="download(item.download_pdf)" outline color="blue">PDF</f7-button>
+                <f7-button @click="download(item.external_id)" outline color="blue">PDF</f7-button>
                 <f7-button
                   @click="whatsap(item.customer_telephone, item.external_id)"
                   outline
@@ -283,8 +283,10 @@ export default {
     go() {
       this.$f7router.navigate("/form-document/");
     },
-    download(download) {
-      // var ref = cordova.InAppBrowser.open(download, "_blank", "location=yes");
+    download(external_id) {
+
+       cordova.InAppBrowser.open(`https://demo.facturador.pro/print/document/${external_id}/a4`, "_system", "location=yes");
+
       /*cordova.plugins.DownloadManager.download(
         "https://demo.facturador.pro/print/document/3b0358b0-02b6-4272-a7dd-05932a7dcabb/a4",
         function(status) {

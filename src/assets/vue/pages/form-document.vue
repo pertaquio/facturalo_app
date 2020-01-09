@@ -9,7 +9,7 @@
     >
       <f7-icon size="35px" color="white" material="check"></f7-icon>
     </f7-fab>
-    <f7-fab position="left-bottom" @click="cancel" slot="fixed" color="red">
+    <f7-fab small position="left-bottom" @click="cancel" slot="fixed" color="red">
       <f7-icon ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
     </f7-fab>
 
@@ -121,7 +121,7 @@
               </div>
             </div>
           </li>
-          <li class="item-content item-input">
+          <!--<li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">IGV</div>
               <div class="item-input-wrap">
@@ -135,8 +135,8 @@
                 />
               </div>
             </div>
-          </li>
-          <li class="item-content item-input">
+          </li>-->
+          <!--<li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">TOTAL A PAGAR</div>
               <div class="item-input-wrap">
@@ -150,12 +150,51 @@
                 />
               </div>
             </div>
-          </li>
+          </li>-->
         </ul>
       </form>
     </f7-block>
+    <div class="footer">
+      <div class="footer-data">
+        <div class="footer-text">
+          IGV:
+          <span>{{form.total_igv}}</span>
+          <br />TOTAL A PAGAR:
+          <span>{{form.total}}</span>
+        </div>
+      </div>
+    </div>
   </f7-page>
 </template>
+
+<style scoped>
+
+.footer-text{
+  position: absolute;
+  margin-top: 2%;
+  width: 50%;
+}
+.footer-data {
+  width: 50%;
+  color: #fff;
+  background: #17a2b8;
+  margin: auto;
+  border-right: 30px solid #fff;
+  border-left: 30px solid #fff;
+  border-bottom: 60px solid transparent;
+  text-align: center;
+}
+.footer {
+  text-align: center;
+  z-index: 9999;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
+</style>
 <script>
 const url = "https://demo.facturador.pro/api";
 import moment from "moment";
@@ -375,18 +414,17 @@ export default {
         )
         .then(response => {
           let source = response.data.data;
-         // self.customers = source.customers;
-          let code_type = self.$f7route.params.cod
-          if(code_type == '01')
-          {
-            self.customers = source.customers.filter(o=>o.identity_document_type_id == '6') 
+          // self.customers = source.customers;
+          let code_type = self.$f7route.params.cod;
+          if (code_type == "01") {
+            self.customers = source.customers.filter(
+              o => o.identity_document_type_id == "6"
+            );
+          } else if (code_type == "03") {
+            self.customers = source.customers.filter(
+              o => o.identity_document_type_id == "1"
+            );
           }
-          else if(code_type == '03')
-          {
-            self.customers = source.customers.filter(o=>o.identity_document_type_id == '1') 
-
-          }
-
         })
         .catch(err => {
           console.log(err);

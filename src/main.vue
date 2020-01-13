@@ -33,6 +33,10 @@ export default {
                 id: 'io.framework7.testapp',
             }
         }
+    },
+    created()
+    {
+        
     }
 }
 </script>

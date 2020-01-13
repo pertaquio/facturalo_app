@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar title="App Facturador"></f7-navbar>
+    <f7-navbar title="Facturador PRO APP"></f7-navbar>
 
     <f7-block-title class="title">Inicio de Sesión</f7-block-title>
 
@@ -38,6 +38,21 @@
             </div>
           </div>
         </li>
+        <li class="item-content item-input item-input-with-info">
+          <div class="item-inner">
+            <div class="item-title item-label">URL</div>
+            <div class="item-input-wrap">
+              <input
+                type="url"
+                placeholder="https://demo.facturador.pro"
+                required
+                validate
+                v-model="url"
+              />
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
       </ul>
     </form>
     <f7-block>
@@ -63,28 +78,31 @@
 }
 </style>
 <script>
-const url = "https://demo.facturador.pro/api";
-//const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
+import { auth } from "mixins_/auth";
 
 export default {
+  mixins: [auth],
   components: {},
   data: function() {
     return {
       email: "demo@gmail.com",
-      password: "123456"
+      password: "123456",
+      url: "https://demo.facturador.pro"
     };
   },
+  created() {},
+  computed: {},
   methods: {
-    whatsapp() {
-      window.open("https://wa.me/51961721647/?text=hola", "_system");
-    },
+    
     saveToken(token, name, email) {
       localStorage.api_token = token;
       localStorage.user_name = name;
       localStorage.user_email = email;
+
+      localStorage.api_url = this.url
     },
     login() {
-      if (!this.email || !this.password) {
+      if (!this.email || !this.password || !this.url) {
         return;
       }
 
@@ -93,7 +111,10 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${url}/login`, { email: this.email, password: this.password })
+        .post(`${this.url}/api/login`, {
+          email: this.email,
+          password: this.password
+        })
         .then(response => {
           let data = response.data;
           if (data.success) {
@@ -104,7 +125,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          alert("No se logro conexion con la URL, verifique la URL.");
         })
         .then(() => {
           self.$f7.preloader.hide();

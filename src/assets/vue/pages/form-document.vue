@@ -20,7 +20,7 @@
     <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
-        <ul>
+        <ul style="margin-bottom: 25% !important;">
           <li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">Tipo Comprobante</div>
@@ -89,6 +89,7 @@
               <table>
                 <thead>
                   <tr>
+                    <th class="medium-only"></th>
                     <th class="label-cell">#</th>
                     <th class="numeric-cell">Descripcion</th>
                     <th class="medium-only">Cantidad</th>
@@ -100,6 +101,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="(row, index) in form.items" :key="index">
+                    <td >
+                      <f7-button raised color="black" @click="deleteItem(row.item_id)"> <f7-icon material="cancel"></f7-icon> </f7-button>
+                    </td>
                     <td class="label-cell">{{index + 1 }}</td>
                     <td class="numeric-cell">{{row.item.description}}</td>
                     <td class="numeric-cell">{{row.quantity}}</td>
@@ -137,10 +141,15 @@
     <div class="footer">
       <div class="footer-data">
         <div class="footer-text">
-          IGV:
-          <span>{{form.total_igv}}</span>
-          <br />TOTAL A PAGAR:
-          <span>{{form.total}}</span>
+          <div class="row">
+            <div class="col">IGV:</div>
+            <div class="col">{{form.total_igv}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col">TOTAL:</div>
+            <div class="col">{{form.total}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -202,6 +211,11 @@ export default {
   },
 
   methods: {
+    deleteItem(id)
+    {
+      console.log(id)
+      this.$refs.form_items_car.delete_parent(id);
+    },
     addItems(rows) {
       this.form.items = rows;
       this.calculateTotal();
@@ -277,7 +291,7 @@ export default {
 
             self.$f7.dialog.alert(
               `Compra registrada: ${data.data.number}`,
-              "App Facturador"
+              "Facturador PRO APP"
             );
             self.$f7router.navigate("/documents/");
           } else {

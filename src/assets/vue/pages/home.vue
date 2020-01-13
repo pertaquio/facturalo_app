@@ -11,7 +11,7 @@
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
-      <div class="title">App Facturador</div>
+      <div class="title">Facturador PRO APP</div>
     </f7-navbar>
 
     <f7-block>

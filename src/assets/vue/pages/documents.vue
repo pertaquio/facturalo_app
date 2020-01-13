@@ -108,7 +108,43 @@
         </div>
         <div id="tab-3" class="page-content tab">
           <div class="block">
-            <p>No existen registros disponibles.</p>
+            <f7-card v-for="item in source_nota" :key="item.id" class="demo-card-header-pic">
+              <f7-card-header
+                class="no-border"
+                valign="bottom"
+                style="background: darkgrey;"
+              >NOTA DE VENTA : {{ item.identifier }}</f7-card-header>
+              <f7-card-content>
+                <p>
+                  Estado:
+                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                </p>
+                <p>{{ item.created_at }}</p>
+                <p>
+                  Total:
+                  <f7-badge color="orange">{{ item.total }}</f7-badge>
+                </p>
+                <p>RUC: {{ item.customer_number }}</p>
+                <p>{{ item.customer_name }}</p>
+              </f7-card-content>
+              <f7-card-footer>
+                <f7-button
+                  @click="download(item.external_id, 'sale-notes')"
+                  outline
+                  color="blue"
+                >PDF</f7-button>
+                <f7-button
+                  @click="whatsap(item.customer_telephone, item.external_id)"
+                  outline
+                  color="green"
+                >
+                  <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
+                </f7-button>
+                <f7-button @click="email(item.id)" outline color="blue">
+                  <f7-icon size="30px" color="blue" material="email"></f7-icon>
+                </f7-button>
+              </f7-card-footer>
+            </f7-card>
           </div>
         </div>
         <div id="tab-4" class="page-content tab">
@@ -195,11 +231,14 @@
 
 
 <script>
-const url = "https://demo.facturador.pro/api";
+//const url = "https://demo.facturador.pro/api";
 import _ from "lodash";
+import { auth } from "mixins_/auth";
+
 
 export default {
   name: "documents",
+  mixins: [auth],
   components: {},
   data: function() {
     // Must return an object
@@ -217,6 +256,7 @@ export default {
   created() {
     this.initformEmail();
     this.getData();
+    this.getDataSaleNote();
   },
   mounted() {},
   methods: {
@@ -227,6 +267,23 @@ export default {
       };
     },
     whatsap(phone, external_id) {
+      const self = this;
+
+      self.$f7.dialog.prompt("WhattsApp (9 dígitos)", "", function(number) {
+        if (number.length == 9) {
+          let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
+          let message = `Hola, revisa tu comprobante ingresando a este link ${link_pdf}`;
+          let message_ = message.split(" ").join("%20");
+          window.open(`https://wa.me/51${number}/?text=${message_}`, "_system");
+        } else {
+          self.$f7.dialog.alert(
+            `Ingrese correctamente los dígitos`,
+            "WhattsApp"
+          );
+        }
+      });
+
+      /*return false
       if (phone.length == 9) {
         let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
         let message = `Hola, revisa tu comprobante ingresando a este link ${link_pdf}`;
@@ -234,7 +291,7 @@ export default {
         window.open(`https://wa.me/51${phone}/?text=${message_}`, "_system");
       } else {
         alert("El numero telefonico no cuenta con WhatsApp");
-      }
+      }*/
     },
 
     validateEmail(email) {
@@ -283,19 +340,21 @@ export default {
     go() {
       this.$f7router.navigate("/form-document/");
     },
-    download(external_id) {
+    download(external_id, type = "document") {
+      if (type == "document") {
+        cordova.InAppBrowser.open(
+          `${localStorage.api_url}/print/${type}/${external_id}/a4`,
+          "_system",
+          "location=yes"
+        );
+      } else if (type == "sale-notes") {
 
-       cordova.InAppBrowser.open(`https://demo.facturador.pro/print/document/${external_id}/a4`, "_system", "location=yes");
-
-      /*cordova.plugins.DownloadManager.download(
-        "https://demo.facturador.pro/print/document/3b0358b0-02b6-4272-a7dd-05932a7dcabb/a4",
-        function(status) {
-          alert("Se descargó el archivo correctamente. Carpeta Download.");
-        },
-        function(err) {
-          alert(err);
-        }
-      );*/
+        cordova.InAppBrowser.open(
+          `${localStorage.api_url}/${type}/print/${external_id}/a4`,
+          "_system",
+          "location=yes"
+        );
+      }
     },
 
     clean() {
@@ -329,7 +388,7 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .get(`${url}/documents/lists`, this.getHeaderConfig())
+        .get(`${this.returnBaseUrl()}/documents/lists`, this.getHeaderConfig())
         .then(response => {
           self.source = response.data.data;
           this.applyFilters();
@@ -341,6 +400,16 @@ export default {
         .then(() => {
           self.$f7.preloader.hide();
         });
+    },
+    getDataSaleNote() {
+      const self = this;
+      this.$http
+        .get(`${this.returnBaseUrl()}/sale-note/lists`, this.getHeaderConfig())
+        .then(response => {
+          self.source_nota = response.data.data;
+        })
+        .catch(err => {})
+        .then(() => {});
     }
   }
 };

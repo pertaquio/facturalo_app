@@ -16,6 +16,9 @@ import Cpe from './assets/vue/pages/cpe.vue';
 import Login from './assets/vue/pages/login.vue';
 import Report from './assets/vue/pages/report.vue';
 
+import Configuration from './assets/vue/pages/configuration.vue';
+
+
 
 
 
@@ -77,6 +80,11 @@ export default [
   {
     path: '/form-sale-note/',
     component: FormSaleNote
+  },
+
+  {
+    path: '/configuration/',
+    component: Configuration
   },
 
 

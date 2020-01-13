@@ -55,10 +55,15 @@
   </f7-page>
 </template>
 <script>
-const url = "https://demo.facturador.pro/api";
-const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
+//const url = "https://demo.facturador.pro/api";
+//const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
+
+import { auth } from "mixins_/auth";
 export default {
+  name: 'Cpe',
   components: {},
+  mixins: [auth],
+
   data() {
     return {
       report: {},
@@ -97,17 +102,6 @@ export default {
          
         }
       );
-    },
-    getHeaderConfig() {
-      let token = localStorage.api_token;
-      let axiosConfig = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer 8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92`
-        }
-      };
-
-      return axiosConfig;
     },
     getFormatter(data) {
       let arr = data.split("|");

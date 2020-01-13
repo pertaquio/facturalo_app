@@ -3,14 +3,17 @@
     <f7-fab @click="send" position="right-bottom" slot="fixed" color="green">
       <f7-icon color="white" material="check"></f7-icon>
     </f7-fab>
-    <f7-fab @click="filteCart_b = !filteCart_b" position="left-bottom" slot="fixed" color="green">
+    <f7-fab @click="filteCart_b = !filteCart_b" position="left-bottom" slot="fixed" color="orange">
       <f7-icon color="white" material="shopping_cart"></f7-icon>
     </f7-fab>
 
-    <f7-navbar title="Productos">
-      <f7-nav-right>
-        <input type="search" placeholder="Buscar.." v-model="search_item" />
-      </f7-nav-right>
+    <f7-navbar>
+      <input
+        style="margin:4%;width:100%"
+        type="search"
+        placeholder="Buscar producto.."
+        v-model="search_item"
+      />
     </f7-navbar>
     <f7-block style="padding:0px">
       <div class="list inset">
@@ -85,7 +88,7 @@ export default {
     search_item: function(val) {
       if (val) {
         this.items_car = _.filter(this.items_car_base, function(o) {
-          return o.description.toLowerCase().includes(val);
+          return o.description.toLowerCase().includes(val.toLowerCase());
         });
       } else {
         this.items_car = this.items_car_base;
@@ -103,6 +106,11 @@ export default {
   },
 
   methods: {
+    delete_parent(id) {
+      let o = this.items_car.find(x => x.id == id);
+      o.quantity = 0;
+      this.send();
+    },
     initFormItem() {
       return {
         item_id: null,
@@ -131,6 +139,7 @@ export default {
         .filter(x => x.quantity > 0)
         .map(o => {
           let obj = self.initFormItem();
+          obj.quantity = o.quantity;
           obj.item = _.find(self.items, { id: o.id });
           obj.unit_price_value = obj.item.sale_unit_price;
           obj.has_igv = obj.item.has_igv;
@@ -157,7 +166,6 @@ export default {
         });
 
       this.$emit("addItemsCar", send_items);
-
     },
     add(item) {
       if (item.quantity > 0) {

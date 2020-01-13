@@ -2,8 +2,8 @@
   <f7-page>
     <f7-block-title>Acciones</f7-block-title>
     <f7-block>
-
       <f7-button color="red" @click="logout" outline>Cerrar Session</f7-button>
+
       <!--<p>
          hola mundo cristian:
         <f7-link panel-close>close me</f7-link>. You can put here anything.
@@ -18,21 +18,41 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse faucibus mauris leo, eu bibendum neque congue non. Ut leo mauris, eleifend eu commodo a, egestas ac urna. Maecenas in lacus faucibus, viverra ipsum pulvinar, molestie arcu. Etiam lacinia venenatis dignissim. Suspendisse non nisl semper tellus malesuada suscipit eu et eros. Nulla eu enim quis quam elementum vulputate. Mauris ornare consequat nunc viverra pellentesque. Aenean semper eu massa sit amet aliquam. Integer et neque sed libero mollis elementum at vitae ligula. Vestibulum pharetra sed libero sed porttitor. Suspendisse a faucibus lectus.</p>
       <p>Duis ut mauris sollicitudin, venenatis nisi sed, luctus ligula. Phasellus blandit nisl ut lorem semper pharetra. Nullam tortor nibh, suscipit in consequat vel, feugiat sed quam. Nam risus libero, auctor vel tristique ac, malesuada ut ante. Sed molestie, est in eleifend sagittis, leo tortor ullamcorper erat, at vulputate eros sapien nec libero. Mauris dapibus laoreet nibh quis bibendum. Fusce dolor sem, suscipit in iaculis id, pharetra at urna. Pellentesque tempor congue massa quis faucibus. Vestibulum nunc eros, convallis blandit dui sit amet, gravida adipiscing libero.</p>
     </f7-block>-->
+
+    <div class="footer">
+      <f7-block>
+        <f7-button color="blue" @click="go" outline>Configuracion</f7-button>
+      </f7-block>
+    </div>
   </f7-page>
 </template>
+
+<style  scoped>
+.footer {
+  text-align: center;
+  z-index: 9999;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
+</style>
 <script>
 export default {
   components: {},
-  methods:{
-    logout()
-    {
-      localStorage.removeItem('api_token')
-      localStorage.removeItem('user_name')
-      localStorage.removeItem('user_email')
-
-      location.reload()
-     // this.$f7router.navigate("/");
-
+  methods: {
+    go() {
+      this.$f7router.navigate("/configuration/");
+    },
+    logout() {
+      localStorage.removeItem("api_token");
+      localStorage.removeItem("user_name");
+      localStorage.removeItem("user_email");
+      localStorage.removeItem('api_url')
+      location.reload();
+      // this.$f7router.navigate("/");
     }
   }
 };

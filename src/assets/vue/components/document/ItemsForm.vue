@@ -3,17 +3,23 @@
     <f7-fab @click="send" position="right-bottom" slot="fixed" color="green">
       <f7-icon color="white" material="check"></f7-icon>
     </f7-fab>
+
+    <!--<f7-fab @click="addForm = !addForm" position="left-bottom" slot="fixed" color="orange">
+      <f7-icon color="white" material="add"></f7-icon>
+    </f7-fab>-->
     <f7-fab @click="filteCart_b = !filteCart_b" position="left-bottom" slot="fixed" color="orange">
       <f7-icon color="white" material="shopping_cart"></f7-icon>
+      <f7-badge style="margin-left: 68%;font-size: 15px" color="red">{{countCar}}</f7-badge>
     </f7-fab>
 
     <f7-navbar>
       <input
-        style="margin:4%;width:100%"
+        style="margin:4%;width:70%"
         type="search"
         placeholder="Buscar producto.."
         v-model="search_item"
       />
+      <f7-button @click="addForm = !addForm" style="margin:2%;width:30%" raised>Nuevo</f7-button>
     </f7-navbar>
     <f7-block style="padding:0px">
       <div class="list inset">
@@ -49,6 +55,70 @@
         </ul>
       </div>
     </f7-block>
+
+    <f7-sheet
+      style="height:55%;"
+      class="demo-sheet"
+      :opened="addForm"
+      @sheet:closed="addForm = false"
+    >
+      <f7-toolbar>
+        <div class="left"></div>
+        <div class="right">
+          <f7-link sheet-close>Cancelar</f7-link>
+        </div>
+      </f7-toolbar>
+      <!-- Scrollable sheet content -->
+      <f7-page-content>
+        <f7-block style="margin-top: 0px !important; ">
+          <form class="list no-hairlines-md" id="demo-form-item">
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Nombre</div>
+                  <div class="item-input-wrap">
+                    <input v-model="form.description" required validate type="text" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Descripción</div>
+                  <div class="item-input-wrap">
+                    <input v-model="form.name" required validate type="text" />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Precio Unitario (Venta) *</div>
+                  <div class="item-input-wrap">
+                    <input
+                      v-model="form.sale_unit_price"
+                      required
+                      validate
+                      step="any"
+                      type="number"
+                    />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <f7-button fill @click="submit">Guardar</f7-button>
+                </div>
+              </li>
+            </ul>
+          </form>
+        </f7-block>
+      </f7-page-content>
+    </f7-sheet>
   </f7-page>
 </template>
 
@@ -75,13 +145,21 @@ export default {
       search_item: "",
       items_car: [],
       items_car_base: [],
-
+      addForm: false,
       items: [],
-      affectation_igv_types: []
+      affectation_igv_types: [],
+      form: {}
     };
   },
-  computed: {},
+  computed: {
+    countCar() {
+      return  _.filter(this.items_car_base, function(o) {
+          return o.quantity > 0;
+        }).length;
+    }
+  },
   created() {
+    this.initForm();
     this.getTables();
   },
   watch: {
@@ -106,6 +184,72 @@ export default {
   },
 
   methods: {
+    initForm() {
+      this.form = {
+        id: null,
+        item_type_id: "01",
+        internal_id: null,
+        item_code: null,
+        item_code_gs1: null,
+        description: null,
+        name: null,
+        second_name: null,
+        unit_type_id: "NIU",
+        currency_type_id: "PEN",
+        sale_unit_price: 0,
+        purchase_unit_price: 0,
+        has_isc: false,
+        system_isc_type_id: null,
+        percentage_isc: 0,
+        suggested_price: 0,
+        sale_affectation_igv_type_id: "10",
+        purchase_affectation_igv_type_id: "10",
+        calculate_quantity: false,
+        stock: 0,
+        stock_min: 1,
+        has_igv: true,
+        has_perception: false,
+        item_unit_types: [],
+        percentage_of_profit: 0,
+        percentage_perception: 0,
+        image: null,
+        image_url: null,
+        temp_path: null,
+        is_set: false,
+        account_id: null,
+        category_id: null,
+        brand_id: null,
+        date_of_due: null,
+        lot_code: null,
+        lots_enabled: false,
+        lots: []
+      };
+    },
+    submit() {
+      this.addForm = false;
+
+      const self = this;
+      self.$f7.preloader.show();
+      this.$http
+        .post(`${this.returnBaseUrl()}/item`, this.form, this.getHeaderConfig())
+        .then(response => {
+          self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
+          let it = response.data.data;
+          self.items.push(it);
+          self.items_car_base.push({
+            description: it.description,
+            id: it.id,
+            quantity: 0,
+            sale_unit_price: it.sale_unit_price
+          });
+        })
+        .catch(err => {
+          alert("Sucedio un error al guardar.");
+        })
+        .then(() => {
+          self.$f7.preloader.hide();
+        });
+    },
     delete_parent(id) {
       let o = this.items_car.find(x => x.id == id);
       o.quantity = 0;

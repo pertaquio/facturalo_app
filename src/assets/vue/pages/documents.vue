@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <f7-fab
+    <!-- <f7-fab
       style="margin-bottom: 12%;"
       position="right-bottom"
       @click="go"
@@ -8,7 +8,7 @@
       color="green"
     >
       <f7-icon ios="f7:note_add" aurora="f7:note_add" md="material:note_add"></f7-icon>
-    </f7-fab>
+    </f7-fab>-->
 
     <div class="navbar">
       <div class="navbar-bg"></div>
@@ -19,15 +19,18 @@
             <span class="if-not-md">Back</span>
           </a>
         </div>
-        <div class="title">Listado de comprobantes</div>
+        <div class="title">
+          Listado de comprobantes
+          <f7-badge color="blue">{{ countDoc }}</f7-badge>
+        </div>
       </div>
     </div>
     <div class="toolbar tabbar toolbar-bottom">
       <div class="toolbar-inner">
-        <a href="#tab-1" class="tab-link tab-link-active">Factura</a>
-        <a href="#tab-2" class="tab-link">Boleta</a>
-        <a href="#tab-3" class="tab-link">Nota</a>
-        <a href="#tab-4" class="tab-link">Todo</a>
+        <a href="#tab-1" @click="show(1)" class="tab-link tab-link-active">Factura</a>
+        <a href="#tab-2" @click="show(2)" class="tab-link">Boleta</a>
+        <a href="#tab-3" @click="show(3)" class="tab-link">Nota</a>
+        <a href="#tab-4" @click="show(4)" class="tab-link">Todo</a>
       </div>
     </div>
     <div class="tabs-animated-wrap">
@@ -38,8 +41,8 @@
               <f7-card-header
                 class="no-border"
                 valign="bottom"
-                style="background: darkgrey;"
-              >{{ item.document_type_description }} : {{ item.number }}</f7-card-header>
+                style="background: #73C1FF;"
+              > {{ item.document_type_description }} : {{ item.number }}</f7-card-header>
               <f7-card-content>
                 <p>
                   Estado:
@@ -54,17 +57,27 @@
                 <p>{{ item.customer_name }}</p>
               </f7-card-content>
               <f7-card-footer>
-                <f7-button @click="download(item.external_id)" outline color="blue">PDF</f7-button>
-                <f7-button
-                  @click="whatsap(item.customer_telephone, item.external_id)"
-                  outline
-                  color="green"
-                >
-                  <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
+                <f7-button @click="download(item.external_id)" outline color="blue">
+                  <f7-icon color="blue" material="cloud_download"></f7-icon>
                 </f7-button>
-                <f7-button @click="email(item.id)" outline color="blue">
-                  <f7-icon size="30px" color="blue" material="email"></f7-icon>
-                </f7-button>
+
+                <div class="row no-gap" style="width: 51%;">
+                  <div class="col-50">
+                    <f7-button
+                      @click="whatsap(item.customer_telephone, item.external_id)"
+                      outline
+                      color="green"
+                    >
+                      <i style="font-size: 1.6em;" class="icon fab fa-whatsapp"></i>
+                      <i style="font-size: 1.0em;" class="icon fa fa-arrow-right"></i>
+                    </f7-button>
+                  </div>
+                  <div class="col-50">
+                    <f7-button @click="email(item.id)" outline color="blue">
+                      <f7-icon size="30px" color="blue" material="email"></f7-icon>
+                    </f7-button>
+                  </div>
+                </div>
               </f7-card-footer>
             </f7-card>
           </div>
@@ -75,7 +88,7 @@
               <f7-card-header
                 class="no-border"
                 valign="bottom"
-                style="background: darkgrey;"
+                style="background: #73C1FF;"
               >{{ item.document_type_description }} : {{ item.number }}</f7-card-header>
               <f7-card-content>
                 <p>
@@ -112,7 +125,7 @@
               <f7-card-header
                 class="no-border"
                 valign="bottom"
-                style="background: darkgrey;"
+                style="background: #73C1FF;"
               >NOTA DE VENTA : {{ item.identifier }}</f7-card-header>
               <f7-card-content>
                 <p>
@@ -153,7 +166,7 @@
               <f7-card-header
                 class="no-border"
                 valign="bottom"
-                style="background: darkgrey;"
+                style="background: #73C1FF;"
               >{{ item.document_type_description }} : {{ item.number }}</f7-card-header>
               <f7-card-content>
                 <p>
@@ -235,7 +248,6 @@
 import _ from "lodash";
 import { auth } from "mixins_/auth";
 
-
 export default {
   name: "documents",
   mixins: [auth],
@@ -250,16 +262,39 @@ export default {
       source_fact: [],
       source_bol: [],
       source_nota: [],
-      form_email: {}
+      form_email: {},
+      count: 0
     };
+  },
+  computed: {
+    countDoc() {
+      return this.count;
+    }
   },
   created() {
     this.initformEmail();
     this.getData();
     this.getDataSaleNote();
   },
-  mounted() {},
+
   methods: {
+    show(type) {
+      const self = this;
+      switch (type) {
+        case 1:
+          self.count = self.source_fact.length;
+          break;
+        case 2:
+          self.count = self.source_bol.length;
+          break;
+        case 3:
+          self.count = self.source_nota.length;
+          break;
+        case 4:
+          self.count = self.source.length;
+          break;
+      }
+    },
     initformEmail() {
       this.form_email = {
         email: null,
@@ -335,6 +370,8 @@ export default {
     applyFilters() {
       this.source_fact = _.filter(this.source, { document_type_id: "01" });
       this.source_bol = _.filter(this.source, { document_type_id: "03" });
+
+      this.show(1);
       //this.source_nota =  _.filter(this.source, { document_type_id: '01' });
     },
     go() {
@@ -348,7 +385,6 @@ export default {
           "location=yes"
         );
       } else if (type == "sale-notes") {
-
         cordova.InAppBrowser.open(
           `${localStorage.api_url}/${type}/print/${external_id}/a4`,
           "_system",
@@ -392,7 +428,6 @@ export default {
         .then(response => {
           self.source = response.data.data;
           this.applyFilters();
-          // self.sourceClone = response.data.data;
         })
         .catch(err => {
           console.log(err);

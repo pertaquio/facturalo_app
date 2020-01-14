@@ -1,12 +1,6 @@
 <template>
   <f7-page>
-    <f7-fab
-      v-if="form.items.length > 0"
-      @click="send"
-      position="right-bottom"
-      slot="fixed"
-      color="green"
-    >
+    <f7-fab @click="send" position="right-bottom" slot="fixed" color="green">
       <f7-icon size="35px" color="white" material="check"></f7-icon>
     </f7-fab>
     <f7-fab small position="left-bottom" @click="cancel" slot="fixed" color="red">
@@ -17,11 +11,11 @@
       <items-form ref="form_items_car" @addItemsCar="addItems"></items-form>
     </f7-popup>
 
-    <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
+    <f7-navbar :title="title" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul style="margin-bottom: 25% !important;">
-          <li class="item-content item-input">
+          <!--<li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">Tipo Comprobante</div>
               <div class="item-input-wrap">
@@ -37,28 +31,23 @@
                 </select>
               </div>
             </div>
-          </li>
+          </li>-->
 
           <li>
+            
             <a
-              data-popup-close-link-text
+              data-popup-close-link-text="<i class='icon icon-back'></i>"
               class="item-link smart-select smart-select-init"
               data-open-in="popup"
               data-searchbar="true"
               data-searchbar-placeholder="buscar cliente"
             >
-              <select
-                required
-                validate
-                @change="selectCustomer"
-                v-model="form.customer_id"
-                placeholder="Seleccione un cliente..."
-              >
+              <select required validate @change="selectCustomer" v-model="form.customer_id">
                 <option v-for="item in customers" :key="item.id" :value="item.id">{{item.name}}</option>
               </select>
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Cliente</div>
+                  <div class="item-title">Clientes</div>
                 </div>
               </div>
             </a>
@@ -68,20 +57,13 @@
             <a class="item-link" @click="popupOpened = true">
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Agregar producto</div>
+                  <div class="item-title">
+                    <f7-icon material="add"></f7-icon>Productos
+                  </div>
                 </div>
               </div>
             </a>
           </li>
-
-          <!--<li class="item-content item-input">
-            <f7-button
-              style="width: 100%;"
-              small
-              outline
-              @click="popupOpened = true"
-            >Agregar Producto</f7-button>
-          </li>-->
 
           <li style="margin-bottom: 5%;" class="item-content item-input">
             <br />
@@ -91,7 +73,7 @@
                   <tr>
                     <th class="medium-only"></th>
                     <th class="label-cell">#</th>
-                    <th class="numeric-cell">Descripcion</th>
+                    <th class="medium-cell">Descripcion</th>
                     <th class="medium-only">Cantidad</th>
 
                     <th class="medium-only">Precio</th>
@@ -101,8 +83,12 @@
                 </thead>
                 <tbody>
                   <tr v-for="(row, index) in form.items" :key="index">
-                    <td >
-                      <f7-button raised color="black" @click="deleteItem(row.item_id)"> <f7-icon material="cancel"></f7-icon> </f7-button>
+                    <td>
+                      <f7-icon
+                        @click.native="deleteItem(row.item_id)"
+                        color="red"
+                        material="cancel"
+                      ></f7-icon>
                     </td>
                     <td class="label-cell">{{index + 1 }}</td>
                     <td class="numeric-cell">{{row.item.description}}</td>
@@ -142,13 +128,18 @@
       <div class="footer-data">
         <div class="footer-text">
           <div class="row">
-            <div class="col">IGV:</div>
-            <div class="col">{{form.total_igv}}</div>
+            <div class="col m-text">OP.GRAVADA:</div>
+            <div class="col m-text-r">{{form.total_taxed}}</div>
           </div>
 
           <div class="row">
-            <div class="col">TOTAL:</div>
-            <div class="col">{{form.total}}</div>
+            <div class="col m-text">IGV:</div>
+            <div class="col m-text-r">{{form.total_igv}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col m-text">TOTAL:</div>
+            <div class="col m-text-r">{{form.total}}</div>
           </div>
         </div>
       </div>
@@ -157,10 +148,17 @@
 </template>
 
 <style scoped>
+.m-text {
+  text-align: left;
+}
+.m-text-r {
+  text-align: center;
+}
 .footer-text {
   position: absolute;
   margin-top: 2%;
   width: 50%;
+  padding-left: 1%;
 }
 .footer-data {
   width: 50%;
@@ -169,7 +167,7 @@
   margin: auto;
   border-right: 30px solid #fff;
   border-left: 30px solid #fff;
-  border-bottom: 60px solid transparent;
+  border-bottom: 73px solid transparent;
   text-align: center;
 }
 .footer {
@@ -200,7 +198,8 @@ export default {
       search_item: "",
       customers: [],
       form: {},
-      popupOpened: false
+      popupOpened: false,
+      title: ""
     };
   },
   computed: {},
@@ -211,9 +210,7 @@ export default {
   },
 
   methods: {
-    deleteItem(id)
-    {
-      console.log(id)
+    deleteItem(id) {
       this.$refs.form_items_car.delete_parent(id);
     },
     addItems(rows) {
@@ -272,13 +269,32 @@ export default {
         informacion_adicional: "Forma de pago:Efectivo|Caja: 1"
       };
     },
+
+    validate() {
+      const self = this;
+      if (this.form.items.length == 0) {
+        self.$f7.dialog.alert(`Debe agregar productos.`, "Facturador PRO APP");
+
+        return false;
+      }
+
+      if (!this.form.customer_id) {
+        self.$f7.dialog.alert(
+          `Debe seleccionar un cliente.`,
+          "Facturador PRO APP"
+        );
+
+        return false;
+      }
+
+      return true;
+    },
     send() {
       const self = this;
 
-      if (!this.form.customer_id) {
-        alert("Debe seleccionar un cliente.");
-        return false;
-      }
+      let valid = this.validate();
+
+      if (!valid) return;
 
       self.$f7.preloader.show();
 
@@ -308,8 +324,10 @@ export default {
     selectDocumentType() {
       if (this.form.codigo_tipo_documento == "01") {
         this.form.serie_documento = "F001";
+        this.title = "Factura Electrónica";
       } else if (this.form.codigo_tipo_documento == "03") {
         this.form.serie_documento = "B001";
+        this.title = "Boleta Electrónica";
       }
     },
     calculateTotal() {
@@ -379,6 +397,7 @@ export default {
 
     initForm() {
       this.form = {
+        total_taxed: 0,
         total_plastic_bag_taxes: 0,
         total_igv: 0,
         total: 0,

@@ -21,7 +21,7 @@
           <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon size="44px" color="green" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
               </span>
               <p>Factura <br> electrónica</p>
             </f7-card-content>
@@ -32,7 +32,8 @@
           <f7-card @click.native="go('ls_doc')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon size="44px" color="orange" material="create_new_folder"></f7-icon>
+                <!-- <f7-icon size="44px" color="green" material="list_alt"></f7-icon>-->
+                <f7-icon size="44px" color="green" f7="list_alt"></f7-icon>
               </span>
               <p>Listado de comprobantes</p>
             </f7-card-content>
@@ -44,9 +45,9 @@
           <f7-card @click.native="go('nw_docb')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon size="44px" color="green" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
               </span>
-              <p>Boleta electrónica</p>
+              <p>Boleta  <br> electrónica</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
@@ -54,9 +55,9 @@
           <f7-card @click.native="go('cpe')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon f7="lessthan_circle_fill" size="44px" color="orange"></f7-icon>
+                <f7-icon material="center_focus_strong" size="44px" color="green"></f7-icon>
               </span>
-              <p>Validar CPE</p>
+              <p>Validar <br> CPE</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
@@ -66,7 +67,7 @@
           <f7-card @click.native="go('sale_note')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon size="44px" color="green" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
               </span>
               <p>Nota de venta</p>
             </f7-card-content>
@@ -76,7 +77,7 @@
           <f7-card @click.native="go('report')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
               <span>
-                <f7-icon size="44px" color="orange" material="insert_chart"></f7-icon>
+                <f7-icon size="44px" color="green" material="insert_chart"></f7-icon>
               </span>
               <p>Reportes</p>
             </f7-card-content>

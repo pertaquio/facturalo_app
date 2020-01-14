@@ -1,12 +1,6 @@
 <template>
   <f7-page>
-    <f7-fab
-      v-if="form.items.length > 0"
-      @click="send"
-      position="right-bottom"
-      slot="fixed"
-      color="green"
-    >
+    <f7-fab @click="send" position="right-bottom" slot="fixed" color="green">
       <f7-icon size="35px" color="white" material="check"></f7-icon>
     </f7-fab>
     <f7-fab small position="left-bottom" @click="cancel" slot="fixed" color="red">
@@ -17,11 +11,11 @@
       <items-form ref="form_items_car" @addItemsCar="addItems"></items-form>
     </f7-popup>
 
-    <f7-navbar title="Nuevo Comprobante" back-link="Back"></f7-navbar>
+    <f7-navbar title="Nota de Venta" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
-          <li class="item-content item-input">
+          <!--<li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">Tipo Comprobante</div>
               <div class="item-input-wrap">
@@ -30,7 +24,7 @@
                 </select>
               </div>
             </div>
-          </li>
+          </li>-->
 
           <li>
             <a
@@ -51,7 +45,7 @@
               </select>
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Cliente</div>
+                  <div class="item-title">Clientes</div>
                 </div>
               </div>
             </a>
@@ -61,7 +55,9 @@
             <a class="item-link" @click="popupOpened = true">
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Agregar producto</div>
+                  <div class="item-title">
+                    <f7-icon material="add"></f7-icon>Productos
+                  </div>
                 </div>
               </div>
             </a>
@@ -103,13 +99,18 @@
       <div class="footer-data">
         <div class="footer-text">
           <div class="row">
-            <div class="col">IGV:</div>
-            <div class="col">{{form.total_igv}}</div>
+            <div class="col m-text">OP.GRAVADA:</div>
+            <div class="col m-text-r">{{form.total_taxed}}</div>
           </div>
 
           <div class="row">
-            <div class="col">TOTAL:</div>
-            <div class="col">{{form.total}}</div>
+            <div class="col m-text">IGV:</div>
+            <div class="col m-text-r">{{form.total_igv}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col m-text">TOTAL:</div>
+            <div class="col m-text-r">{{form.total}}</div>
           </div>
         </div>
       </div>
@@ -118,10 +119,17 @@
 </template>
 
 <style scoped>
+.m-text {
+  text-align: left;
+}
+.m-text-r {
+  text-align: center;
+}
 .footer-text {
   position: absolute;
   margin-top: 2%;
   width: 50%;
+  padding-left: 1%;
 }
 .footer-data {
   width: 50%;
@@ -130,7 +138,7 @@
   margin: auto;
   border-right: 30px solid #fff;
   border-left: 30px solid #fff;
-  border-bottom: 60px solid transparent;
+  border-bottom: 73px solid transparent;
   text-align: center;
 }
 .footer {
@@ -181,13 +189,32 @@ export default {
       this.$f7router.navigate("/");
     },
 
+    validate() {
+      const self = this;
+      if (this.form.items.length == 0) {
+        self.$f7.dialog.alert(`Debe agregar productos.`, "Facturador PRO APP");
+
+        return false;
+      }
+
+      if (!this.form.customer_id) {
+        self.$f7.dialog.alert(
+          `Debe seleccionar un cliente.`,
+          "Facturador PRO APP"
+        );
+
+        return false;
+      }
+
+      return true;
+    },
+
     send() {
       const self = this;
 
-      if (!this.form.customer_id) {
-        alert("Debe seleccionar un cliente.");
-        return false;
-      }
+      let valid = this.validate();
+
+      if (!valid) return;
 
       self.$f7.preloader.show();
 

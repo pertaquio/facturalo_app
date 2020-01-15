@@ -302,6 +302,8 @@ export default {
             self.items = source.customers.filter(
               o => o.identity_document_type_id == "1"
             );
+          } else {
+            self.items = source.customers;
           }
 
           self.items_base = self.items;

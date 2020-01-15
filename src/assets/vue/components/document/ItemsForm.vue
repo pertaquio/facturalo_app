@@ -1,16 +1,22 @@
 <template>
   <f7-page>
-    <f7-fab @click="send" position="right-bottom" slot="fixed" color="green">
+    <f7-fab
+      @click="sheetConfirm = !sheetConfirm"
+      position="right-bottom"
+      slot="fixed"
+      color="green"
+    >
       <f7-icon color="white" material="check"></f7-icon>
+      <f7-badge style="margin-left: 68%;font-size: 15px" color="orange">{{countCar}}</f7-badge>
     </f7-fab>
 
     <!--<f7-fab @click="addForm = !addForm" position="left-bottom" slot="fixed" color="orange">
       <f7-icon color="white" material="add"></f7-icon>
     </f7-fab>-->
-    <f7-fab @click="filteCart_b = !filteCart_b" position="left-bottom" slot="fixed" color="orange">
+    <!-- <f7-fab @click="filteCart_b = !filteCart_b" position="left-bottom" slot="fixed" color="orange">
       <f7-icon color="white" material="shopping_cart"></f7-icon>
       <f7-badge style="margin-left: 68%;font-size: 15px" color="red">{{countCar}}</f7-badge>
-    </f7-fab>
+    </f7-fab>-->
 
     <!--<f7-navbar>
       <input
@@ -94,7 +100,6 @@
           <f7-link sheet-close>Cancelar</f7-link>
         </div>
       </f7-toolbar>
-      <!-- Scrollable sheet content -->
       <f7-page-content>
         <f7-block style="margin-top: 0px !important; ">
           <form class="list no-hairlines-md" id="demo-form-item">
@@ -145,6 +150,43 @@
         </f7-block>
       </f7-page-content>
     </f7-sheet>
+
+    <f7-sheet
+      style="height:65%;"
+      class="demo-sheet"
+      :opened="sheetConfirm"
+      @sheet:closed="sheetConfirm = false"
+    >
+      <f7-toolbar>
+        <div class="left"></div>
+        <div class="right">
+          <f7-link @click="cancel" sheet-close>Cancelar</f7-link>
+        </div>
+      </f7-toolbar>
+      <f7-page-content>
+        <f7-block>
+          <div class="data-table">
+            <f7-button color="green" @click="send" small outline>Confirmar</f7-button>
+            <table>
+              <thead>
+                <tr>
+                  <th class="numeric-only">#</th>
+                  <th class="label-cell">Producto</th>
+                  <th class="numeric-only">Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in itemsCar" :key="index">
+                  <td class="numeric-only">{{index + 1}}</td>
+                  <td class="label-cell">{{item.description}}</td>
+                  <td class="numeric-only">{{item.quantity}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </f7-block>
+      </f7-page-content>
+    </f7-sheet>
   </f7-page>
 </template>
 
@@ -168,6 +210,7 @@ export default {
 
   data: function() {
     return {
+      sheetConfirm: false,
       filteCart_b: false,
       search_item: "",
       items_car: [],
@@ -183,6 +226,12 @@ export default {
       return _.filter(this.items_car_base, function(o) {
         return o.quantity > 0;
       }).length;
+    },
+
+    itemsCar() {
+      return _.filter(this.items_car_base, function(o) {
+        return o.quantity > 0;
+      });
     }
   },
   created() {
@@ -211,6 +260,9 @@ export default {
   },
 
   methods: {
+    cancel() {
+      this.items_car.forEach(element => (element.quantity = 0));
+    },
     closePopup() {
       this.$emit("update:showDialog", false);
     },
@@ -309,6 +361,7 @@ export default {
 
     send() {
       const self = this;
+      self.sheetConfirm = false
       let send_items = this.items_car
         .filter(x => x.quantity > 0)
         .map(o => {

@@ -28,27 +28,6 @@
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul style="margin-bottom: 25% !important;">
-          <!-- <li>
-            <a
-              data-popup-close-link-text="<i class='icon icon-back'></i>"
-              class="item-link smart-select smart-select-init"
-              data-open-in="popup"
-              data-searchbar="true"
-              data-searchbar-placeholder="buscar cliente"
-            >
-              <select required validate @change="selectCustomer" v-model="form.customer_id">
-                <option v-for="item in customers" :key="item.id" :value="item.id">{{item.name}}</option>
-              </select>
-              <div class="item-content">
-                <div class="item-inner">
-                  <div class="item-title">
-                    <span style="font-size:19px;font-weight:bold;">+</span> Clientes
-                  </div>
-                </div>
-              </div>
-            </a>
-          </li>-->
-
           <li>
             <a class="item-link" @click="popupCustomerOpened = true">
               <div class="item-content">
@@ -158,6 +137,8 @@
 <style scoped>
 .m-text {
   text-align: left;
+  font-size: 12px;
+  font-weight: bold;
 }
 .m-text-r {
   text-align: center;
@@ -215,7 +196,8 @@ export default {
   },
   computed: {},
   created() {
-    (this.codeType = this.$f7route.params.cod), this.initForm();
+    this.codeType = this.$f7route.params.cod;
+    this.initForm();
     //this.getTables();
     this.selectDocumentType();
   },
@@ -231,6 +213,7 @@ export default {
     },
     addCustomer(row) {
       this.popupCustomerOpened = false;
+      this.form.customer_id = row.id;
       this.form.datos_del_cliente_o_receptor = {
         codigo_tipo_documento_identidad: row.identity_document_type_id,
         numero_documento: row.number,

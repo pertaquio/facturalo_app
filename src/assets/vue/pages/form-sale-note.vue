@@ -8,44 +8,33 @@
     </f7-fab>
 
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
-      <items-form ref="form_items_car" @addItemsCar="addItems"></items-form>
+      <items-form :showDialog.sync="popupOpened" ref="form_items_car" @addItemsCar="addItems"></items-form>
+    </f7-popup>
+
+    <f7-popup
+      class="demo-popup"
+      :opened="popupCustomerOpened"
+      @popup:closed="popupCustomerOpened = false"
+    >
+      <customer-form
+        :codeType="codeType"
+        :showDialog.sync="popupCustomerOpened"
+        ref="form_customer_car"
+        @addCustomerCar="addCustomer"
+      ></customer-form>
     </f7-popup>
 
     <f7-navbar title="Nota de Venta" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
-          <!--<li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">Tipo Comprobante</div>
-              <div class="item-input-wrap">
-                <select disabled>
-                  <option :value="'01'">Nota de Venta</option>
-                </select>
-              </div>
-            </div>
-          </li>-->
-
           <li>
-            <a
-              data-popup-close-link-text
-              class="item-link smart-select smart-select-init"
-              data-open-in="popup"
-              data-searchbar="true"
-              data-searchbar-placeholder="buscar cliente"
-            >
-              <select
-                required
-                validate
-                @change="selectCustomer"
-                v-model="form.customer_id"
-                placeholder="Seleccione un cliente..."
-              >
-                <option v-for="item in customers" :key="item.id" :value="item.id">{{item.name}}</option>
-              </select>
+            <a class="item-link" @click="popupCustomerOpened = true">
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Clientes</div>
+                  <div class="item-title">
+                    <span style="font-size:19px;font-weight:bold;">+</span> Clientes
+                  </div>
                 </div>
               </div>
             </a>
@@ -56,7 +45,7 @@
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
-                    <f7-icon material="add"></f7-icon>Productos
+                    <span style="font-size:19px;font-weight:bold;">+</span> Productos
                   </div>
                 </div>
               </div>
@@ -121,6 +110,8 @@
 <style scoped>
 .m-text {
   text-align: left;
+  font-size: 12px;
+  font-weight: bold;
 }
 .m-text-r {
   text-align: center;
@@ -157,15 +148,18 @@ const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
+import CustomerForm from "components/document/CustomerForm";
 import { auth } from "mixins_/auth";
 
 export default {
   name: "FormSaleNote",
-  components: { ItemsForm },
+  components: { ItemsForm, CustomerForm },
   mixins: [auth],
   data: function() {
     // Must return an object
     return {
+      codeType: "",
+      popupCustomerOpened: false,
       search_item: "",
       customers: [],
       form: {},
@@ -179,10 +173,24 @@ export default {
   },
 
   methods: {
+    addCustomer(row) {
+      this.popupCustomerOpened = false;
+      this.form.customer_id = row.id;
+      this.form.datos_del_cliente_o_receptor = {
+        codigo_tipo_documento_identidad: row.identity_document_type_id,
+        numero_documento: row.number,
+        apellidos_y_nombres_o_razon_social: row.name,
+        codigo_pais: "PE",
+        ubigeo: "150101",
+        direccion: row.address,
+        correo_electronico: row.email,
+        telefono: "427-1148"
+      };
+    },
     addItems(rows) {
+      this.popupOpened = false;
       this.form.items = rows;
       this.calculateTotal();
-      this.popupOpened = false;
     },
     cancel() {
       this.initForm();
@@ -289,22 +297,6 @@ export default {
       this.form.total_value = _.round(total_value, 2);
       this.form.total_taxes = _.round(total_igv, 2);
       this.form.total = _.round(total + 2);
-    },
-    selectCustomer() {
-      this.$f7.smartSelect.close(".smart-select");
-      let row = this.customers.find(x => x.id == this.form.customer_id);
-      if (!row) return false;
-
-      this.form.datos_del_cliente_o_receptor = {
-        codigo_tipo_documento_identidad: row.identity_document_type_id,
-        numero_documento: row.number,
-        apellidos_y_nombres_o_razon_social: row.name,
-        codigo_pais: "PE",
-        ubigeo: "150101",
-        direccion: row.address,
-        correo_electronico: row.email,
-        telefono: "427-1148"
-      };
     },
 
     initForm() {

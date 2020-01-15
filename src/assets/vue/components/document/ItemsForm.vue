@@ -12,7 +12,7 @@
       <f7-badge style="margin-left: 68%;font-size: 15px" color="red">{{countCar}}</f7-badge>
     </f7-fab>
 
-    <f7-navbar>
+    <!--<f7-navbar>
       <input
         style="margin:4%;width:70%"
         type="search"
@@ -20,8 +20,34 @@
         v-model="search_item"
       />
       <f7-button @click="addForm = !addForm" style="margin:2%;width:30%" raised>Nuevo</f7-button>
-    </f7-navbar>
+    </f7-navbar>-->
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" @click="closePopup" class="link">
+            <i class="icon icon-back"></i>
+            <span class="if-not-md">Back</span>
+          </a>
+        </div>
+        <div class="title">Productos</div>
+        <div class="right">
+          <a @click="addForm = !addForm" href="#" class="link">
+            <f7-icon material="add"></f7-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+
     <f7-block style="padding:0px">
+      <div class="searchbar searchbar-inline" style="margin:4%">
+        <div class="searchbar-input-wrap">
+          <input type="search" placeholder="Buscar producto.." v-model="search_item" />
+          <i class="searchbar-icon"></i>
+          <span class="input-clear-button"></span>
+        </div>
+      </div>
       <div class="list inset">
         <p v-if="filteCart_b && items_car.length == 0">No tienes productos agregados</p>
         <ul>
@@ -138,6 +164,7 @@ export default {
   mixins: [auth],
   name: "ItemsForm",
   components: {},
+  props: ["showDialog"],
 
   data: function() {
     return {
@@ -153,9 +180,9 @@ export default {
   },
   computed: {
     countCar() {
-      return  _.filter(this.items_car_base, function(o) {
-          return o.quantity > 0;
-        }).length;
+      return _.filter(this.items_car_base, function(o) {
+        return o.quantity > 0;
+      }).length;
     }
   },
   created() {
@@ -184,6 +211,9 @@ export default {
   },
 
   methods: {
+    closePopup() {
+      this.$emit("update:showDialog", false);
+    },
     initForm() {
       this.form = {
         id: null,

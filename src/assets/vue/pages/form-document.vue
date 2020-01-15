@@ -8,33 +8,27 @@
     </f7-fab>
 
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
-      <items-form ref="form_items_car" @addItemsCar="addItems"></items-form>
+      <items-form :showDialog.sync="popupOpened" ref="form_items_car" @addItemsCar="addItems"></items-form>
+    </f7-popup>
+
+    <f7-popup
+      class="demo-popup"
+      :opened="popupCustomerOpened"
+      @popup:closed="popupCustomerOpened = false"
+    >
+      <customer-form
+        :codeType="codeType"
+        :showDialog.sync="popupCustomerOpened"
+        ref="form_customer_car"
+        @addCustomerCar="addCustomer"
+      ></customer-form>
     </f7-popup>
 
     <f7-navbar :title="title" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul style="margin-bottom: 25% !important;">
-          <!--<li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">Tipo Comprobante</div>
-              <div class="item-input-wrap">
-                <select
-                  disabled
-                  required
-                  validate
-                  @change="selectDocumentType"
-                  v-model="form.codigo_tipo_documento"
-                >
-                  <option :value="'01'">Factura</option>
-                  <option :value="'03'">Boleta</option>
-                </select>
-              </div>
-            </div>
-          </li>-->
-
-          <li>
-            
+          <!-- <li>
             <a
               data-popup-close-link-text="<i class='icon icon-back'></i>"
               class="item-link smart-select smart-select-init"
@@ -47,7 +41,21 @@
               </select>
               <div class="item-content">
                 <div class="item-inner">
-                  <div class="item-title">Clientes</div>
+                  <div class="item-title">
+                    <span style="font-size:19px;font-weight:bold;">+</span> Clientes
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>-->
+
+          <li>
+            <a class="item-link" @click="popupCustomerOpened = true">
+              <div class="item-content">
+                <div class="item-inner">
+                  <div class="item-title">
+                    <span style="font-size:19px;font-weight:bold;">+</span> Clientes
+                  </div>
                 </div>
               </div>
             </a>
@@ -58,7 +66,7 @@
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
-                    <f7-icon material="add"></f7-icon>Productos
+                    <span style="font-size:19px;font-weight:bold;">+</span> Productos
                   </div>
                 </div>
               </div>
@@ -71,7 +79,7 @@
               <table>
                 <thead>
                   <tr>
-                    <th class="medium-only"></th>
+                    <th class="label-cell"></th>
                     <th class="label-cell">#</th>
                     <th class="medium-cell">Descripcion</th>
                     <th class="medium-only">Cantidad</th>
@@ -186,26 +194,29 @@ const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
+import CustomerForm from "components/document/CustomerForm";
+
 import { auth } from "mixins_/auth";
 
 export default {
   name: "FormDocument",
-  components: { ItemsForm },
+  components: { ItemsForm, CustomerForm },
   mixins: [auth],
   data: function() {
     // Must return an object
     return {
+      codeType: "",
       search_item: "",
-      customers: [],
       form: {},
       popupOpened: false,
+      popupCustomerOpened: false,
       title: ""
     };
   },
   computed: {},
   created() {
-    this.initForm();
-    this.getTables();
+    (this.codeType = this.$f7route.params.cod), this.initForm();
+    //this.getTables();
     this.selectDocumentType();
   },
 
@@ -214,9 +225,22 @@ export default {
       this.$refs.form_items_car.delete_parent(id);
     },
     addItems(rows) {
+      this.popupOpened = false;
       this.form.items = rows;
       this.calculateTotal();
-      this.popupOpened = false;
+    },
+    addCustomer(row) {
+      this.popupCustomerOpened = false;
+      this.form.datos_del_cliente_o_receptor = {
+        codigo_tipo_documento_identidad: row.identity_document_type_id,
+        numero_documento: row.number,
+        apellidos_y_nombres_o_razon_social: row.name,
+        codigo_pais: "PE",
+        ubigeo: "150101",
+        direccion: row.address,
+        correo_electronico: row.email,
+        telefono: "427-1148"
+      };
     },
     cancel() {
       this.initForm();
@@ -378,22 +402,6 @@ export default {
       this.form.total_taxes = _.round(total_igv, 2);
       this.form.total = _.round(total + this.form.total_plastic_bag_taxes, 2);
     },
-    selectCustomer() {
-      this.$f7.smartSelect.close(".smart-select");
-      let row = this.customers.find(x => x.id == this.form.customer_id);
-      if (!row) return false;
-
-      this.form.datos_del_cliente_o_receptor = {
-        codigo_tipo_documento_identidad: row.identity_document_type_id,
-        numero_documento: row.number,
-        apellidos_y_nombres_o_razon_social: row.name,
-        codigo_pais: "PE",
-        ubigeo: "150101",
-        direccion: row.address,
-        correo_electronico: row.email,
-        telefono: "427-1148"
-      };
-    },
 
     initForm() {
       this.form = {
@@ -415,35 +423,6 @@ export default {
         totales: {},
         items: []
       };
-    },
-    getTables() {
-      const self = this;
-      self.$f7.preloader.show();
-      this.$http
-        .get(
-          `${this.returnBaseUrl()}/document/customers`,
-          this.getHeaderConfig()
-        )
-        .then(response => {
-          let source = response.data.data;
-          // self.customers = source.customers;
-          let code_type = self.$f7route.params.cod;
-          if (code_type == "01") {
-            self.customers = source.customers.filter(
-              o => o.identity_document_type_id == "6"
-            );
-          } else if (code_type == "03") {
-            self.customers = source.customers.filter(
-              o => o.identity_document_type_id == "1"
-            );
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .then(() => {
-          self.$f7.preloader.hide();
-        });
     }
   }
 };

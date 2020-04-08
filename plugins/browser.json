@@ -7,19 +7,16 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-whitelist": {
+    "cordova-plugin-android-permissions": {
       "PACKAGE_NAME": "com.example.facturalo"
     },
     "cordova-plugin-barcodescanner": {
       "PACKAGE_NAME": "com.example.facturalo"
     },
-    "cordova-plugin-android-permissions": {
+    "cordova-plugin-downloadmanager": {
       "PACKAGE_NAME": "com.example.facturalo"
     },
     "cordova-plugin-file-downloader": {
-      "PACKAGE_NAME": "com.example.facturalo"
-    },
-    "cordova-plugin-downloadmanager": {
       "PACKAGE_NAME": "com.example.facturalo"
     },
     "cordova-plugin-file-transfer": {
@@ -27,10 +24,16 @@
     },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.example.facturalo"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-compat": {
+      "PACKAGE_NAME": "com.example.facturalo"
+    },
+    "cordova-plugin-camera": {
       "PACKAGE_NAME": "com.example.facturalo"
     },
     "cordova-plugin-file": {

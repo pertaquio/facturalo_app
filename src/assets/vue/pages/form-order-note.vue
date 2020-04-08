@@ -24,7 +24,7 @@
       ></customer-form>
     </f7-popup>
 
-    <f7-navbar title="Nota de Venta" back-link="Back"></f7-navbar>
+    <f7-navbar title="Pedido" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
@@ -152,7 +152,7 @@ import CustomerForm from "components/document/CustomerForm";
 import { auth } from "mixins_/auth";
 
 export default {
-  name: "FormSaleNote",
+  name: "FormOrderNote",
   components: { ItemsForm, CustomerForm },
   mixins: [auth],
   data: function() {
@@ -226,10 +226,8 @@ export default {
 
       self.$f7.preloader.show();
 
-      console.log(this.form);
-
       this.$http
-        .post(`${url}/sale-note`, this.form, this.getHeaderConfig())
+        .post(`${url}/order-note`, this.form, this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {

@@ -11,17 +11,13 @@ import Vuex from './assets/vue/pages/vuex.vue';
 import Documents from './assets/vue/pages/documents.vue';
 import FormDocument from './assets/vue/pages/form-document.vue';
 import FormSaleNote from './assets/vue/pages/form-sale-note.vue';
+import FormOrderNote from './assets/vue/pages/form-order-note.vue';
 
 import Cpe from './assets/vue/pages/cpe.vue';
 import Login from './assets/vue/pages/login.vue';
 import Report from './assets/vue/pages/report.vue';
 
 import Configuration from './assets/vue/pages/configuration.vue';
-
-
-
-
-
 
 
 export default [
@@ -80,6 +76,10 @@ export default [
   {
     path: '/form-sale-note/',
     component: FormSaleNote
+  },
+  {
+    path: '/form-order-note/',
+    component: FormOrderNote
   },
 
   {

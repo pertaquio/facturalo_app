@@ -9,7 +9,7 @@
             <span class="if-not-md">Back</span>
           </a>
         </div>
-        <div class="title">Cliente</div>
+        <div class="title">Proveedor</div>
         <div class="right">
           <a @click="addForm = !addForm" href="#" class="link">
             <f7-icon material="add"></f7-icon>
@@ -21,7 +21,7 @@
     <f7-block style="padding:0px">
       <div class="searchbar searchbar-inline" style="margin:4%">
         <div class="searchbar-input-wrap">
-          <input type="search" placeholder="Buscar cliente.." v-model="search_item" />
+          <input type="search" placeholder="Buscar proveedor.." v-model="search_item" />
           <i class="searchbar-icon"></i>
           <span class="input-clear-button"></span>
         </div>
@@ -171,7 +171,7 @@ import _ from "lodash";
 
 export default {
   mixins: [auth],
-  name: "CustomerForm",
+  name: "SupplierForm",
   components: {},
   props: ["showDialog", "codeType"],
   data: function() {

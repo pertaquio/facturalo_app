@@ -296,7 +296,7 @@ export default {
       this.form.total_igv = _.round(total_igv, 2);
       this.form.total_value = _.round(total_value, 2);
       this.form.total_taxes = _.round(total_igv, 2);
-      this.form.total = _.round(total + 2);
+      this.form.total = _.round(total, 2);
     },
 
     initForm() {

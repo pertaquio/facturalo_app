@@ -199,12 +199,10 @@ export default {
   },
   watch: {
     search_item: function(val) {
-      if (val) {
-        this.items = _.filter(this.items_base, function(o) {
-          return o.name.toLowerCase().includes(val.toLowerCase());
-        });
-      } else {
-        this.items = this.items_base;
+       if (val.length > 4) {
+        this.searchCustomers();
+      } else if (val.length == 0) {
+        this.initItems();
       }
     }
   },
@@ -283,6 +281,24 @@ export default {
 
       this.$emit("addCustomerCar", item);
     },
+    initItems()
+    {
+        const self = this;
+
+        if (self.codeType == "01") {
+            self.items = self.items_base.filter(
+              o => o.identity_document_type_id == "6"
+            );
+          } else if (self.codeType == "03") {
+
+            self.items = self.items_base.filter(
+              o => o.identity_document_type_id == "1"
+            );
+          } else {
+            self.items = self.items_base;
+        }
+
+    },
     getData() {
       const self = this;
       self.$f7.preloader.show();
@@ -292,21 +308,12 @@ export default {
           this.getHeaderConfig()
         )
         .then(response => {
+
           let source = response.data.data;
 
-          if (self.codeType == "01") {
-            self.items = source.customers.filter(
-              o => o.identity_document_type_id == "6"
-            );
-          } else if (self.codeType == "03") {
-            self.items = source.customers.filter(
-              o => o.identity_document_type_id == "1"
-            );
-          } else {
-            self.items = source.customers;
-          }
+          self.items_base = source.customers;
 
-          self.items_base = self.items;
+          self.initItems()
         })
         .catch(err => {
           console.log(err);
@@ -359,6 +366,50 @@ export default {
       //this.loading_search = false;
 
       this.$f7.preloader.hide();
+    },
+    async searchCustomers()
+    {
+      if (this.search_item.length > 4) {
+
+          const self = this;
+          self.$f7.preloader.show();
+
+          let parameters = `input=${this.search_item}`
+
+                            await this.$http.get(`${this.returnBaseUrl()}/document/search-customers/?${parameters}`, this.getHeaderConfig())
+                            .then(response => {
+
+
+                              let datos = response.data.data.customers
+
+                               if (self.codeType == "01") {
+                                  self.items = datos.filter(
+                                    o => o.identity_document_type_id == "6"
+                                  );
+                                } else if (self.codeType == "03") {
+
+                                  self.items = datos.filter(
+                                    o => o.identity_document_type_id == "1"
+                                  );
+                                } else {
+                                  self.items = datos;
+                              }
+                             
+                               this.items = response.data.data.customers
+                              
+                            })
+                             .catch(err => {
+                               alert('Error')
+                             })
+                            .then(()=> {
+                                self.$f7.preloader.hide();
+                            })
+
+
+      }
+      else{
+       // this.initItems()
+      }
     }
   }
 };

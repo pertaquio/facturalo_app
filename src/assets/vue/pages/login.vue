@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar title="Facturador PRO APP"></f7-navbar>
+    <f7-navbar class="navbar-cus" title="Facturador PRO APP"></f7-navbar>
 
     <f7-block-title class="title">Inicio de Sesión</f7-block-title>
 
@@ -65,6 +65,11 @@
   </f7-page>
 </template>
 <style scoped>
+
+.navbar-cus {
+  background: #17a2b8;
+  color: white;
+}
 .item-label {
   font-size: 17px;
   font-weight: bold;

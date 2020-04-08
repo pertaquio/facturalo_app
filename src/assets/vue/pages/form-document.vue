@@ -24,12 +24,25 @@
       ></customer-form>
     </f7-popup>
 
-    <f7-navbar :title="title" back-link="Back"></f7-navbar>
+    <f7-navbar class="navbar-cus" :title="title" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul style="margin-bottom: 25% !important;">
           <li>
-            <a class="item-link" @click="popupCustomerOpened = true">
+            <f7-col>
+              <f7-card class="demo-card-header-pic">
+                <f7-card-header
+                  style="font-weight:bold;color:white;background:#17a2b8"
+                >Cliente</f7-card-header>
+                <f7-card-content>
+                  <p>{{this.form.datos_del_cliente_o_receptor ? this.form.datos_del_cliente_o_receptor.apellidos_y_nombres_o_razon_social : ''}}</p>
+                </f7-card-content>
+                <f7-card-footer>
+                  <f7-link @click="popupCustomerOpened = true" >Seleccione cliente</f7-link>
+                </f7-card-footer>
+              </f7-card>
+          </f7-col>
+           <!-- <a class="item-link" @click="popupCustomerOpened = true">
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
@@ -37,7 +50,7 @@
                   </div>
                 </div>
               </div>
-            </a>
+            </a> -->
           </li>
 
           <li>
@@ -135,6 +148,10 @@
 </template>
 
 <style scoped>
+.navbar-cus{
+   background:#17a2b8;
+   color:white
+}
 .m-text {
   text-align: left;
   font-size: 12px;
@@ -207,8 +224,16 @@ export default {
       this.$refs.form_items_car.delete_parent(id);
     },
     addItems(rows) {
-      this.popupOpened = false;
-      this.form.items = rows;
+      let contex = this
+
+      contex.popupOpened = false;
+
+      rows.forEach(record => {
+
+        contex.form.items.push(record)
+
+      });
+
       this.calculateTotal();
     },
     addCustomer(row) {

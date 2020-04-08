@@ -24,7 +24,7 @@
       ></customer-form>
     </f7-popup>
 
-    <f7-navbar title="Nota de Venta" back-link="Back"></f7-navbar>
+    <f7-navbar class="navbar-cus" title="Nota de Venta" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
@@ -108,6 +108,11 @@
 </template>
 
 <style scoped>
+
+.navbar-cus{
+   background:#17a2b8;
+   color:white
+}
 .m-text {
   text-align: left;
   font-size: 12px;

@@ -199,12 +199,10 @@ export default {
   },
   watch: {
     search_item: function(val) {
-      if (val) {
-        this.items = _.filter(this.items_base, function(o) {
-          return o.name.toLowerCase().includes(val.toLowerCase());
-        });
-      } else {
-        this.items = this.items_base;
+       if (val.length > 2) {
+        this.searchSuppliers();
+      } else if (val.length == 0) {
+        this.initItems();
       }
     }
   },
@@ -212,7 +210,7 @@ export default {
     initForm() {
       this.form = {
         id: null,
-        type: this.type,
+        type: 'suppliers',
         identity_document_type_id: "6",
         number: "",
         name: null,
@@ -281,32 +279,39 @@ export default {
       this.items.forEach(element => (element.selected = false));
       item.selected = !item.selected;
 
-      this.$emit("addCustomerCar", item);
+      this.$emit("addSupplierCar", item);
+    },
+    initItems()
+    {
+        const self = this;
+
+        if (self.codeType == "01") {
+            self.items = self.items_base.filter(
+              o => o.identity_document_type_id == "6"
+            );
+          } else if (self.codeType == "03") {
+
+            self.items = self.items_base.filter(
+              o => o.identity_document_type_id == "1"
+            );
+          } else {
+            self.items = self.items_base;
+        }
+
     },
     getData() {
       const self = this;
       self.$f7.preloader.show();
       this.$http
         .get(
-          `${this.returnBaseUrl()}/document/customers`,
+          `${this.returnBaseUrl()}/purchases/suppliers`,
           this.getHeaderConfig()
         )
         .then(response => {
-          let source = response.data.data;
 
-          if (self.codeType == "01") {
-            self.items = source.customers.filter(
-              o => o.identity_document_type_id == "6"
-            );
-          } else if (self.codeType == "03") {
-            self.items = source.customers.filter(
-              o => o.identity_document_type_id == "1"
-            );
-          } else {
-            self.items = source.customers;
-          }
+          self.items_base = response.data;
 
-          self.items_base = self.items;
+          self.initItems()
         })
         .catch(err => {
           console.log(err);
@@ -359,6 +364,51 @@ export default {
       //this.loading_search = false;
 
       this.$f7.preloader.hide();
+    },
+    async searchSuppliers()
+    {
+      if (this.search_item.length > 1) {
+
+          const self = this;
+          self.$f7.preloader.show();
+
+          let parameters = `input=${this.search_item}`
+
+          await this.$http.get(`${this.returnBaseUrl()}/purchases/search-suppliers/?${parameters}`, this.getHeaderConfig())
+          .then(response => {
+
+
+              let data = response.data
+
+              if (self.codeType == "01") {
+                self.items = data.filter(
+                  o => o.identity_document_type_id == "6"
+                );
+              } else if (self.codeType == "03") {
+
+                self.items = data.filter(
+                  o => o.identity_document_type_id == "1"
+                );
+
+              } else {
+                self.items = data;
+              }
+            
+            this.items = response.data
+            
+          })
+            .catch(err => {
+              alert('Error')
+            })
+          .then(()=> {
+              self.$f7.preloader.hide();
+          })
+
+
+      }
+      else{
+       // this.initItems()
+      }
     }
   }
 };

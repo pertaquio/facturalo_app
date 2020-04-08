@@ -13,23 +13,56 @@
 
     <f7-popup
       class="demo-popup"
-      :opened="popupCustomerOpened"
-      @popup:closed="popupCustomerOpened = false"
+      :opened="popupSupplierOpened"
+      @popup:closed="popupSupplierOpened = false"
     >
-      <customer-form
+      <supplier-form
         :codeType="codeType"
-        :showDialog.sync="popupCustomerOpened"
-        ref="form_customer_car"
-        @addCustomerCar="addCustomer"
-      ></customer-form>
+        :showDialog.sync="popupSupplierOpened"
+        ref="form_supplier_car"
+        @addSupplierCar="addSupplier"
+      ></supplier-form>
     </f7-popup>
 
     <f7-navbar title="Compra" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
+          
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Tipo de documento</div>
+              <div class="item-input-wrap input-dropdown-wrap">
+                <select v-model="form.document_type_id" placeholder="Please choose...">
+                  <template v-for="(row, index) in document_types_invoice">
+                    <option :value="row.id" :key="index">{{row.description}}</option> 
+                  </template>
+                </select>
+              </div>
+            </div>
+          </li>
+          
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Serie</div>
+              <div class="item-input-wrap">
+                <input required validate v-model="form.series" type="text" />
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+            
+            <div class="item-inner">
+              <div class="item-title item-label">Número</div>
+              <div class="item-input-wrap">
+                <input required validate v-model="form.number" type="number" />
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+
+          </li>
+
           <li>
-            <a class="item-link" @click="popupCustomerOpened = true">
+            <a class="item-link" @click="popupSupplierOpened = true">
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title">
@@ -58,6 +91,7 @@
               <table>
                 <thead>
                   <tr>
+                    <th class="label-cell"></th>
                     <th class="label-cell">#</th>
                     <th class="numeric-cell">Descripcion</th>
                     <th class="medium-only">Cantidad</th>
@@ -69,6 +103,13 @@
                 </thead>
                 <tbody>
                   <tr v-for="(row, index) in form.items" :key="index">
+                    <td>
+                      <f7-icon
+                        @click.native="deleteItem(index)"
+                        color="red"
+                        material="cancel"
+                      ></f7-icon>
+                    </td>
                     <td class="label-cell">{{index + 1 }}</td>
                     <td class="numeric-cell">{{row.item.description}}</td>
                     <td class="numeric-cell">{{row.quantity}}</td>
@@ -148,44 +189,43 @@ const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
-import CustomerForm from "components/document/CustomerForm";
+import SupplierForm from "components/purchases/SupplierForm";
 import { auth } from "mixins_/auth";
 
 export default {
   name: "FormSaleNote",
-  components: { ItemsForm, CustomerForm },
+  components: { ItemsForm, SupplierForm },
   mixins: [auth],
   data: function() {
     // Must return an object
     return {
       codeType: "",
-      popupCustomerOpened: false,
+      popupSupplierOpened: false,
       search_item: "",
       customers: [],
+      document_types_invoice: [],
       form: {},
-      popupOpened: false
+      popupOpened: false,
+      title_alert:'Facturador PRO APP'
     };
   },
   computed: {},
   created() {
+    this.codeType = '01';
     this.initForm();
     this.getTables();
   },
 
   methods: {
-    addCustomer(row) {
-      this.popupCustomerOpened = false;
-      this.form.customer_id = row.id;
-      this.form.datos_del_cliente_o_receptor = {
-        codigo_tipo_documento_identidad: row.identity_document_type_id,
-        numero_documento: row.number,
-        apellidos_y_nombres_o_razon_social: row.name,
-        codigo_pais: "PE",
-        ubigeo: "150101",
-        direccion: row.address,
-        correo_electronico: row.email,
-        telefono: "427-1148"
-      };
+    deleteItem(index) {
+      this.form.items.splice(index, 1)
+      // this.$refs.form_items_car.delete_parent(id);
+    },
+    addSupplier(row) {
+
+      this.popupSupplierOpened = false;
+      this.form.supplier_id = row.id; 
+
     },
     addItems(rows) {
       this.popupOpened = false;
@@ -200,17 +240,26 @@ export default {
     validate() {
       const self = this;
       if (this.form.items.length == 0) {
-        self.$f7.dialog.alert(`Debe agregar productos.`, "Facturador PRO APP");
+        self.$f7.dialog.alert(`Debe agregar productos.`, this.title_alert);
+        return false;
+      }
+
+      if (!this.form.supplier_id) {
+        self.$f7.dialog.alert(
+          `Debe seleccionar un proveedor.`,
+          this.title_alert
+        );
 
         return false;
       }
 
-      if (!this.form.customer_id) {
-        self.$f7.dialog.alert(
-          `Debe seleccionar un proveedor.`,
-          "Facturador PRO APP"
-        );
-
+      if (!this.form.series) {
+        self.$f7.dialog.alert(`Debe ingresar una serie.`,this.title_alert);
+        return false;
+      }
+       
+      if (!this.form.number) {
+        self.$f7.dialog.alert(`Debe ingresar un número.`,this.title_alert);
         return false;
       }
 
@@ -227,16 +276,12 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${url}/sale-note`, this.form, this.getHeaderConfig())
+        .post(`${url}/purchases`, this.form, this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {
             this.initForm();
-
-            self.$f7.dialog.alert(
-              `Compra registrada: ${data.data.number}`,
-              "Facturador PRO APP"
-            );
+            self.$f7.dialog.alert(`Compra registrada: ${data.data.number_full}`,this.title_alert);
             self.$f7router.navigate("/documents/");
           } else {
             alert("No se registro la Compra");
@@ -302,12 +347,12 @@ export default {
     initForm() {
 
       this.form = { 
-        document_type_id: null,
+        document_type_id: '01',
         series: null,
         number: null,
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
-        supplier_id: 6, 
+        supplier_id: null, 
         currency_type_id: 'PEN', 
         exchange_rate_sale: 1,
         total_prepayment: 0,
@@ -346,8 +391,7 @@ export default {
           this.getHeaderConfig()
         )
         .then(response => {
-          let source = response.data.data;
-          self.customers = source.customers;
+          self.document_types_invoice = response.data.document_types_invoice;
         })
         .catch(err => {
           console.log(err);

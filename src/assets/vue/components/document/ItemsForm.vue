@@ -283,7 +283,7 @@ export default {
   },
   watch: {
     search_item: function(val) {
-      if (val.length > 4) {
+      if (val.length > 1) {
         this.searchItems();
       } else if (val.length == 0) {
         this.initItems();
@@ -482,7 +482,7 @@ export default {
     },
 
     async searchItems() {
-      if (this.search_item.length > 4) {
+      if (this.search_item.length > 1) {
         const self = this;
         self.$f7.preloader.show();
 

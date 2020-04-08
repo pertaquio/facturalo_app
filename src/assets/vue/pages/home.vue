@@ -7,7 +7,7 @@
         </f7-block>
       </f7-page>
     </f7-popup>
-    <f7-navbar>
+    <f7-navbar class="navbar-cus">
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
@@ -100,6 +100,10 @@
   </f7-page>
 </template>
 <style scoped>
+.navbar-cus{
+   background:#17a2b8;
+   color:white
+}
 .center {
   margin-top: 40%;
   display: block;

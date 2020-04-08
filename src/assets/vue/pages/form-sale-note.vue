@@ -24,7 +24,7 @@
       ></customer-form>
     </f7-popup>
 
-    <f7-navbar title="Nota de Venta" back-link="Back"></f7-navbar>
+    <f7-navbar class="navbar-cus" title="Nota de Venta" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
@@ -108,6 +108,11 @@
 </template>
 
 <style scoped>
+
+.navbar-cus{
+   background:#17a2b8;
+   color:white
+}
 .m-text {
   text-align: left;
   font-size: 12px;
@@ -144,7 +149,7 @@
 }
 </style>
 <script>
-const url = "https://demo.facturador.pro/api";
+const url = "http://demo.facturadorpro3.oo/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
@@ -228,6 +233,10 @@ export default {
 
       console.log(this.form);
 
+      if(localStorage.api_url) {
+        this.url = localStorage.api_url;
+      }
+
       this.$http
         .post(`${url}/sale-note`, this.form, this.getHeaderConfig())
         .then(response => {
@@ -304,6 +313,7 @@ export default {
     initForm() {
       this.form = {
         prefix: "NV",
+        series_id: "NV01",
         establishment_id: 1,
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),

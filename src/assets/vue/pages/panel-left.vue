@@ -2,7 +2,7 @@
   <f7-page>
     <f7-block-title>Acciones</f7-block-title>
     <f7-block>
-      <f7-button color="red" @click="logout" outline>Cerrar Session</f7-button>
+      <f7-button color="red" @click="logout" outline>Cerrar Sesión</f7-button>
 
       <!--<p>
          hola mundo cristian:

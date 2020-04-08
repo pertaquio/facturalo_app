@@ -18,6 +18,7 @@ import Report from './assets/vue/pages/report.vue';
 
 import Configuration from './assets/vue/pages/configuration.vue';
 
+import FormPurchase from './assets/vue/pages/purchases/form.vue';
 
 
 
@@ -87,6 +88,10 @@ export default [
     component: Configuration
   },
 
+  {
+    path: '/form-purchase/',
+    component: FormPurchase
+  },
 
 
 ];

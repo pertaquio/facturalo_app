@@ -25,11 +25,12 @@
         </div>
       </div>
     </div>
-    <div class="toolbar tabbar toolbar-bottom">
+    <div class="toolbar tabbar toolbar-bottom tabbar-scrollable">
       <div class="toolbar-inner">
         <a href="#tab-1" @click="show(1)" class="tab-link tab-link-active">Factura</a>
         <a href="#tab-2" @click="show(2)" class="tab-link">Boleta</a>
         <a href="#tab-3" @click="show(3)" class="tab-link">Nota</a>
+        <a href="#tab-purchases" @click="show('purchases')" class="tab-link">Compras</a>
         <a href="#tab-4" @click="show(4)" class="tab-link">Todo</a>
       </div>
     </div>
@@ -160,6 +161,55 @@
             </f7-card>
           </div>
         </div>
+        
+        <div id="tab-purchases" class="page-content tab">
+          <div class="block">
+            <f7-card v-for="item in source_purchases" :key="item.id" class="demo-card-header-pic">
+              <f7-card-header
+                class="no-border"
+                valign="bottom"
+                style="background: #73C1FF;"
+              > {{ item.document_type_description }} : {{ item.number }}</f7-card-header>
+              <f7-card-content>
+                <p>
+                  Estado:
+                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                </p>
+                <p>{{ item.created_at }}</p>
+                <p>
+                  Total:
+                  <f7-badge color="orange">{{ item.total }}</f7-badge>
+                </p>
+                <p>RUC: {{ item.supplier_number }}</p>
+                <p>{{ item.supplier_name }}</p>
+              </f7-card-content>
+              <!-- <f7-card-footer>
+                <f7-button @click="download(item.external_id)" outline color="blue">
+                  <f7-icon color="blue" material="cloud_download"></f7-icon>
+                </f7-button>
+
+                <div class="row no-gap" style="width: 51%;">
+                  <div class="col-50">
+                    <f7-button
+                      @click="whatsap(item.customer_telephone, item.external_id)"
+                      outline
+                      color="green"
+                    >
+                      <i style="font-size: 1.6em;" class="icon fab fa-whatsapp"></i>
+                      <i style="font-size: 1.0em;" class="icon fa fa-arrow-right"></i>
+                    </f7-button>
+                  </div>
+                  <div class="col-50">
+                    <f7-button @click="email(item.id)" outline color="blue">
+                      <f7-icon size="30px" color="blue" material="email"></f7-icon>
+                    </f7-button>
+                  </div>
+                </div>
+              </f7-card-footer> -->
+            </f7-card>
+          </div>
+        </div>
+
         <div id="tab-4" class="page-content tab">
           <div class="block">
             <f7-card v-for="item in source" :key="item.id" class="demo-card-header-pic">
@@ -262,6 +312,7 @@ export default {
       source_fact: [],
       source_bol: [],
       source_nota: [],
+      source_purchases: [],
       form_email: {},
       count: 0
     };
@@ -273,6 +324,7 @@ export default {
   },
   created() {
     this.initformEmail();
+    this.getDataPurchases();
     this.getData();
     this.getDataSaleNote();
   },
@@ -289,6 +341,9 @@ export default {
           break;
         case 3:
           self.count = self.source_nota.length;
+          break;
+        case 'purchases':
+          self.count = self.source_purchases.length;
           break;
         case 4:
           self.count = self.source.length;
@@ -442,6 +497,17 @@ export default {
         .get(`${this.returnBaseUrl()}/sale-note/lists`, this.getHeaderConfig())
         .then(response => {
           self.source_nota = response.data.data;
+        })
+        .catch(err => {})
+        .then(() => {});
+    },
+    getDataPurchases() {
+      const self = this;
+      this.$http
+        .get(`${this.returnBaseUrl()}/purchases/records`, this.getHeaderConfig())
+        .then(response => {
+          self.source_purchases = response.data.data;
+          // console.log(self.source_purchases)
         })
         .catch(err => {})
         .then(() => {});

@@ -7,7 +7,9 @@
       color="green"
     >
       <f7-icon color="white" material="check"></f7-icon>
-      <f7-badge style="margin-left: 68%;font-size: 15px" color="orange">{{countCar}}</f7-badge>
+      <f7-badge style="margin-left: 68%;font-size: 15px" color="orange">
+        {{ countCar }}
+      </f7-badge>
     </f7-fab>
 
     <!--<f7-fab @click="addForm = !addForm" position="left-bottom" slot="fixed" color="orange">
@@ -49,36 +51,68 @@
     <f7-block style="padding:0px">
       <div class="searchbar searchbar-inline" style="margin:4%">
         <div class="searchbar-input-wrap">
-          <input type="search" placeholder="Buscar producto.." v-model="search_item" />
+          <input
+            type="search"
+            placeholder="Buscar producto.."
+            style="font-size:12px"
+            v-model="search_item"
+          />
           <i class="searchbar-icon"></i>
           <span class="input-clear-button"></span>
         </div>
       </div>
+
+      <!-- <div class="col-30">
+          <button @click="searchItems" class="col button button-small button-fill">Buscar</button>
+        </div>-->
+
       <div class="list inset">
-        <p v-if="filteCart_b && items_car.length == 0">No tienes productos agregados</p>
+        <p v-if="items_car.length == 0">
+          No tienes productos agregados
+        </p>
         <ul>
           <li v-for="(item, index) in items_car" :key="index">
             <div class="item-content">
-              <div @click="add(item)" class="item-media" style="min-width: 0px !important;">
-                <f7-icon :material="item.quantity > 0 ? 'check_box' : 'check_box_outline_blank'"></f7-icon>
+              <div
+                @click="add(index)"
+                class="item-media"
+                style="min-width: 0px !important;"
+              >
+                <f7-icon
+                  :material="
+                    item.quantity > 0 ? 'check_box' : 'check_box_outline_blank'
+                  "
+                ></f7-icon>
               </div>
               <div class="item-inner">
                 <div class="item-title">
                   <div class="item-header"></div>
-                  {{item.description}}
-                  <div class="item-footer">S/. {{item.sale_unit_price}}</div>
+                  {{ item.description }}
+                  <div class="item-footer">S/. {{ item.sale_unit_price }}</div>
                 </div>
 
                 <div class="item-after" style="width: 101px;">
-                  <div class="stepper stepper-raised stepper-init stepper-small">
+                  <div
+                    class="stepper stepper-raised stepper-init stepper-small"
+                  >
                     <div
                       class="stepper-button-minus"
-                      @click=" item.quantity > 0 ? item.quantity -- : ''"
+                      @click="calculate(-1, index)"
                     ></div>
                     <div class="stepper-input-wrap">
-                      <input type="text" :value="item.quantity" min="0" max="100" step="1" readonly />
+                      <input
+                        type="text"
+                        :value="item.quantity"
+                        min="0"
+                        max="100"
+                        step="1"
+                        readonly
+                      />
                     </div>
-                    <div @click="item.quantity ++" class="stepper-button-plus"></div>
+                    <div
+                      @click="calculate(1, index)"
+                      class="stepper-button-plus"
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -108,7 +142,12 @@
                 <div class="item-inner">
                   <div class="item-title item-label">Nombre</div>
                   <div class="item-input-wrap">
-                    <input v-model="form.description" required validate type="text" />
+                    <input
+                      v-model="form.description"
+                      required
+                      validate
+                      type="text"
+                    />
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -126,7 +165,9 @@
 
               <li class="item-content item-input">
                 <div class="item-inner">
-                  <div class="item-title item-label">Precio Unitario (Venta) *</div>
+                  <div class="item-title item-label">
+                    Precio Unitario (Venta) *
+                  </div>
                   <div class="item-input-wrap">
                     <input
                       v-model="form.sale_unit_price"
@@ -166,7 +207,9 @@
       <f7-page-content>
         <f7-block>
           <div class="data-table">
-            <f7-button color="green" @click="send" small outline>Confirmar</f7-button>
+            <f7-button color="green" @click="send" small outline
+              >Confirmar</f7-button
+            >
             <table>
               <thead>
                 <tr>
@@ -177,9 +220,9 @@
               </thead>
               <tbody>
                 <tr v-for="(item, index) in itemsCar" :key="index">
-                  <td class="numeric-only">{{index + 1}}</td>
-                  <td class="label-cell">{{item.description}}</td>
-                  <td class="numeric-only">{{item.quantity}}</td>
+                  <td class="numeric-only">{{ index + 1 }}</td>
+                  <td class="label-cell">{{ item.description }}</td>
+                  <td class="numeric-only">{{ item.quantity }}</td>
                 </tr>
               </tbody>
             </table>
@@ -223,13 +266,13 @@ export default {
   },
   computed: {
     countCar() {
-      return _.filter(this.items_car_base, function(o) {
+      return _.filter(this.items_car, function(o) {
         return o.quantity > 0;
       }).length;
     },
 
     itemsCar() {
-      return _.filter(this.items_car_base, function(o) {
+      return _.filter(this.items_car, function(o) {
         return o.quantity > 0;
       });
     }
@@ -240,15 +283,13 @@ export default {
   },
   watch: {
     search_item: function(val) {
-      if (val) {
-        this.items_car = _.filter(this.items_car_base, function(o) {
-          return o.description.toLowerCase().includes(val.toLowerCase());
-        });
-      } else {
-        this.items_car = this.items_car_base;
+      if (val.length > 4) {
+        this.searchItems();
+      } else if (val.length == 0) {
+        this.initItems();
       }
-    },
-    filteCart_b: function(val) {
+    }
+    /*filteCart_b: function(val) {
       if (val) {
         this.items_car = _.filter(this.items_car_base, function(o) {
           return o.quantity > 0;
@@ -256,7 +297,7 @@ export default {
       } else {
         this.items_car = this.items_car_base;
       }
-    }
+    }*/
   },
 
   methods: {
@@ -317,12 +358,13 @@ export default {
         .then(response => {
           self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
           let it = response.data.data;
-          self.items.push(it);
-          self.items_car_base.push({
+          // self.items.push(it);
+          self.items_car.push({
             description: it.description,
             id: it.id,
             quantity: 0,
-            sale_unit_price: it.sale_unit_price
+            sale_unit_price: it.sale_unit_price,
+            item: it
           });
         })
         .catch(err => {
@@ -361,14 +403,14 @@ export default {
 
     send() {
       const self = this;
-      self.sheetConfirm = false
+      self.sheetConfirm = false;
       let send_items = this.items_car
         .filter(x => x.quantity > 0)
         .map(o => {
           let obj = self.initFormItem();
           obj.quantity = o.quantity;
-          obj.item = _.find(self.items, { id: o.id });
-          obj.unit_price_value = obj.item.sale_unit_price;
+          (obj.item = o.item), //_.find(self.items, { id: o.id });
+            (obj.unit_price_value = obj.item.sale_unit_price);
           obj.has_igv = obj.item.has_igv;
           obj.affectation_igv_type_id = obj.item.sale_affectation_igv_type_id;
 
@@ -393,25 +435,34 @@ export default {
         });
 
       this.$emit("addItemsCar", send_items);
+
+      this.initItems();
     },
-    add(item) {
-      if (item.quantity > 0) {
-        item.quantity = 0;
+    add(index) {
+      if (this.items_car[index].quantity > 0) {
+        this.items_car[index].quantity = 0;
       } else {
-        item.quantity = 1;
+        this.items_car[index].quantity = 1;
       }
     },
+    calculate(value, index) {
+      let q = this.items_car[index].quantity;
+      let resul = (q += value);
+      this.items_car[index].quantity = resul < 0 ? 0 : resul;
+    },
+
     initItems() {
-      this.items_car = this.items.map(x => {
+      this.search_item = "";
+      let datos = this.items_car_base.map(x => {
         return {
           description: x.description,
           id: x.id,
           quantity: 0,
-          sale_unit_price: x.sale_unit_price
+          sale_unit_price: x.sale_unit_price,
+          item: x
         };
       });
-
-      this.items_car_base = this.items_car;
+      this.items_car = datos;
     },
     getTables() {
       const self = this;
@@ -420,7 +471,7 @@ export default {
         .get(`${this.returnBaseUrl()}/document/tables`, this.getHeaderConfig())
         .then(response => {
           let source = response.data.data;
-          self.items = source.items;
+          self.items_car_base = source.items;
           self.affectation_igv_types = source.affectation_types;
           self.initItems();
         })
@@ -428,6 +479,40 @@ export default {
         .then(() => {
           self.$f7.preloader.hide();
         });
+    },
+
+    async searchItems() {
+      if (this.search_item.length > 4) {
+        const self = this;
+        self.$f7.preloader.show();
+
+        let parameters = `input=${this.search_item}`;
+
+        await this.$http
+          .get(
+            `${this.returnBaseUrl()}/document/search-items/?${parameters}`,
+            this.getHeaderConfig()
+          )
+          .then(response => {
+            this.items_car = response.data.data.items.map(x => {
+              return {
+                description: x.description,
+                id: x.id,
+                quantity: 0,
+                sale_unit_price: x.sale_unit_price,
+                item: x
+              };
+            });
+          })
+          .catch(err => {
+            alert("Error");
+          })
+          .then(() => {
+            self.$f7.preloader.hide();
+          });
+      } else {
+        // this.initItems()
+      }
     }
   }
 };

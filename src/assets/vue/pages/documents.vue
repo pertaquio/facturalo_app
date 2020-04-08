@@ -12,7 +12,7 @@
 
     <div class="navbar">
       <div class="navbar-bg"></div>
-      <div class="navbar-inner sliding">
+      <div class="navbar-inner sliding navbar-cus">
         <div class="left">
           <a href="#" class="link back">
             <i class="icon icon-back"></i>
@@ -27,7 +27,9 @@
     </div>
     <div class="toolbar tabbar toolbar-bottom">
       <div class="toolbar-inner">
-        <a href="#tab-1" @click="show(1)" class="tab-link tab-link-active">Factura</a>
+        <a href="#tab-1" @click="show(1)" class="tab-link tab-link-active"
+          >Factura</a
+        >
         <a href="#tab-2" @click="show(2)" class="tab-link">Boleta</a>
         <a href="#tab-3" @click="show(3)" class="tab-link">Nota</a>
         <a href="#tab-4" @click="show(4)" class="tab-link">Todo</a>
@@ -37,16 +39,25 @@
       <div class="tabs">
         <div id="tab-1" class="page-content tab tab-active">
           <div class="block">
-            <f7-card v-for="item in source_fact" :key="item.id" class="demo-card-header-pic">
+            <f7-card
+              v-for="item in source_fact"
+              :key="item.id"
+              class="demo-card-header-pic"
+            >
               <f7-card-header
                 class="no-border"
                 valign="bottom"
                 style="background: #73C1FF;"
-              > {{ item.document_type_description }} : {{ item.number }}</f7-card-header>
+              >
+                {{ item.document_type_description }} :
+                {{ item.number }}</f7-card-header
+              >
               <f7-card-content>
                 <p>
                   Estado:
-                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                  <f7-badge color="green">{{
+                    item.state_type_description
+                  }}</f7-badge>
                 </p>
                 <p>{{ item.created_at }}</p>
                 <p>
@@ -57,43 +68,62 @@
                 <p>{{ item.customer_name }}</p>
               </f7-card-content>
               <f7-card-footer>
-                <f7-button @click="download(item.external_id)" outline color="blue">
+                <f7-button
+                  @click="download(item.external_id)"
+                  outline
+                  color="blue"
+                >
                   <f7-icon color="blue" material="cloud_download"></f7-icon>
                 </f7-button>
 
-                <div class="row no-gap" style="width: 51%;">
+              
                   <div class="col-50">
                     <f7-button
                       @click="whatsap(item.customer_telephone, item.external_id)"
                       outline
                       color="green"
                     >
-                      <i style="font-size: 1.6em;" class="icon fab fa-whatsapp"></i>
-                      <i style="font-size: 1.0em;" class="icon fa fa-arrow-right"></i>
+                      <i
+                        style="font-size: 1.7em;"
+                        class="icon fab fa-whatsapp"
+                      ></i>
+                     
                     </f7-button>
                   </div>
                   <div class="col-50">
                     <f7-button @click="email(item.id)" outline color="blue">
-                      <f7-icon size="30px" color="blue" material="email"></f7-icon>
+                      <f7-icon
+                        size="30px"
+                        color="blue"
+                        material="email"
+                      ></f7-icon>
                     </f7-button>
                   </div>
-                </div>
+               
               </f7-card-footer>
             </f7-card>
           </div>
         </div>
         <div id="tab-2" class="page-content tab">
           <div class="block">
-            <f7-card v-for="item in source_bol" :key="item.id" class="demo-card-header-pic">
+            <f7-card
+              v-for="item in source_bol"
+              :key="item.id"
+              class="demo-card-header-pic"
+            >
               <f7-card-header
                 class="no-border"
                 valign="bottom"
                 style="background: #73C1FF;"
-              >{{ item.document_type_description }} : {{ item.number }}</f7-card-header>
+                >{{ item.document_type_description }} :
+                {{ item.number }}</f7-card-header
+              >
               <f7-card-content>
                 <p>
                   Estado:
-                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                  <f7-badge color="green">{{
+                    item.state_type_description
+                  }}</f7-badge>
                 </p>
                 <p>{{ item.created_at }}</p>
                 <p>
@@ -104,7 +134,12 @@
                 <p>{{ item.customer_name }}</p>
               </f7-card-content>
               <f7-card-footer>
-                <f7-button @click="download(item.external_id)" outline color="blue">PDF</f7-button>
+                <f7-button
+                  @click="download(item.external_id)"
+                  outline
+                  color="blue"
+                  >PDF</f7-button
+                >
                 <f7-button
                   @click="whatsap(item.customer_telephone, item.external_id)"
                   outline
@@ -121,16 +156,23 @@
         </div>
         <div id="tab-3" class="page-content tab">
           <div class="block">
-            <f7-card v-for="item in source_nota" :key="item.id" class="demo-card-header-pic">
+            <f7-card
+              v-for="item in source_nota"
+              :key="item.id"
+              class="demo-card-header-pic"
+            >
               <f7-card-header
                 class="no-border"
                 valign="bottom"
                 style="background: #73C1FF;"
-              >NOTA DE VENTA : {{ item.identifier }}</f7-card-header>
+                >NOTA DE VENTA : {{ item.identifier }}</f7-card-header
+              >
               <f7-card-content>
                 <p>
                   Estado:
-                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                  <f7-badge color="green">{{
+                    item.state_type_description
+                  }}</f7-badge>
                 </p>
                 <p>{{ item.created_at }}</p>
                 <p>
@@ -145,7 +187,8 @@
                   @click="download(item.external_id, 'sale-notes')"
                   outline
                   color="blue"
-                >PDF</f7-button>
+                  >PDF</f7-button
+                >
                 <f7-button
                   @click="whatsap(item.customer_telephone, item.external_id)"
                   outline
@@ -162,16 +205,24 @@
         </div>
         <div id="tab-4" class="page-content tab">
           <div class="block">
-            <f7-card v-for="item in source" :key="item.id" class="demo-card-header-pic">
+            <f7-card
+              v-for="item in source"
+              :key="item.id"
+              class="demo-card-header-pic"
+            >
               <f7-card-header
                 class="no-border"
                 valign="bottom"
                 style="background: #73C1FF;"
-              >{{ item.document_type_description }} : {{ item.number }}</f7-card-header>
+                >{{ item.document_type_description }} :
+                {{ item.number }}</f7-card-header
+              >
               <f7-card-content>
                 <p>
                   Estado:
-                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                  <f7-badge color="green">{{
+                    item.state_type_description
+                  }}</f7-badge>
                 </p>
                 <p>{{ item.created_at }}</p>
                 <p>
@@ -182,7 +233,12 @@
                 <p>{{ item.customer_name }}</p>
               </f7-card-content>
               <f7-card-footer>
-                <f7-button @click="download(item.external_id)" outline color="blue">PDF</f7-button>
+                <f7-button
+                  @click="download(item.external_id)"
+                  outline
+                  color="blue"
+                  >PDF</f7-button
+                >
                 <f7-button
                   @click="whatsap(item.customer_telephone, item.external_id)"
                   outline
@@ -205,7 +261,10 @@
     <f7-sheet
       class="demo-sheet"
       :opened="sendMailOpen"
-      @sheet:closed="sendMailOpen = false; initformEmail()"
+      @sheet:closed="
+        sendMailOpen = false;
+        initformEmail();
+      "
     >
       <f7-toolbar>
         <div class="left"></div>
@@ -222,7 +281,11 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">E-mail</div>
                   <div class="item-input-wrap">
-                    <input v-model="form_email.email" type="email" placeholder="Your e-mail" />
+                    <input
+                      v-model="form_email.email"
+                      type="email"
+                      placeholder="Your e-mail"
+                    />
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -230,7 +293,9 @@
               <li>
                 <div class="item-inner">
                   <div class="item-input-wrap">
-                    <f7-button style="width: 104%;" @click="sendEmail" outline>Enviar</f7-button>
+                    <f7-button style="width: 104%;" @click="sendEmail" outline
+                      >Enviar</f7-button
+                    >
                   </div>
                 </div>
               </li>
@@ -241,8 +306,12 @@
     </f7-sheet>
   </div>
 </template>
-
-
+<style scoped>
+.navbar-cus {
+  background: #17a2b8;
+  color: white;
+}
+</style>
 <script>
 //const url = "https://demo.facturador.pro/api";
 import _ from "lodash";
@@ -304,29 +373,50 @@ export default {
     whatsap(phone, external_id) {
       const self = this;
 
-      self.$f7.dialog.prompt("WhattsApp (9 dígitos)", "", function(number) {
-        if (number.length == 9) {
-          let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
-          let message = `Hola, revisa tu comprobante ingresando a este link ${link_pdf}`;
-          let message_ = message.split(" ").join("%20");
-          window.open(`https://wa.me/51${number}/?text=${message_}`, "_system");
-        } else {
-          self.$f7.dialog.alert(
-            `Ingrese correctamente los dígitos`,
-            "WhattsApp"
-          );
-        }
-      });
+      self.$f7.dialog
+        .create({
+          text: "WhattsApp (9 dígitos)",
+          on: {
+            opened: function() {
+            }
+          },
+          content: `
+              <div class="dialog-input-field input">
+                <input type="tel" name="dialog-wasap" placeholder="Ingrese numero celular" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="dialog-input dialog-wasap">
+              </div>`,
+          buttons: [
+            {
+              text: "Cancel",
+              keyCodes: null,
+              color: null
+            },
+            {
+              text: "Ok",
+              bold: true,
+              keyCodes: null
+            }
+          ],
+          onClick(dialog, e) {
+            if (e == 1) {
+             
+              let number = (dialog.$el.find('.dialog-wasap').val()).toString()
 
-      /*return false
-      if (phone.length == 9) {
-        let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
-        let message = `Hola, revisa tu comprobante ingresando a este link ${link_pdf}`;
-        let message_ = message.split(" ").join("%20");
-        window.open(`https://wa.me/51${phone}/?text=${message_}`, "_system");
-      } else {
-        alert("El numero telefonico no cuenta con WhatsApp");
-      }*/
+              if (number.length == 9) {
+                let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
+                let message = `Hola, revisa tu comprobante ingresando a este link ${link_pdf}`;
+                let message_ = message.split(" ").join("%20");
+                window.open(`https://wa.me/51${number}/?text=${message_}`, "_system");
+              } else {
+                self.$f7.dialog.alert(
+                  `Ingrese correctamente los dígitos`,
+                  "WhattsApp"
+                );
+              }
+            }
+          }
+        }).open();
+
+  
     },
 
     validateEmail(email) {
@@ -340,7 +430,7 @@ export default {
       }
 
       if (!this.validateEmail(this.form_email.email)) {
-        alert("Ingrese Essmail.");
+        alert("Ingrese un Email valido.");
         return false;
       }
 
@@ -348,7 +438,11 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${url}/document/email`, this.form_email, this.getHeaderConfig())
+        .post(
+          `${this.returnBaseUrl()}/document/email`,
+          this.form_email,
+          this.getHeaderConfig()
+        )
         .then(response => {
           if (response.data.success) {
             alert(`${response.data.message}`);
@@ -364,8 +458,18 @@ export default {
         });
     },
     email(id) {
-      this.form_email.id = id;
-      this.sendMailOpen = true;
+      const self = this;
+      self.initformEmail();
+      self.form_email.id = id;
+      //  this.sendMailOpen = true;
+      self.$f7.dialog.prompt("Ingresa el Email", "", function(value) {
+        if (value) {
+          self.form_email.email = value;
+          self.sendEmail();
+        } else {
+          alert("Ingrese el Email.");
+        }
+      });
     },
     applyFilters() {
       this.source_fact = _.filter(this.source, { document_type_id: "01" });

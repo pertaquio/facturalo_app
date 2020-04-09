@@ -95,8 +95,6 @@
             </f7-card-content>
           </f7-card>
         </f7-col>
-      </f7-row>
-      <f7-row>
         <f7-col>
           <f7-card @click.native="go('purchase')" class="demo-card-header-pic">
             <f7-card-content class="center_ic">
@@ -106,7 +104,7 @@
               <p>Compras</p>
             </f7-card-content>
           </f7-card>
-        </f7-col> 
+        </f7-col>
       </f7-row>
     </f7-block>
   </f7-page>

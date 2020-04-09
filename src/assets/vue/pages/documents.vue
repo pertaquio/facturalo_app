@@ -270,7 +270,8 @@
                   <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
                 </p>
                 <p>Registro: {{ item.created_at }}</p>
-                <p>Entrega: {{ item.delivery_date }}</p>
+                <p v-if="item.date_of_due">Vence: {{ item.date_of_due }}</p>
+                <p v-if="item.delivery_date">Entrega: {{ item.delivery_date }}</p>
                 <p>
                   Total:
                   <f7-badge color="orange">{{ item.total }}</f7-badge>

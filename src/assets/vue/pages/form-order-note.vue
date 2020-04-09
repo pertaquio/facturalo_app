@@ -322,8 +322,8 @@ export default {
       this.form = {
         prefix: "PD",
         establishment_id: 1,
-        delivery_date: moment().format("YYYY-MM-DD"),
-        date_of_due: moment().format("YYYY-MM-DD"),
+        delivery_date: '',
+        date_of_due: '',
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
         customer_id: null,

@@ -34,7 +34,6 @@
         <a href="#tab-3" @click="show(3)" class="tab-link">Nota</a>
         <a href="#tab-5" @click="show(5)" class="tab-link">Pedidos</a>
         <a href="#tab-purchases" @click="show('purchases')" class="tab-link">Compras</a>
-        <a href="#tab-4" @click="show(4)" class="tab-link">Todo</a>
       </div>
     </div>
     <div class="tabs-animated-wrap">
@@ -205,7 +204,7 @@
             </f7-card>
           </div>
         </div>
-        
+
         <div id="tab-purchases" class="page-content tab">
           <div class="block">
             <f7-card v-for="item in source_purchases" :key="item.id" class="demo-card-header-pic">
@@ -254,58 +253,6 @@
           </div>
         </div>
 
-        <div id="tab-4" class="page-content tab">
-          <div class="block">
-            <f7-card
-              v-for="item in source"
-              :key="item.id"
-              class="demo-card-header-pic"
-            >
-              <f7-card-header
-                class="no-border"
-                valign="bottom"
-                style="background: #73C1FF;"
-                >{{ item.document_type_description }} :
-                {{ item.number }}</f7-card-header
-              >
-              <f7-card-content>
-                <p>
-                  Estado:
-                  <f7-badge color="green">{{
-                    item.state_type_description
-                  }}</f7-badge>
-                </p>
-                <p>{{ item.created_at }}</p>
-                <p>
-                  Total:
-                  <f7-badge color="orange">{{ item.total }}</f7-badge>
-                </p>
-                <p>RUC: {{ item.customer_number }}</p>
-                <p>{{ item.customer_name }}</p>
-              </f7-card-content>
-              <f7-card-footer>
-                <f7-button
-                  @click="download(item.external_id)"
-                  outline
-                  color="blue"
-                  >PDF</f7-button
-                >
-                <f7-button
-                  @click="whatsap(item.customer_telephone, item.external_id)"
-                  outline
-                  color="green"
-                >
-                  <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
-                </f7-button>
-                <f7-button @click="email(item.id)" outline color="blue">
-                  <f7-icon size="30px" color="blue" material="email"></f7-icon>
-                </f7-button>
-
-                <!--<f7-button outline @click="download(item.download_xml)" color="blue">XML</f7-button> -->
-              </f7-card-footer>
-            </f7-card>
-          </div>
-        </div>
         <div id="tab-5" class="page-content tab">
           <div class="block">
             <f7-card v-for="item in source_order_note" :key="item.id" class="demo-card-header-pic">
@@ -459,9 +406,6 @@ export default {
           break;
         case 'purchases':
           self.count = self.source_purchases.length;
-          break;
-        case 4:
-          self.count = self.source.length;
           break;
         case 5:
           self.count = self.source_order_note.length;

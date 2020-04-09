@@ -28,6 +28,26 @@
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul style="margin-bottom: 25% !important;">
+          
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Serie</div>
+              <div class="item-input-wrap input-dropdown-wrap">
+                <select v-model="form.serie_documento" placeholder="Please choose..." >
+                  <template v-for="(row, index) in series">
+                    <option :value="row.number" :key="index">{{row.number}}</option> 
+                  </template>
+                </select>
+              </div>
+            </div>
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Emisión</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.fecha_de_emision" type="date" />
+              </div>
+            </div>
+          </li>
+
           <li>
             <f7-col>
               <f7-card class="demo-card-header-pic">
@@ -208,7 +228,8 @@ export default {
       form: {},
       popupOpened: false,
       popupCustomerOpened: false,
-      title: ""
+      title: "",
+      series:[]
     };
   },
   computed: {},
@@ -217,9 +238,26 @@ export default {
     this.initForm();
     //this.getTables();
     this.selectDocumentType();
+    this.getSeries()
   },
 
   methods: {
+    getSeries() {
+
+      const self = this;
+      self.$f7.preloader.show();
+      this.$http.get(`${this.returnBaseUrl()}/document/series`, this.getHeaderConfig()).then(response => {
+
+          let all_series = response.data;
+          this.series = _.filter(all_series, {document_type_id:this.form.codigo_tipo_documento})
+
+        })
+        .catch(err => {})
+        .then(() => {
+          self.$f7.preloader.hide();
+        })
+
+    },
     deleteItem(id) {
       this.$refs.form_items_car.delete_parent(id);
     },
@@ -276,7 +314,7 @@ export default {
           total_igv: this.form.total_igv,
           total_impuestos: this.form.total_taxes,
           total_valor: this.form.total_value,
-          total_venta: 118.2
+          total_venta: this.form.total
         },
         items: this.form.items.map(x => {
           return {
@@ -304,6 +342,12 @@ export default {
 
     validate() {
       const self = this;
+
+      if (!this.form.serie_documento) {
+        self.$f7.dialog.alert(`Debe seleccionar una serie.`, "Facturador PRO APP");
+        return false;
+      }
+
       if (this.form.items.length == 0) {
         self.$f7.dialog.alert(`Debe agregar productos.`, "Facturador PRO APP");
 
@@ -331,14 +375,14 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${url}/documents`, this.getFormatter(), this.getHeaderConfig())
+        .post(`${this.returnBaseUrl()}/documents`, this.getFormatter(), this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {
             this.initForm();
 
             self.$f7.dialog.alert(
-              `Compra registrada: ${data.data.number}`,
+              `Comprobante registrado: ${data.data.number}`,
               "Facturador PRO APP"
             );
             self.$f7router.navigate("/documents/");

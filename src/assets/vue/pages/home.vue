@@ -11,7 +11,7 @@
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
-      <div  class="title">Facturador PRO APP</div>
+      <div class="title">Facturador PRO</div>
     </f7-navbar>
 
     <f7-block>
@@ -84,7 +84,18 @@
           </f7-card>
         </f7-col>
       </f7-row>
-
+      <f7-row>
+        <f7-col>
+          <f7-card @click.native="go('order_note')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
+              </span>
+              <p>Pedido</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+      </f7-row>
       <f7-row>
         <f7-col>
           <f7-card @click.native="go('purchase')" class="demo-card-header-pic">
@@ -97,7 +108,6 @@
           </f7-card>
         </f7-col> 
       </f7-row>
-
     </f7-block>
   </f7-page>
 </template>
@@ -172,6 +182,9 @@ export default {
           break;
         case "sale_note":
           self.$f7router.navigate("/form-sale-note/");
+          break;
+        case "order_note":
+          self.$f7router.navigate("/form-order-note/");
           break;
         case "purchase":
           self.$f7router.navigate("/form-purchase/");

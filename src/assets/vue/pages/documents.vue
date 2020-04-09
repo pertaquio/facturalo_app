@@ -32,6 +32,7 @@
         >
         <a href="#tab-2" @click="show(2)" class="tab-link">Boleta</a>
         <a href="#tab-3" @click="show(3)" class="tab-link">Nota</a>
+        <a href="#tab-5" @click="show(5)" class="tab-link">Pedidos</a>
         <a href="#tab-purchases" @click="show('purchases')" class="tab-link">Compras</a>
         <a href="#tab-4" @click="show(4)" class="tab-link">Todo</a>
       </div>
@@ -77,7 +78,7 @@
                   <f7-icon color="blue" material="cloud_download"></f7-icon>
                 </f7-button>
 
-              
+
                   <div class="col-50">
                     <f7-button
                       @click="whatsap(item.customer_telephone, item.external_id)"
@@ -88,7 +89,7 @@
                         style="font-size: 1.7em;"
                         class="icon fab fa-whatsapp"
                       ></i>
-                     
+
                     </f7-button>
                   </div>
                   <div class="col-50">
@@ -100,7 +101,7 @@
                       ></f7-icon>
                     </f7-button>
                   </div>
-               
+
               </f7-card-footer>
             </f7-card>
           </div>
@@ -305,6 +306,49 @@
             </f7-card>
           </div>
         </div>
+        <div id="tab-5" class="page-content tab">
+          <div class="block">
+            <f7-card v-for="item in source_order_note" :key="item.id" class="demo-card-header-pic">
+              <f7-card-header
+                class="no-border"
+                valign="bottom"
+                style="background: #73C1FF;"
+              >PEDIDO DE VENTA : {{ item.identifier }}</f7-card-header>
+              <f7-card-content>
+                <p>
+                  Estado:
+                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                </p>
+                <p>Registro: {{ item.created_at }}</p>
+                <p v-if="item.date_of_due">Vence: {{ item.date_of_due }}</p>
+                <p v-if="item.delivery_date">Entrega: {{ item.delivery_date }}</p>
+                <p>
+                  Total:
+                  <f7-badge color="orange">{{ item.total }}</f7-badge>
+                </p>
+                <p>RUC: {{ item.customer_number }}</p>
+                <p>{{ item.customer_name }}</p>
+              </f7-card-content>
+              <f7-card-footer>
+                <f7-button
+                  @click="download(item.external_id, 'order-notes')"
+                  outline
+                  color="blue"
+                >PDF</f7-button>
+                <f7-button
+                  @click="whatsap(item.customer_telephone, item.external_id)"
+                  outline
+                  color="green"
+                >
+                  <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
+                </f7-button>
+                <f7-button @click="email(item.id)" outline color="blue">
+                  <f7-icon size="30px" color="blue" material="email"></f7-icon>
+                </f7-button>
+              </f7-card-footer>
+            </f7-card>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -381,9 +425,10 @@ export default {
       source_fact: [],
       source_bol: [],
       source_nota: [],
+      source_order_note: [],
       source_purchases: [],
       form_email: {},
-      count: 0
+      count: 0,
     };
   },
   computed: {
@@ -396,6 +441,7 @@ export default {
     this.getDataPurchases();
     this.getData();
     this.getDataSaleNote();
+    this.getDataOrderNote();
   },
 
   methods: {
@@ -416,6 +462,9 @@ export default {
           break;
         case 4:
           self.count = self.source.length;
+          break;
+        case 5:
+          self.count = self.source_order_note.length;
           break;
       }
     },
@@ -453,7 +502,7 @@ export default {
           ],
           onClick(dialog, e) {
             if (e == 1) {
-             
+
               let number = (dialog.$el.find('.dialog-wasap').val()).toString()
 
               if (number.length == 9) {
@@ -471,7 +520,7 @@ export default {
           }
         }).open();
 
-  
+
     },
 
     validateEmail(email) {
@@ -549,6 +598,12 @@ export default {
           "_system",
           "location=yes"
         );
+      } else if (type == "order-notes") {
+        cordova.InAppBrowser.open(
+          `${localStorage.api_url}/${type}/print/${external_id}/a4`,
+          "_system",
+          "location=yes"
+        );
       }
     },
 
@@ -601,6 +656,16 @@ export default {
         .get(`${this.returnBaseUrl()}/sale-note/lists`, this.getHeaderConfig())
         .then(response => {
           self.source_nota = response.data.data;
+        })
+        .catch(err => {})
+        .then(() => {});
+    },
+    getDataOrderNote() {
+      const self = this;
+      this.$http
+        .get(`${this.returnBaseUrl()}/order-notes/lists`, this.getHeaderConfig())
+        .then(response => {
+          self.source_order_note = response.data.data;
         })
         .catch(err => {})
         .then(() => {});

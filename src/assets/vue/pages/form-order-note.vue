@@ -24,7 +24,7 @@
       ></customer-form>
     </f7-popup>
 
-    <f7-navbar class="navbar-cus" title="Nota de Venta" back-link="Back"></f7-navbar>
+    <f7-navbar title="Pedido" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
@@ -81,6 +81,24 @@
               </table>
             </div>
           </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Vencimiento</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.date_of_due" type="date" />
+              </div>
+            </div>
+          </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha de Entrega</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.delivery_date" type="date" />
+              </div>
+            </div>
+          </li>
         </ul>
       </form>
     </f7-block>
@@ -108,11 +126,6 @@
 </template>
 
 <style scoped>
-
-.navbar-cus{
-   background:#17a2b8;
-   color:white
-}
 .m-text {
   text-align: left;
   font-size: 12px;
@@ -149,7 +162,7 @@
 }
 </style>
 <script>
-const url = "http://demo.facturadorpro3.oo/api";
+const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
@@ -157,7 +170,7 @@ import CustomerForm from "components/document/CustomerForm";
 import { auth } from "mixins_/auth";
 
 export default {
-  name: "FormSaleNote",
+  name: "FormOrderNote",
   components: { ItemsForm, CustomerForm },
   mixins: [auth],
   data: function() {
@@ -168,7 +181,8 @@ export default {
       search_item: "",
       customers: [],
       form: {},
-      popupOpened: false
+      popupOpened: false,
+      api_url: localStorage.api_url
     };
   },
   computed: {},
@@ -232,14 +246,14 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${this.returnBaseUrl()}/sale-note`, this.form, this.getHeaderConfig())
+        .post(`${this.returnBaseUrl()}/order-notes`, this.form, this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {
             this.initForm();
 
             self.$f7.dialog.alert(
-              `Compra registrada: ${data.data.number}`,
+              `Pedido registrado: PD-${data.data.id}`,
               "Facturador PRO APP"
             );
             self.$f7router.navigate("/documents/");
@@ -306,15 +320,16 @@ export default {
 
     initForm() {
       this.form = {
-        prefix: "NV",
-        series_id: "NV01",
+        prefix: "PD",
         establishment_id: 1,
+        delivery_date: '',
+        date_of_due: '',
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
         customer_id: null,
         currency_type_id: "PEN",
         purchase_order: null,
-        exchange_rate_sale: 0,
+        exchange_rate_sale: 0.01,
         total_prepayment: 0,
         total_charge: 0,
         total_discount: 0,

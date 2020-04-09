@@ -81,6 +81,24 @@
               </table>
             </div>
           </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Vencimiento</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.date_of_due" type="date" />
+              </div>
+            </div>
+          </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha de Entrega</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.delivery_date" type="date" />
+              </div>
+            </div>
+          </li>
         </ul>
       </form>
     </f7-block>
@@ -163,7 +181,8 @@ export default {
       search_item: "",
       customers: [],
       form: {},
-      popupOpened: false
+      popupOpened: false,
+      api_url: localStorage.api_url
     };
   },
   computed: {},
@@ -227,14 +246,14 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${url}/order-note`, this.form, this.getHeaderConfig())
+        .post(`${this.returnBaseUrl()}/order-notes`, this.form, this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {
             this.initForm();
 
             self.$f7.dialog.alert(
-              `Compra registrada: ${data.data.number}`,
+              `Pedido registrado: PD-${data.data.id}`,
               "Facturador PRO APP"
             );
             self.$f7router.navigate("/documents/");
@@ -301,14 +320,16 @@ export default {
 
     initForm() {
       this.form = {
-        prefix: "NV",
+        prefix: "PD",
         establishment_id: 1,
+        delivery_date: moment().format("YYYY-MM-DD"),
+        date_of_due: moment().format("YYYY-MM-DD"),
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
         customer_id: null,
         currency_type_id: "PEN",
         purchase_order: null,
-        exchange_rate_sale: 0,
+        exchange_rate_sale: 0.01,
         total_prepayment: 0,
         total_charge: 0,
         total_discount: 0,

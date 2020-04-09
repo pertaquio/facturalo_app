@@ -607,7 +607,7 @@ export default {
     getDataOrderNote() {
       const self = this;
       this.$http
-        .get(`${this.returnBaseUrl()}/order-note/lists`, this.getHeaderConfig())
+        .get(`${this.returnBaseUrl()}/order-notes/lists`, this.getHeaderConfig())
         .then(response => {
           self.source_order_note = response.data.data;
         })

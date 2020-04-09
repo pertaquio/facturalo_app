@@ -231,14 +231,8 @@ export default {
 
       self.$f7.preloader.show();
 
-      console.log(this.form);
-
-      if(localStorage.api_url) {
-        this.url = localStorage.api_url;
-      }
-
       this.$http
-        .post(`${url}/sale-note`, this.form, this.getHeaderConfig())
+        .post(`${this.returnBaseUrl()}/sale-note`, this.form, this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {

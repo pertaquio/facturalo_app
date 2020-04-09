@@ -17,7 +17,7 @@
       @popup:closed="popupSupplierOpened = false"
     >
       <supplier-form
-        :codeType="codeType"
+        :codeType="form.document_type_id"
         :showDialog.sync="popupSupplierOpened"
         ref="form_supplier_car"
         @addSupplierCar="addSupplier"
@@ -33,7 +33,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Tipo de documento</div>
               <div class="item-input-wrap input-dropdown-wrap">
-                <select v-model="form.document_type_id" placeholder="Please choose...">
+                <select v-model="form.document_type_id" placeholder="Please choose..." @change="changeDocumentType">
                   <template v-for="(row, index) in document_types_invoice">
                     <option :value="row.id" :key="index">{{row.description}}</option> 
                   </template>
@@ -46,7 +46,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Serie</div>
               <div class="item-input-wrap">
-                <input required validate v-model="form.series" type="text" />
+                <input required validate v-model="form.series" type="text" maxlength="4" />
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -59,6 +59,21 @@
               </div>
             </div>
 
+          </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Emisión</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.date_of_issue" type="date" />
+              </div>
+            </div>
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Vencimiento</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.date_of_due" type="date" />
+              </div>
+            </div>
           </li>
 
           <li>
@@ -185,7 +200,6 @@
 }
 </style>
 <script>
-const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
@@ -193,13 +207,12 @@ import SupplierForm from "components/purchases/SupplierForm";
 import { auth } from "mixins_/auth";
 
 export default {
-  name: "FormSaleNote",
+  name: "FormPurchase",
   components: { ItemsForm, SupplierForm },
   mixins: [auth],
   data: function() {
     // Must return an object
     return {
-      codeType: "",
       popupSupplierOpened: false,
       search_item: "",
       customers: [],
@@ -211,12 +224,14 @@ export default {
   },
   computed: {},
   created() {
-    this.codeType = '01';
     this.initForm();
     this.getTables();
   },
 
   methods: {
+    changeDocumentType(){
+      this.$refs.form_supplier_car.initItems(this.form.document_type_id);
+    },
     deleteItem(index) {
       this.form.items.splice(index, 1)
       // this.$refs.form_items_car.delete_parent(id);
@@ -238,7 +253,14 @@ export default {
     },
 
     validate() {
+
       const self = this;
+
+      if (this.form.date_of_issue > this.form.date_of_due) {
+        self.$f7.dialog.alert(`La fecha de emisión no puede ser posterior a la de vencimiento.`,this.title_alert);
+        return false;
+      }
+
       if (this.form.items.length == 0) {
         self.$f7.dialog.alert(`Debe agregar productos.`, this.title_alert);
         return false;
@@ -276,7 +298,7 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${url}/purchases`, this.form, this.getHeaderConfig())
+        .post(`${this.returnBaseUrl()}/purchases`, this.form, this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {

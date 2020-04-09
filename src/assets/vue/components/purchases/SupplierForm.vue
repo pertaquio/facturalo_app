@@ -82,7 +82,7 @@
                           v-model="form.number"
                           required
                           validate
-                          type="text"
+                          type="number"
                           :maxlength="maxLength"
                         />
                         <span class="input-clear-button"></span>
@@ -199,14 +199,14 @@ export default {
   },
   watch: {
     search_item: function(val) {
-       if (val.length > 2) {
+       if (val.length > 1) {
         this.searchSuppliers();
       } else if (val.length == 0) {
         this.initItems();
       }
     }
   },
-  methods: {
+  methods: { 
     initForm() {
       this.form = {
         id: null,
@@ -263,7 +263,8 @@ export default {
         .then(response => {
           self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
           let it = response.data.data;
-          self.items.push(it);
+          // self.items.push(it);
+          this.getData()
         })
         .catch(err => {
           alert("Sucedio un error al guardar.");
@@ -281,22 +282,23 @@ export default {
 
       this.$emit("addSupplierCar", item);
     },
-    initItems()
+    async initItems(document_type_id = '01')
     {
         const self = this;
+        // console.log(document_type_id)
 
-        if (self.codeType == "01") {
-            self.items = self.items_base.filter(
-              o => o.identity_document_type_id == "6"
-            );
-          } else if (self.codeType == "03") {
+        if (document_type_id == "01") {
 
-            self.items = self.items_base.filter(
-              o => o.identity_document_type_id == "1"
-            );
-          } else {
-            self.items = self.items_base;
+          self.items = await self.items_base.filter(o => o.identity_document_type_id == "6")
+
+        } else if (document_type_id == "03") {
+
+          self.items = await self.items_base.filter(o => ['1','4','6','7','0'].includes(o.identity_document_type_id))
+
+        } else {
+          self.items = await self.items_base
         }
+
 
     },
     getData() {
@@ -372,29 +374,12 @@ export default {
           const self = this;
           self.$f7.preloader.show();
 
-          let parameters = `input=${this.search_item}`
+          let parameters = `input=${this.search_item}&document_type_id=${this.codeType}`
 
           await this.$http.get(`${this.returnBaseUrl()}/purchases/search-suppliers/?${parameters}`, this.getHeaderConfig())
           .then(response => {
 
-
-              let data = response.data
-
-              if (self.codeType == "01") {
-                self.items = data.filter(
-                  o => o.identity_document_type_id == "6"
-                );
-              } else if (self.codeType == "03") {
-
-                self.items = data.filter(
-                  o => o.identity_document_type_id == "1"
-                );
-
-              } else {
-                self.items = data;
-              }
-            
-            this.items = response.data
+            this.items = response.data 
             
           })
             .catch(err => {

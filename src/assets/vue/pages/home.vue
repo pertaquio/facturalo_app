@@ -1,5 +1,5 @@
 <template>
-  <f7-page>
+  <f7-page class="">
     <f7-popup class="demo-popup" :opened="splash" @popup:closed="popupOpened = false">
       <f7-page style="background:#676666">
         <f7-block>
@@ -7,99 +7,99 @@
         </f7-block>
       </f7-page>
     </f7-popup>
-    <f7-navbar class="navbar-cus">
+    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" transparent="1">
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
-      <div class="title">Facturador PRO</div>
+      <f7-nav-title>FacturaloPeru APP</f7-nav-title>
     </f7-navbar>
 
     <f7-block>
+      <f7-row v-if="isOffline">
+        <p style="color:red;">SIN ACCESO A INTERNET, VERIFICA TU CONEXION.</p>
+      </f7-row>
       <f7-row>
-        <p v-if="isOffline" style="color:red;">SIN ACCESO A INTERNET, VERIFICA TU CONEXION.</p>
-        <f7-col>
-          <f7-card @click.native="go('nw_doc')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
-              <span>
-                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
-              </span>
-              <p>Factura <br> electrónica</p>
+        <f7-col width="100">
+          <f7-card @click.native="go('cpe')" class="">
+            <f7-card-content class="">
+              <f7-row>
+                <f7-col width="70"><h3>Validar CPE</h3></f7-col>
+                <f7-col width="30">
+                  <f7-icon material="center_focus_strong" size="55px" color="green"></f7-icon>
+                </f7-col>
+              </f7-row>
             </f7-card-content>
           </f7-card>
         </f7-col>
-
-        <f7-col>
-          <f7-card @click.native="go('ls_doc')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
-              <span>
-                <!-- <f7-icon size="44px" color="green" material="list_alt"></f7-icon>-->
-                <f7-icon size="44px" color="green" f7="list_alt"></f7-icon>
-              </span>
-              <p>Listado de comprobantes</p>
+        <f7-col width="100">
+          <f7-card @click.native="go('report')" class="">
+            <f7-card-content class="">
+              <f7-row>
+                <f7-col width="70"><h3>Reportes</h3></f7-col>
+                <f7-col width="30">
+                  <f7-icon size="55px" color="green" material="insert_chart"></f7-icon>
+                </f7-col>
+              </f7-row>
+            </f7-card-content>
+          </f7-card>
+        </f7-col>
+        <f7-col width="100">
+          <f7-card @click.native="go('ls_doc')" class="">
+            <f7-card-content class="">
+              <f7-row>
+                <f7-col width="70"><h3>Listado de comprobantes</h3></f7-col>
+                <f7-col width="30">
+                  <f7-icon size="55px" color="green" f7="list_alt"></f7-icon>
+                </f7-col>
+              </f7-row>
             </f7-card-content>
           </f7-card>
         </f7-col>
       </f7-row>
-      <f7-row>
-        <f7-col>
-          <f7-card @click.native="go('nw_docb')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
-              <span>
-                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
-              </span>
-              <p>Boleta  <br> electrónica</p>
+      <f7-row no-gap>
+        <f7-col width="50">
+          <f7-card @click.native="go('nw_doc')" class="">
+            <f7-card-content class="text-align-center">
+              <f7-icon size="35px" color="light-blue" class="fa fa-file-invoice"></f7-icon>
+              <h3 class="no-padding">Factura <br> Electrónica</h3>
             </f7-card-content>
           </f7-card>
         </f7-col>
-        <f7-col>
-          <f7-card @click.native="go('cpe')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
-              <span>
-                <f7-icon material="center_focus_strong" size="44px" color="green"></f7-icon>
-              </span>
-              <p>Validar <br> CPE</p>
+        <f7-col width="50">
+          <f7-card @click.native="go('nw_docb')" class="">
+            <f7-card-content class="text-align-center">
+              <f7-icon size="35px" color="light-blue" class="fa fa-receipt"></f7-icon>
+              <h3 class="no-padding">Boleta  <br> Electrónica</h3>
             </f7-card-content>
           </f7-card>
         </f7-col>
       </f7-row>
-      <f7-row>
-        <f7-col>
-          <f7-card @click.native="go('sale_note')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
+      <f7-row no-gap>
+        <f7-col width="33">
+          <f7-card @click.native="go('sale_note')" class="">
+            <f7-card-content class="text-align-center no-padding-horizontal">
               <span>
-                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="light-blue" material="note_add"></f7-icon>
               </span>
-              <p>Nota de venta</p>
+              <p class="no-padding">Nota de venta</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
-        <f7-col>
-          <f7-card @click.native="go('report')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
+        <f7-col width="33">
+          <f7-card @click.native="go('order_note')" class="">
+            <f7-card-content class="text-align-center">
               <span>
-                <f7-icon size="44px" color="green" material="insert_chart"></f7-icon>
-              </span>
-              <p>Reportes</p>
-            </f7-card-content>
-          </f7-card>
-        </f7-col>
-      </f7-row>
-      <f7-row>
-        <f7-col>
-          <f7-card @click.native="go('order_note')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
-              <span>
-                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="light-blue" material="note_add"></f7-icon>
               </span>
               <p>Pedido</p>
             </f7-card-content>
           </f7-card>
         </f7-col>
-        <f7-col>
-          <f7-card @click.native="go('purchase')" class="demo-card-header-pic">
-            <f7-card-content class="center_ic">
+        <f7-col width="33">
+          <f7-card @click.native="go('purchase')" class="">
+            <f7-card-content class="text-align-center">
               <span>
-                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="light-blue" material="note_add"></f7-icon>
               </span>
               <p>Compras</p>
             </f7-card-content>
@@ -114,19 +114,19 @@
    background:#17a2b8;
    color:white
 }
-.center {
-  margin-top: 40%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-}
 .center_ic {
   text-align: center;
+}
+.title img {
+  max-height: 70px;
+  margin-top: 0;
+  max-width: 40%;
+  margin-left: 0;
 }
 </style>
 <script>
 import logo from "assets/images/logo9_b.png";
+import logoFacturaloPeru from "assets/images/facturaloperu.png";
 const url = "https://demo.facturador.pro/api";
 const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
 export default {
@@ -135,6 +135,7 @@ export default {
     // Must return an object
     return {
       logoban: logo,
+      logoFacturaloPeru : logoFacturaloPeru,
       user: "",
       password: "",
       splash: true,

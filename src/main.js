@@ -27,6 +27,7 @@ import FontAwesome from '@fortawesome/fontawesome-free/css/all.min.css';
 import FastClick from 'fastclick';
 
 // Import App Custom Styles
+import customCss from './assets/css/custom.css';
 // import AppStyles from './assets/sass/main.scss'
 
 // Import App Component

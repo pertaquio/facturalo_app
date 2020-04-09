@@ -96,6 +96,18 @@
           </f7-card>
         </f7-col>
       </f7-row>
+      <f7-row>
+        <f7-col>
+          <f7-card @click.native="go('purchase')" class="demo-card-header-pic">
+            <f7-card-content class="center_ic">
+              <span>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
+              </span>
+              <p>Compras</p>
+            </f7-card-content>
+          </f7-card>
+        </f7-col> 
+      </f7-row>
     </f7-block>
   </f7-page>
 </template>
@@ -173,6 +185,9 @@ export default {
           break;
         case "order_note":
           self.$f7router.navigate("/form-order-note/");
+          break;
+        case "purchase":
+          self.$f7router.navigate("/form-purchase/");
           break;
       }
     },

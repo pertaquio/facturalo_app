@@ -28,6 +28,26 @@
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Serie</div>
+              <div class="item-input-wrap input-dropdown-wrap">
+                <select v-model="form.serie_documento" placeholder="Please choose..." >
+                  <template v-for="(row, index) in series">
+                    <option :value="row.number" :key="index">{{row.number}}</option> 
+                  </template>
+                </select>
+              </div>
+            </div>
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Emisión</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.fecha_de_emision" type="date" />
+              </div>
+            </div>
+          </li>
+
           <li>
             <a class="item-link" @click="popupCustomerOpened = true">
               <div class="item-content">
@@ -168,16 +188,33 @@ export default {
       search_item: "",
       customers: [],
       form: {},
-      popupOpened: false
+      popupOpened: false,
+      series:[]
     };
   },
   computed: {},
   created() {
     this.initForm();
     this.getTables();
+    this.getSeries()
   },
 
   methods: {
+    getSeries() {
+
+      const self = this;
+      self.$f7.preloader.show();
+      this.$http.get(`${this.returnBaseUrl()}/sale-note/series`, this.getHeaderConfig()).then(response => {
+
+          let series = response.data;
+
+        })
+        .catch(err => {})
+        .then(() => {
+          self.$f7.preloader.hide();
+        })
+
+    },
     addCustomer(row) {
       this.popupCustomerOpened = false;
       this.form.customer_id = row.id;

@@ -33,7 +33,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Serie</div>
               <div class="item-input-wrap input-dropdown-wrap">
-                <select v-model="form.serie_documento" placeholder="Please choose..." >
+                <select v-model="form.series_id" placeholder="Please choose..." >
                   <template v-for="(row, index) in series">
                     <option :value="row.number" :key="index">{{row.number}}</option> 
                   </template>
@@ -43,7 +43,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Fecha Emisión</div>
               <div class="item-input-wrap">
-                <input name="date" v-model="form.fecha_de_emision" type="date" />
+                <input name="date" v-model="form.date_of_issue" type="date" />
               </div>
             </div>
           </li>
@@ -193,21 +193,21 @@ export default {
     };
   },
   computed: {},
-  created() {
-    this.initForm();
-    this.getTables();
-    this.getSeries()
+  async created() {
+    await this.initForm();
+    await this.getTables();
+    await this.getSeries()
   },
 
   methods: {
-    getSeries() {
+    async getSeries() {
 
       const self = this;
       self.$f7.preloader.show();
-      this.$http.get(`${this.returnBaseUrl()}/sale-note/series`, this.getHeaderConfig()).then(response => {
 
-          let series = response.data;
-
+      await this.$http.get(`${this.returnBaseUrl()}/sale-note/series`, this.getHeaderConfig()).then(response => {
+          this.series = response.data;
+          this.form.series_id = (this.series.length > 0) ? this.series[0].id : null
         })
         .catch(err => {})
         .then(() => {
@@ -241,6 +241,12 @@ export default {
 
     validate() {
       const self = this;
+
+      if (!this.form.series_id) {
+        self.$f7.dialog.alert(`Debe seleccionar una serie.`, "Facturador PRO APP");
+        return false;
+      }
+
       if (this.form.items.length == 0) {
         self.$f7.dialog.alert(`Debe agregar productos.`, "Facturador PRO APP");
 
@@ -276,12 +282,12 @@ export default {
             this.initForm();
 
             self.$f7.dialog.alert(
-              `Compra registrada: ${data.data.number}`,
+              `Nota de venta registrada: ${data.data.number}`,
               "Facturador PRO APP"
             );
             self.$f7router.navigate("/documents/");
           } else {
-            alert("No se registro la Compra");
+            alert("No se registro la Nota de venta");
           }
         })
         .catch(err => {
@@ -344,8 +350,8 @@ export default {
     initForm() {
       this.form = {
         prefix: "NV",
-        series_id: "NV01",
-        establishment_id: 1,
+        series_id: null,
+        establishment_id: null,
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
         customer_id: null,

@@ -166,7 +166,7 @@
                 class="no-border"
                 valign="bottom"
                 style="background: #73C1FF;"
-                >NOTA DE VENTA : {{ item.identifier }}</f7-card-header
+                >NOTA DE VENTA : {{ item.number_full }}</f7-card-header
               >
               <f7-card-content>
                 <p>

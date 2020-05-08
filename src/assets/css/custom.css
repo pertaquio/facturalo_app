@@ -17,3 +17,12 @@
 .list .item-content {
     padding-left: 0px;
 }
+
+/* Custom color theme */
+.color-blue {
+  --f7-theme-color: #0088cc;
+  --f7-theme-color-rgb: 0, 136, 204;
+  --f7-theme-color-shade: #006da3;
+  --f7-theme-color-tint: #00a3f5;
+}
+

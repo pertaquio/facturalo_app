@@ -25,7 +25,7 @@
               <f7-row>
                 <f7-col width="70"><h3>Validar CPE</h3></f7-col>
                 <f7-col width="30">
-                  <f7-icon material="center_focus_strong" size="55px" color="green"></f7-icon>
+                  <f7-icon material="center_focus_strong" size="55px" color="teal"></f7-icon>
                 </f7-col>
               </f7-row>
             </f7-card-content>
@@ -37,7 +37,7 @@
               <f7-row>
                 <f7-col width="70"><h3>Reportes</h3></f7-col>
                 <f7-col width="30">
-                  <f7-icon size="55px" color="green" material="insert_chart"></f7-icon>
+                  <f7-icon size="55px" color="teal" material="insert_chart"></f7-icon>
                 </f7-col>
               </f7-row>
             </f7-card-content>
@@ -49,7 +49,7 @@
               <f7-row>
                 <f7-col width="70"><h3>Listado de comprobantes</h3></f7-col>
                 <f7-col width="30">
-                  <f7-icon size="55px" color="green" f7="list_alt"></f7-icon>
+                  <f7-icon size="55px" color="teal" f7="list_alt"></f7-icon>
                 </f7-col>
               </f7-row>
             </f7-card-content>
@@ -60,7 +60,7 @@
         <f7-col width="50">
           <f7-card @click.native="go('nw_doc')" class="">
             <f7-card-content class="text-align-center">
-              <f7-icon size="35px" color="light-blue" class="fa fa-file-invoice"></f7-icon>
+              <f7-icon size="35px" color="blue" class="fa fa-file-invoice"></f7-icon>
               <h3 class="no-padding">Factura <br> Electrónica</h3>
             </f7-card-content>
           </f7-card>
@@ -68,7 +68,7 @@
         <f7-col width="50">
           <f7-card @click.native="go('nw_docb')" class="">
             <f7-card-content class="text-align-center">
-              <f7-icon size="35px" color="light-blue" class="fa fa-receipt"></f7-icon>
+              <f7-icon size="35px" color="blue" class="fa fa-receipt"></f7-icon>
               <h3 class="no-padding">Boleta  <br> Electrónica</h3>
             </f7-card-content>
           </f7-card>
@@ -79,7 +79,7 @@
           <f7-card @click.native="go('sale_note')" class="">
             <f7-card-content class="text-align-center no-padding-horizontal">
               <span>
-                <f7-icon size="44px" color="light-blue" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
               </span>
               <p class="no-padding">Nota de venta</p>
             </f7-card-content>
@@ -89,7 +89,7 @@
           <f7-card @click.native="go('order_note')" class="">
             <f7-card-content class="text-align-center">
               <span>
-                <f7-icon size="44px" color="light-blue" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
               </span>
               <p>Pedido</p>
             </f7-card-content>
@@ -99,7 +99,7 @@
           <f7-card @click.native="go('purchase')" class="">
             <f7-card-content class="text-align-center">
               <span>
-                <f7-icon size="44px" color="light-blue" material="note_add"></f7-icon>
+                <f7-icon size="44px" color="blue" material="note_add"></f7-icon>
               </span>
               <p>Compras</p>
             </f7-card-content>

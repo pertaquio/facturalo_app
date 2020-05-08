@@ -3,10 +3,10 @@
     <f7-block-title>Acciones</f7-block-title>
     <f7-block>
       <f7-block>
-        <f7-button class="button-fill" color="green" @click="go" outline>Configuracion</f7-button>
+        <f7-button class="button-fill" color="teal" @click="go">Configuración</f7-button>
       </f7-block>
       <f7-block>
-        <f7-button class="button-fill" color="red" @click="logout" outline>Cerrar Sesión</f7-button>
+        <f7-button class="button-fill" color="blue" @click="logout">Cerrar Sesión</f7-button>
       </f7-block>
       <!--<p>
          hola mundo cristian:
@@ -20,7 +20,7 @@
     </f7-list>-->
 
     <div class="footer">
-      <f7-block-title>FacturaloPeru APP</f7-block-title>
+        <img class="center margin-bottom" width="200px" :src="logoban" alt="FacturaloPeru App" />
     </div>
   </f7-page>
 </template>
@@ -38,20 +38,26 @@
 }
 </style>
 <script>
-export default {
-  components: {},
-  methods: {
-    go() {
-      this.$f7router.navigate("/configuration/");
+  import logo from "assets/images/facturaloperu.png";
+  export default {
+    components: {},
+    data: function() {
+      return {
+        logoban: logo,
+      }
     },
-    logout() {
-      localStorage.removeItem("api_token");
-      localStorage.removeItem("user_name");
-      localStorage.removeItem("user_email");
-      localStorage.removeItem('api_url')
-      location.reload();
-      // this.$f7router.navigate("/");
+    methods: {
+      go() {
+        this.$f7router.navigate("/configuration/");
+      },
+      logout() {
+        localStorage.removeItem("api_token");
+        localStorage.removeItem("user_name");
+        localStorage.removeItem("user_email");
+        localStorage.removeItem('api_url')
+        location.reload();
+        // this.$f7router.navigate("/");
+      }
     }
-  }
-};
+  };
 </script>

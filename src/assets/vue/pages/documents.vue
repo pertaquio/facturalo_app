@@ -322,19 +322,16 @@
     </f7-sheet>
   </div>
 </template>
-<style scoped>
-.navbar-cus {
-  background: #17a2b8;
-  color: white;
-}
 
-li {
-  background: var(--f7-color-white-shade);
-}
-li:nth-child(odd) {
-  background: var(--f7-color-white-tint);
-}
+<style scoped>
+  li {
+    background: var(--f7-color-white-shade);
+  }
+  li:nth-child(odd) {
+    background: var(--f7-color-white-tint);
+  }
 </style>
+
 <script>
 //const url = "https://demo.facturador.pro/api";
 import _ from "lodash";

@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <div class="navbar">
+    <div class="navbar color-theme-white no-shadow theme-dark">
       <div class="navbar-bg"></div>
       <div class="navbar-inner sliding">
         <div class="left">
@@ -206,7 +206,7 @@ export default {
       }
     }
   },
-  methods: { 
+  methods: {
     initForm() {
       this.form = {
         id: null,
@@ -379,8 +379,8 @@ export default {
           await this.$http.get(`${this.returnBaseUrl()}/purchases/search-suppliers/?${parameters}`, this.getHeaderConfig())
           .then(response => {
 
-            this.items = response.data 
-            
+            this.items = response.data
+
           })
             .catch(err => {
               alert('Error')

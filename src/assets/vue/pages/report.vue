@@ -6,13 +6,11 @@
     </f7-block-title>
 
     <f7-list>
-      <f7-list-item title="Total
-notas de venta" :badge="general.totals.total_sale_notes">
+      <f7-list-item class="padding-left" title="Total notas de venta" :badge="general.totals.total_sale_notes">
       </f7-list-item>
-      <f7-list-item title="Total
-comprobantes" :badge="general.totals.total_documents">
+      <f7-list-item class="padding-left" title="Total comprobantes" :badge="general.totals.total_documents">
       </f7-list-item>
-      <f7-list-item title="Total" :badge="general.totals.total">
+      <f7-list-item class="padding-left" title="Total" :badge="general.totals.total">
       </f7-list-item>
     </f7-list>
 

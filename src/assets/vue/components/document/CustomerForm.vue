@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <div class="navbar">
+    <div class="navbar color-theme-white no-shadow theme-dark">
       <div class="navbar-bg"></div>
       <div class="navbar-inner sliding">
         <div class="left">
@@ -394,9 +394,9 @@ export default {
                                 } else {
                                   self.items = datos;
                               }
-                             
+
                                this.items = response.data.data.customers
-                              
+
                             })
                              .catch(err => {
                                alert('Error')

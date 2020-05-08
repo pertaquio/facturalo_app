@@ -4,18 +4,17 @@
   margin-left: auto;
   margin-right: auto;
 }
-
 .list ul:after {
-    background-color: black;
+  background-color: black;
 }
 .links-list a:after, .list .item-inner:after, .simple-list li:after {
-    background-color: black;
+  background-color: black;
 }
 .media-list .item-inner, li.media-item .item-inner {
-	padding-left: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-left));
+  padding-left: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-left));
 }
 .list .item-content {
-    padding-left: 0px;
+  padding-left: 0px;
 }
 
 /* Custom color theme */
@@ -26,3 +25,8 @@
   --f7-theme-color-tint: #00a3f5;
 }
 
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--f7-color-blue);
+}

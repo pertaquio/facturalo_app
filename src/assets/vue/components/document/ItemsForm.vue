@@ -30,7 +30,7 @@
       <f7-button @click="addForm = !addForm" style="margin:2%;width:30%" raised>Nuevo</f7-button>
     </f7-navbar>-->
 
-    <div class="navbar">
+    <div class="navbar color-theme-white no-shadow theme-dark">
       <div class="navbar-bg"></div>
       <div class="navbar-inner sliding">
         <div class="left">

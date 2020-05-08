@@ -18,6 +18,7 @@
     >
       <customer-form
         :codeType="codeType"
+        :customerId="form.customer_id"
         :showDialog.sync="popupCustomerOpened"
         ref="form_customer_car"
         @addCustomerCar="addCustomer"
@@ -208,7 +209,7 @@
 }
 </style>
 <script>
-const url = "https://demo.facturador.pro/api";
+
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
@@ -233,23 +234,23 @@ export default {
     };
   },
   computed: {},
-  created() {
+  async created() {
     this.codeType = this.$f7route.params.cod;
-    this.initForm();
+    await this.initForm();
     //this.getTables();
-    this.selectDocumentType();
-    this.getSeries()
+    await this.selectDocumentType();
+    await this.getSeries()
   },
-
   methods: {
-    getSeries() {
+    async getSeries() {
 
       const self = this;
       self.$f7.preloader.show();
-      this.$http.get(`${this.returnBaseUrl()}/document/series`, this.getHeaderConfig()).then(response => {
+      await this.$http.get(`${this.returnBaseUrl()}/document/series`, this.getHeaderConfig()).then(response => {
 
           let all_series = response.data;
           this.series = _.filter(all_series, {document_type_id:this.form.codigo_tipo_documento})
+          this.initSeries()
 
         })
         .catch(err => {})
@@ -258,10 +259,15 @@ export default {
         })
 
     },
+    initSeries(){
+      this.form.serie_documento = (this.series.length > 0) ? this.series[0].number : null
+    },
     deleteItem(id) {
       this.$refs.form_items_car.delete_parent(id);
     },
     addItems(rows) {
+
+      // console.log(rows)
       let contex = this
 
       contex.popupOpened = false;
@@ -281,11 +287,11 @@ export default {
         codigo_tipo_documento_identidad: row.identity_document_type_id,
         numero_documento: row.number,
         apellidos_y_nombres_o_razon_social: row.name,
-        codigo_pais: "PE",
-        ubigeo: "150101",
+        codigo_pais: row.country_id,
+        ubigeo: row.district_id ? row.district_id : '150101',
         direccion: row.address,
         correo_electronico: row.email,
-        telefono: "427-1148"
+        telefono: row.telephone
       };
     },
     cancel() {
@@ -321,7 +327,7 @@ export default {
             codigo_interno: x.item.internal_id,
             descripcion: x.item.description,
             codigo_producto_sunat: x.item.item_code,
-            unidad_de_medida: "NIU",
+            unidad_de_medida: x.item.unit_type_id,
             cantidad: x.quantity,
             valor_unitario: x.unit_value,
             codigo_tipo_precio: "01",
@@ -335,8 +341,7 @@ export default {
             total_valor_item: x.total_value,
             total_item: x.total
           };
-        }),
-        informacion_adicional: "Forma de pago:Efectivo|Caja: 1"
+        })
       };
     },
 
@@ -399,10 +404,10 @@ export default {
     },
     selectDocumentType() {
       if (this.form.codigo_tipo_documento == "01") {
-        this.form.serie_documento = "F001";
+        // this.form.serie_documento = "F001";
         this.title = "Factura Electrónica";
       } else if (this.form.codigo_tipo_documento == "03") {
-        this.form.serie_documento = "B001";
+        // this.form.serie_documento = "B001";
         this.title = "Boleta Electrónica";
       }
     },
@@ -475,6 +480,9 @@ export default {
         totales: {},
         items: []
       };
+
+      this.initSeries()
+
     }
   }
 };

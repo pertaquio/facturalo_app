@@ -173,7 +173,7 @@ export default {
   mixins: [auth],
   name: "CustomerForm",
   components: {},
-  props: ["showDialog", "codeType"],
+  props: ["showDialog", "codeType", 'customerId'],
   data: function() {
     return {
       search_item: "",
@@ -199,10 +199,15 @@ export default {
   },
   watch: {
     search_item: function(val) {
-       if (val.length > 4) {
+       if (val.length > 1) {
         this.searchCustomers();
       } else if (val.length == 0) {
         this.initItems();
+      }
+    },
+    showDialog: function(val) {
+      if (val && !this.customerId) {
+        this.cleanItemsSelected()
       }
     }
   },
@@ -210,7 +215,7 @@ export default {
     initForm() {
       this.form = {
         id: null,
-        type: this.type,
+        type: 'customers',
         identity_document_type_id: "6",
         number: "",
         name: null,
@@ -228,8 +233,11 @@ export default {
         percentage_perception: 0,
         more_address: []
       };
+      
     },
-
+    cleanItemsSelected(){
+      this.items.forEach(item => (item.selected = false));
+    },
     validate() {
       if (!this.form.number) {
         this.$f7.dialog.alert(
@@ -248,7 +256,6 @@ export default {
       return true;
     },
     submit() {
-      this.addForm = false;
 
       if (!this.validate()) return;
 
@@ -261,12 +268,35 @@ export default {
           this.getHeaderConfig()
         )
         .then(response => {
+
           self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
-          let it = response.data.data;
-          self.items.push(it);
+
+          if(response.data.success){
+
+            this.addForm = false;
+            this.initForm()
+            let it = response.data.data;
+            // self.items.push(it);
+            self.items_base.push(it)
+            this.initItems()
+
+          }
+
         })
-        .catch(err => {
-          alert("Sucedio un error al guardar.");
+        .catch(error => {
+          
+          // console.log( error.response.data.message)
+          if (error.response.status === 422) {
+              let errors = error.response.data.message
+
+              if(errors.number){
+                self.$f7.dialog.alert(`Error: ${errors.number[0]}`, "Facturador PRO APP");
+              }
+
+          } else {
+              console.log(error)
+              alert("Sucedio un error al guardar.");
+          }
         })
         .then(() => {
           self.$f7.preloader.hide();
@@ -289,13 +319,8 @@ export default {
             self.items = self.items_base.filter(
               o => o.identity_document_type_id == "6"
             );
-          } else if (self.codeType == "03") {
-
-            self.items = self.items_base.filter(
-              o => o.identity_document_type_id == "1"
-            );
-          } else {
-            self.items = self.items_base;
+        } else {
+          self.items = self.items_base;
         }
 
     },
@@ -369,41 +394,26 @@ export default {
     },
     async searchCustomers()
     {
-      if (this.search_item.length > 4) {
+
+      if (this.search_item.length > 1) {
 
           const self = this;
           self.$f7.preloader.show();
 
-          let parameters = `input=${this.search_item}`
+          let parameters = `input=${this.search_item}&document_type_id=${this.codeType}`
 
-                            await this.$http.get(`${this.returnBaseUrl()}/document/search-customers/?${parameters}`, this.getHeaderConfig())
-                            .then(response => {
-
-
-                              let datos = response.data.data.customers
-
-                               if (self.codeType == "01") {
-                                  self.items = datos.filter(
-                                    o => o.identity_document_type_id == "6"
-                                  );
-                                } else if (self.codeType == "03") {
-
-                                  self.items = datos.filter(
-                                    o => o.identity_document_type_id == "1"
-                                  );
-                                } else {
-                                  self.items = datos;
-                              }
-
-                               this.items = response.data.data.customers
-
-                            })
-                             .catch(err => {
-                               alert('Error')
-                             })
-                            .then(()=> {
-                                self.$f7.preloader.hide();
-                            })
+          await this.$http.get(`${this.returnBaseUrl()}/document/search-customers?${parameters}`, this.getHeaderConfig())
+            .then(response => {
+ 
+              this.items = response.data.data.customers
+            
+          })
+            .catch(err => {
+              alert('Error')
+            })
+          .then(()=> {
+              self.$f7.preloader.hide();
+          })
 
 
       }

@@ -429,7 +429,7 @@ export default {
             id: obj.affectation_igv_type_id
           });
 
-          let row = calculateRowItem(obj, "PEN", 3.327);
+          let row = calculateRowItem(obj, "PEN", 1);
 
           return row;
         });
@@ -490,7 +490,7 @@ export default {
 
         await this.$http
           .get(
-            `${this.returnBaseUrl()}/document/search-items/?${parameters}`,
+            `${this.returnBaseUrl()}/document/search-items?${parameters}`,
             this.getHeaderConfig()
           )
           .then(response => {

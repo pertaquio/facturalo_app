@@ -18,6 +18,7 @@
     >
       <customer-form
         :codeType="codeType"
+        :customerId="form.customer_id"
         :showDialog.sync="popupCustomerOpened"
         ref="form_customer_car"
         @addCustomerCar="addCustomer"
@@ -28,6 +29,26 @@
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Serie</div>
+              <div class="item-input-wrap input-dropdown-wrap">
+                <select v-model="form.series_id" placeholder="Please choose..." >
+                  <template v-for="(row, index) in series">
+                    <option :value="row.id" :key="index">{{row.number}}</option> 
+                  </template>
+                </select>
+              </div>
+            </div>
+            <div class="item-inner">
+              <div class="item-title item-label">Fecha Emisión</div>
+              <div class="item-input-wrap">
+                <input name="date" v-model="form.date_of_issue" type="date" />
+              </div>
+            </div>
+          </li>
+
           <li>
             <a class="item-link" @click="popupCustomerOpened = true">
               <div class="item-content">
@@ -149,7 +170,6 @@
 }
 </style>
 <script>
-const url = "http://demo.facturadorpro3.oo/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
@@ -168,29 +188,36 @@ export default {
       search_item: "",
       customers: [],
       form: {},
-      popupOpened: false
+      popupOpened: false,
+      series:[]
     };
   },
   computed: {},
-  created() {
-    this.initForm();
-    this.getTables();
+  async created() {
+    await this.initForm();
+    await this.getTables();
+    await this.getSeries()
   },
 
   methods: {
+    async getSeries() {
+
+      const self = this;
+      self.$f7.preloader.show();
+
+      await this.$http.get(`${this.returnBaseUrl()}/sale-note/series`, this.getHeaderConfig()).then(response => {
+          this.series = response.data;
+          this.form.series_id = (this.series.length > 0) ? this.series[0].id : null
+        })
+        .catch(err => {})
+        .then(() => {
+          self.$f7.preloader.hide();
+        })
+
+    },
     addCustomer(row) {
       this.popupCustomerOpened = false;
-      this.form.customer_id = row.id;
-      this.form.datos_del_cliente_o_receptor = {
-        codigo_tipo_documento_identidad: row.identity_document_type_id,
-        numero_documento: row.number,
-        apellidos_y_nombres_o_razon_social: row.name,
-        codigo_pais: "PE",
-        ubigeo: "150101",
-        direccion: row.address,
-        correo_electronico: row.email,
-        telefono: "427-1148"
-      };
+      this.form.customer_id = row.id; 
     },
     addItems(rows) {
       this.popupOpened = false;
@@ -204,6 +231,12 @@ export default {
 
     validate() {
       const self = this;
+
+      if (!this.form.series_id) {
+        self.$f7.dialog.alert(`Debe seleccionar una serie.`, "Facturador PRO APP");
+        return false;
+      }
+
       if (this.form.items.length == 0) {
         self.$f7.dialog.alert(`Debe agregar productos.`, "Facturador PRO APP");
 
@@ -239,12 +272,12 @@ export default {
             this.initForm();
 
             self.$f7.dialog.alert(
-              `Compra registrada: ${data.data.number}`,
+              `Nota de venta registrada: ${data.data.number}`,
               "Facturador PRO APP"
             );
             self.$f7router.navigate("/documents/");
           } else {
-            alert("No se registro la Compra");
+            alert("No se registro la Nota de venta");
           }
         })
         .catch(err => {
@@ -307,8 +340,8 @@ export default {
     initForm() {
       this.form = {
         prefix: "NV",
-        series_id: "NV01",
-        establishment_id: 1,
+        series_id: null,
+        establishment_id: null,
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
         customer_id: null,
@@ -348,6 +381,9 @@ export default {
         automatic_date_of_issue: null,
         enabled_concurrency: false
       };
+
+      this.form.series_id = (this.series.length > 0) ? this.series[0].id : null
+
     },
     getTables() {
       const self = this;

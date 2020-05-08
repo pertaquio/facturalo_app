@@ -82,7 +82,7 @@
                           v-model="form.number"
                           required
                           validate
-                          type="number"
+                          type="text"
                           :maxlength="maxLength"
                         />
                         <span class="input-clear-button"></span>
@@ -173,7 +173,7 @@ export default {
   mixins: [auth],
   name: "SupplierForm",
   components: {},
-  props: ["showDialog", "codeType"],
+  props: ["showDialog", "codeType", 'supplierId'],
   data: function() {
     return {
       search_item: "",
@@ -204,6 +204,11 @@ export default {
       } else if (val.length == 0) {
         this.initItems();
       }
+    },
+    showDialog: function(val) {
+      if (val && !this.supplierId) {
+        this.cleanItemsSelected()
+      }
     }
   },
   methods: {
@@ -229,6 +234,9 @@ export default {
         more_address: []
       };
     },
+    cleanItemsSelected(){
+      this.items.forEach(item => (item.selected = false));
+    },
 
     validate() {
       if (!this.form.number) {
@@ -248,7 +256,6 @@ export default {
       return true;
     },
     submit() {
-      this.addForm = false;
 
       if (!this.validate()) return;
 
@@ -261,13 +268,35 @@ export default {
           this.getHeaderConfig()
         )
         .then(response => {
+
           self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
-          let it = response.data.data;
-          // self.items.push(it);
-          this.getData()
+
+          if(response.data.success){
+
+            this.addForm = false;
+            this.initForm()
+            let it = response.data.data;
+            // self.items.push(it);
+            self.items_base.push(it)
+            this.initItems()
+
+          }
+
         })
-        .catch(err => {
-          alert("Sucedio un error al guardar.");
+        .catch(error => {
+
+          // console.log( error.response.data.message)
+          if (error.response.status === 422) {
+              let errors = error.response.data.message
+
+              if(errors.number){
+                self.$f7.dialog.alert(`Error: ${errors.number[0]}`, "Facturador PRO APP");
+              }
+
+          } else {
+              console.log(error)
+              alert("Sucedio un error al guardar.");
+          }
         })
         .then(() => {
           self.$f7.preloader.hide();
@@ -376,7 +405,7 @@ export default {
 
           let parameters = `input=${this.search_item}&document_type_id=${this.codeType}`
 
-          await this.$http.get(`${this.returnBaseUrl()}/purchases/search-suppliers/?${parameters}`, this.getHeaderConfig())
+          await this.$http.get(`${this.returnBaseUrl()}/purchases/search-suppliers?${parameters}`, this.getHeaderConfig())
           .then(response => {
 
             this.items = response.data

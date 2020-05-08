@@ -18,6 +18,7 @@
     >
       <customer-form
         :codeType="codeType"
+        :customerId="form.customer_id"
         :showDialog.sync="popupCustomerOpened"
         ref="form_customer_car"
         @addCustomerCar="addCustomer"

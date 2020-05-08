@@ -24,7 +24,7 @@
       ></customer-form>
     </f7-popup>
 
-    <f7-navbar class="navbar-cus" title="Nota de Venta" back-link="Back"></f7-navbar>
+    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" title="Nota de Venta" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>

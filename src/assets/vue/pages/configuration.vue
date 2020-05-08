@@ -1,5 +1,6 @@
 <template>
   <f7-page>
+    <f7-block-title>Configuración</f7-block-title>
     <div class="list">
       <ul>
         <li class="item-content item-input item-input-with-info">
@@ -43,16 +44,30 @@
             </div>
           </div>
         </li>
-
-        <li>
-          <div class="item-inner" style="padding:3%">
-            <f7-button color="green" @click="submit" outline>Guardar</f7-button>
-          </div>
-        </li>
       </ul>
+    </div>
+    <f7-block>
+      <f7-button class="button-fill" color="green" @click="submit" outline>Guardar</f7-button>
+    </f7-block>
+    <div class="footer">
+      <f7-block-title>FacturaloPeru APP</f7-block-title>
     </div>
   </f7-page>
 </template>
+
+<style  scoped>
+.footer {
+  text-align: center;
+  z-index: 9999;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
+</style>
+
 <script>
 export default {
   name: "Configuration",
@@ -68,9 +83,9 @@ export default {
   methods: {
     initForm() {
       this.form = {
-        email: "",
+        email: localStorage.user_email,
         password: "",
-        url: ""
+        url: localStorage.api_url
       };
     },
     submit() {
@@ -84,7 +99,7 @@ export default {
           password: this.form.password
         })
         .then(response => {
-          
+
           let data = response.data;
           if (data.success) {
             this.saveToken(data.token, data.name, data.email);

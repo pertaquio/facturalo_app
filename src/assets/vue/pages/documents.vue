@@ -1,30 +1,13 @@
 <template>
   <div class="page">
-    <!-- <f7-fab
-      style="margin-bottom: 12%;"
-      position="right-bottom"
-      @click="go"
-      slot="fixed"
-      color="green"
-    >
-      <f7-icon ios="f7:note_add" aurora="f7:note_add" md="material:note_add"></f7-icon>
-    </f7-fab>-->
 
-    <div class="navbar">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner sliding navbar-cus">
-        <div class="left">
-          <a href="#" class="link back">
-            <i class="icon icon-back"></i>
-            <span class="if-not-md">Back</span>
-          </a>
-        </div>
-        <div class="title">
-          Listado de comprobantes
-          <f7-badge color="blue">{{ countDoc }}</f7-badge>
-        </div>
-      </div>
-    </div>
+    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" back-link="Back">
+      <f7-nav-title>
+        Listado de comprobantes
+        <f7-badge color="blue">{{ countDoc }}</f7-badge>
+      </f7-nav-title>
+    </f7-navbar>
+
     <div class="toolbar tabbar toolbar-bottom tabbar-scrollable">
       <div class="toolbar-inner">
         <a href="#tab-1" @click="show(1)" class="tab-link tab-link-active"
@@ -39,71 +22,53 @@
     <div class="tabs-animated-wrap">
       <div class="tabs">
         <div id="tab-1" class="page-content tab tab-active">
-          <div class="block">
-            <f7-card
+          <f7-searchbar
+            placeholder="Buscar"
+            :clear-button="true"
+            search-container=".search-list"
+            search-in=".item-title"
+          ></f7-searchbar>
+          <f7-block-title>Factura Electrónica</f7-block-title>
+          <f7-list media-list class="search-list">
+            <f7-list-item
               v-for="item in source_fact"
               :key="item.id"
-              class="demo-card-header-pic"
+              :title="item.number"
             >
-              <f7-card-header
-                class="no-border"
-                valign="bottom"
-                style="background: #73C1FF;"
-              >
-                {{ item.document_type_description }} :
-                {{ item.number }}</f7-card-header
-              >
-              <f7-card-content>
-                <p>
-                  Estado:
-                  <f7-badge color="green">{{
-                    item.state_type_description
-                  }}</f7-badge>
-                </p>
-                <p>{{ item.created_at }}</p>
+              <span slot="after">
+                <f7-badge color="green">
+                  {{ item.state_type_description }}
+                </f7-badge>
+              </span>
+              <span slot="subtitle">
                 <p>
                   Total:
                   <f7-badge color="orange">{{ item.total }}</f7-badge>
                 </p>
                 <p>RUC: {{ item.customer_number }}</p>
                 <p>{{ item.customer_name }}</p>
-              </f7-card-content>
-              <f7-card-footer>
-                <f7-button
-                  @click="download(item.external_id)"
-                  outline
-                  color="blue"
-                >
-                  <f7-icon color="blue" material="cloud_download"></f7-icon>
-                </f7-button>
+              </span>
+              <span slot="text" class="row" style="width: 100%; padding-top: 0px;">
+                <f7-col width="33">
+                  <f7-button @click="download(item.external_id)" fill color="blue">
+                    <f7-icon material="cloud_download"></f7-icon>
+                  </f7-button>
+                </f7-col>
 
+                <f7-col width="33">
+                  <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" fill color="green">
+                    <f7-icon style="font-size: 1.7em;" class="icon fab fa-whatsapp"></f7-icon>
+                  </f7-button>
+                </f7-col>
 
-                  <div class="col-50">
-                    <f7-button
-                      @click="whatsap(item.customer_telephone, item.external_id)"
-                      outline
-                      color="green"
-                    >
-                      <i
-                        style="font-size: 1.7em;"
-                        class="icon fab fa-whatsapp"
-                      ></i>
-
-                    </f7-button>
-                  </div>
-                  <div class="col-50">
-                    <f7-button @click="email(item.id)" outline color="blue">
-                      <f7-icon
-                        size="30px"
-                        color="blue"
-                        material="email"
-                      ></f7-icon>
-                    </f7-button>
-                  </div>
-
-              </f7-card-footer>
-            </f7-card>
-          </div>
+                <f7-col width="33">
+                  <f7-button @click="email(item.id)" fill color="blue">
+                    <f7-icon material="email"></f7-icon>
+                  </f7-button>
+                </f7-col>
+              </span>
+            </f7-list-item>
+          </f7-list>
         </div>
         <div id="tab-2" class="page-content tab">
           <div class="block">
@@ -204,7 +169,49 @@
             </f7-card>
           </div>
         </div>
-
+        <div id="tab-5" class="page-content tab">
+          <div class="block">
+            <f7-card v-for="item in source_order_note" :key="item.id" class="demo-card-header-pic">
+              <f7-card-header
+                class="no-border"
+                valign="bottom"
+                style="background: #73C1FF;"
+              >PEDIDO DE VENTA : {{ item.identifier }}</f7-card-header>
+              <f7-card-content>
+                <p>
+                  Estado:
+                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
+                </p>
+                <p>Registro: {{ item.created_at }}</p>
+                <p v-if="item.date_of_due">Vence: {{ item.date_of_due }}</p>
+                <p v-if="item.delivery_date">Entrega: {{ item.delivery_date }}</p>
+                <p>
+                  Total:
+                  <f7-badge color="orange">{{ item.total }}</f7-badge>
+                </p>
+                <p>RUC: {{ item.customer_number }}</p>
+                <p>{{ item.customer_name }}</p>
+              </f7-card-content>
+              <f7-card-footer>
+                <f7-button
+                  @click="download(item.external_id, 'order-notes')"
+                  outline
+                  color="blue"
+                >PDF</f7-button>
+                <f7-button
+                  @click="whatsap(item.customer_telephone, item.external_id)"
+                  outline
+                  color="green"
+                >
+                  <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
+                </f7-button>
+                <f7-button @click="email(item.id)" outline color="blue">
+                  <f7-icon size="30px" color="blue" material="email"></f7-icon>
+                </f7-button>
+              </f7-card-footer>
+            </f7-card>
+          </div>
+        </div>
         <div id="tab-purchases" class="page-content tab">
           <div class="block">
             <f7-card v-for="item in source_purchases" :key="item.id" class="demo-card-header-pic">
@@ -249,50 +256,6 @@
                   </div>
                 </div>
               </f7-card-footer> -->
-            </f7-card>
-          </div>
-        </div>
-
-        <div id="tab-5" class="page-content tab">
-          <div class="block">
-            <f7-card v-for="item in source_order_note" :key="item.id" class="demo-card-header-pic">
-              <f7-card-header
-                class="no-border"
-                valign="bottom"
-                style="background: #73C1FF;"
-              >PEDIDO DE VENTA : {{ item.identifier }}</f7-card-header>
-              <f7-card-content>
-                <p>
-                  Estado:
-                  <f7-badge color="green">{{ item.state_type_description }}</f7-badge>
-                </p>
-                <p>Registro: {{ item.created_at }}</p>
-                <p v-if="item.date_of_due">Vence: {{ item.date_of_due }}</p>
-                <p v-if="item.delivery_date">Entrega: {{ item.delivery_date }}</p>
-                <p>
-                  Total:
-                  <f7-badge color="orange">{{ item.total }}</f7-badge>
-                </p>
-                <p>RUC: {{ item.customer_number }}</p>
-                <p>{{ item.customer_name }}</p>
-              </f7-card-content>
-              <f7-card-footer>
-                <f7-button
-                  @click="download(item.external_id, 'order-notes')"
-                  outline
-                  color="blue"
-                >PDF</f7-button>
-                <f7-button
-                  @click="whatsap(item.customer_telephone, item.external_id)"
-                  outline
-                  color="green"
-                >
-                  <i style="font-size: 1.7em;" class="icon fab fa-whatsapp"></i>
-                </f7-button>
-                <f7-button @click="email(item.id)" outline color="blue">
-                  <f7-icon size="30px" color="blue" material="email"></f7-icon>
-                </f7-button>
-              </f7-card-footer>
             </f7-card>
           </div>
         </div>

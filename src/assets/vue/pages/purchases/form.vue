@@ -24,24 +24,24 @@
       ></supplier-form>
     </f7-popup>
 
-    <f7-navbar title="Compra" back-link="Back"></f7-navbar>
+    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" title="Compra" back-link="Back"></f7-navbar>
     <f7-block>
       <form class="list no-hairlines-md" id="demo-form">
         <ul>
-          
+
           <li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">Tipo de documento</div>
               <div class="item-input-wrap input-dropdown-wrap">
                 <select v-model="form.document_type_id" placeholder="Please choose..." @change="changeDocumentType">
                   <template v-for="(row, index) in document_types_invoice">
-                    <option :value="row.id" :key="index">{{row.description}}</option> 
+                    <option :value="row.id" :key="index">{{row.description}}</option>
                   </template>
                 </select>
               </div>
             </div>
           </li>
-          
+
           <li class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">Serie</div>
@@ -50,7 +50,7 @@
                 <span class="input-clear-button"></span>
               </div>
             </div>
-            
+
             <div class="item-inner">
               <div class="item-title item-label">Número</div>
               <div class="item-input-wrap">
@@ -239,7 +239,7 @@ export default {
     addSupplier(row) {
 
       this.popupSupplierOpened = false;
-      this.form.supplier_id = row.id; 
+      this.form.supplier_id = row.id;
 
     },
     addItems(rows) {
@@ -279,7 +279,7 @@ export default {
         self.$f7.dialog.alert(`Debe ingresar una serie.`,this.title_alert);
         return false;
       }
-       
+
       if (!this.form.number) {
         self.$f7.dialog.alert(`Debe ingresar un número.`,this.title_alert);
         return false;
@@ -368,14 +368,14 @@ export default {
 
     initForm() {
 
-      this.form = { 
+      this.form = {
         document_type_id: '01',
         series: null,
         number: null,
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
-        supplier_id: null, 
-        currency_type_id: 'PEN', 
+        supplier_id: null,
+        currency_type_id: 'PEN',
         exchange_rate_sale: 1,
         total_prepayment: 0,
         total_charge: 0,
@@ -392,7 +392,7 @@ export default {
         total_other_taxes: 0,
         total_taxes: 0,
         total_value: 0,
-        total: 0, 
+        total: 0,
         total_perception: 0,
         date_of_due: moment().format("YYYY-MM-DD"),
         items: [],

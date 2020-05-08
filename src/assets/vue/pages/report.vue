@@ -1,21 +1,18 @@
 <template>
   <f7-page>
-    <f7-navbar class="navbar-cus" title="Reporte" back-link="Back"></f7-navbar>
+    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" title="Reporte" back-link="Back"></f7-navbar>
     <f7-block-title>
-      <p>Reporte de Ventas</p>
+      Reporte de Ventas
     </f7-block-title>
 
     <f7-list>
       <f7-list-item title="Total
 notas de venta" :badge="general.totals.total_sale_notes">
-        <f7-icon slot="media" icon="demo-list-icon"></f7-icon>
       </f7-list-item>
       <f7-list-item title="Total
 comprobantes" :badge="general.totals.total_documents">
-        <f7-icon slot="media" icon="demo-list-icon"></f7-icon>
       </f7-list-item>
       <f7-list-item title="Total" :badge="general.totals.total">
-        <f7-icon slot="media" icon="demo-list-icon"></f7-icon>
       </f7-list-item>
     </f7-list>
 
@@ -30,11 +27,8 @@ comprobantes" :badge="general.totals.total_documents">
 </template>
 
 <style  scoped>
-.navbar-cus{
-   background:#17a2b8;
-   color:white
-}
 </style>
+
 <script>
 const url = "https://demo.facturador.pro/api";
 const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";

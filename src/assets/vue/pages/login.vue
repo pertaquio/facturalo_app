@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar class="navbar-cus" title="Facturador PRO APP"></f7-navbar>
+    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" title="FacturaloPeru APP"></f7-navbar>
 
     <f7-block-title class="title">Inicio de Sesión</f7-block-title>
 
@@ -98,7 +98,7 @@ export default {
   created() {},
   computed: {},
   methods: {
-    
+
     saveToken(token, name, email) {
       localStorage.api_token = token;
       localStorage.user_name = name;

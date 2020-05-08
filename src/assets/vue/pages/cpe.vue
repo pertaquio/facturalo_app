@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar class="navbar-cus" title="CPE" back-link="Back"></f7-navbar>
+    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" title="CPE" back-link="Back"></f7-navbar>
     <f7-block-title>
       <p>Escanea Qr y Codigo de Barras.</p>
     </f7-block-title>
@@ -8,7 +8,7 @@
     <f7-block>
       <f7-row>
         <f7-col>
-          <f7-button @click="scan" outline>Escanear</f7-button>
+          <f7-button class="button-fill" @click="scan" outline>Escanear</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
@@ -81,8 +81,8 @@ export default {
     this.initReport();
   },
   mounted() {
-    
-    
+
+
   },
   methods: {
     initReport() {
@@ -106,7 +106,7 @@ export default {
            }
         },
         function(error) {
-         
+
         }
       );
     },

@@ -18,6 +18,7 @@
     >
       <supplier-form
         :codeType="form.document_type_id"
+        :supplierId="form.supplier_id"
         :showDialog.sync="popupSupplierOpened"
         ref="form_supplier_car"
         @addSupplierCar="addSupplier"

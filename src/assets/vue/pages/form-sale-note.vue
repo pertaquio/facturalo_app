@@ -18,6 +18,7 @@
     >
       <customer-form
         :codeType="codeType"
+        :customerId="form.customer_id"
         :showDialog.sync="popupCustomerOpened"
         ref="form_customer_car"
         @addCustomerCar="addCustomer"
@@ -35,7 +36,7 @@
               <div class="item-input-wrap input-dropdown-wrap">
                 <select v-model="form.series_id" placeholder="Please choose..." >
                   <template v-for="(row, index) in series">
-                    <option :value="row.number" :key="index">{{row.number}}</option> 
+                    <option :value="row.id" :key="index">{{row.number}}</option> 
                   </template>
                 </select>
               </div>
@@ -169,7 +170,6 @@
 }
 </style>
 <script>
-const url = "http://demo.facturadorpro3.oo/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
@@ -217,17 +217,7 @@ export default {
     },
     addCustomer(row) {
       this.popupCustomerOpened = false;
-      this.form.customer_id = row.id;
-      this.form.datos_del_cliente_o_receptor = {
-        codigo_tipo_documento_identidad: row.identity_document_type_id,
-        numero_documento: row.number,
-        apellidos_y_nombres_o_razon_social: row.name,
-        codigo_pais: "PE",
-        ubigeo: "150101",
-        direccion: row.address,
-        correo_electronico: row.email,
-        telefono: "427-1148"
-      };
+      this.form.customer_id = row.id; 
     },
     addItems(rows) {
       this.popupOpened = false;
@@ -391,6 +381,9 @@ export default {
         automatic_date_of_issue: null,
         enabled_concurrency: false
       };
+
+      this.form.series_id = (this.series.length > 0) ? this.series[0].id : null
+
     },
     getTables() {
       const self = this;

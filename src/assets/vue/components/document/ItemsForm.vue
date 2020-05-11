@@ -39,7 +39,15 @@
             <span class="if-not-md">Back</span>
           </a>
         </div>
-        <div class="title">Productos</div>
+        <div class="title">Productos
+          
+        </div>
+        <div class="left">
+          <a href="#" class="link navbar-tooltip">
+            <i class="icon f7-icons if-not-md">info</i>
+            <i class="icon material-icons if-md">info_outline</i>
+          </a>
+        </div>
         <div class="right">
           <a @click="addForm = !addForm" href="#" class="link">
             <f7-icon material="add"></f7-icon>
@@ -66,7 +74,7 @@
           <button @click="searchItems" class="col button button-small button-fill">Buscar</button>
         </div>-->
 
-      <div class="list inset">
+      <div class="list inset ">
         <p v-if="items_car.length == 0">
           No tienes productos agregados
         </p>
@@ -87,7 +95,7 @@
               <div class="item-inner">
                 <div class="item-title">
                   <div class="item-header"></div>
-                  {{ item.description }}
+                  {{ item.full_description }}
                   <div class="item-footer">S/. {{ item.sale_unit_price }}</div>
                 </div>
 
@@ -121,7 +129,7 @@
         </ul>
       </div>
     </f7-block>
-
+    <br><br>
     <f7-sheet
       style="height:55%;"
       class="demo-sheet"
@@ -138,6 +146,21 @@
         <f7-block style="margin-top: 0px !important; ">
           <form class="list no-hairlines-md" id="demo-form-item">
             <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Código interno</div>
+                  <div class="item-input-wrap">
+                    <input
+                      v-model="form.internal_id"
+                      required
+                      validate
+                      type="text"
+                    />
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </li>
+
               <li class="item-content item-input">
                 <div class="item-inner">
                   <div class="item-title item-label">Nombre</div>
@@ -277,6 +300,14 @@ export default {
       });
     }
   },
+  mounted(){
+    
+    this.$f7.tooltip.create({
+      targetEl: '.navbar-tooltip',
+      text: 'El código interno es obligatorio para visualizar los productos'
+    })
+
+  },
   created() {
     this.initForm();
     this.getTables();
@@ -329,7 +360,7 @@ export default {
         purchase_affectation_igv_type_id: "10",
         calculate_quantity: false,
         stock: 0,
-        stock_min: 1,
+        stock_min: 0,
         has_igv: true,
         has_perception: false,
         item_unit_types: [],
@@ -349,30 +380,81 @@ export default {
       };
     },
     submit() {
-      this.addForm = false;
 
       const self = this;
       self.$f7.preloader.show();
       this.$http
         .post(`${this.returnBaseUrl()}/item`, this.form, this.getHeaderConfig())
         .then(response => {
+
           self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
-          let it = response.data.data;
-          // self.items.push(it);
-          self.items_car.push({
-            description: it.description,
-            id: it.id,
-            quantity: 0,
-            sale_unit_price: it.sale_unit_price,
-            item: it
-          });
+          
+          if(response.data.success){
+
+            this.initForm()
+            this.initFormItem()
+            let it = response.data.data;
+            this.addForm = false;
+            self.items_car.push({
+              full_description: it.full_description,
+              description: it.description,
+              id: it.id,
+              quantity: 0,
+              sale_unit_price: it.sale_unit_price,
+              item: it
+            });
+
+          }
+
         })
-        .catch(err => {
-          alert("Sucedio un error al guardar.");
+        .catch(error => {
+          
+          // console.log( error.response.data.message)
+          if (error.response.status === 422) {
+              let errors = error.response.data.message
+
+              let validator = this.validationErros(errors)
+              if(!validator.success){
+                self.$f7.dialog.alert(`Validaciones: <br>${validator.message}`, "Facturador PRO APP");
+              }
+
+          } else {
+              console.log(error)
+              alert("Sucedio un error al guardar.");
+          }
         })
         .then(() => {
           self.$f7.preloader.hide();
         });
+    },
+    validationErros(errors){
+
+      let message = ''
+      let error = {
+        success: true
+      }
+
+      if(errors.internal_id){
+        message += `${errors.internal_id[0]} <br>`
+      }
+
+      if(errors.description){
+        message += `${errors.description[0]} <br>`
+      }
+      
+      if(errors.sale_unit_price){
+        message += `${errors.sale_unit_price[0]} <br>`
+      }
+      
+      if(message != ''){
+        error = {
+          success: false,
+          message: message
+        } 
+      }
+
+      return error
+
     },
     delete_parent(id) {
       let o = this.items_car.find(x => x.id == id);
@@ -455,6 +537,7 @@ export default {
       this.search_item = "";
       let datos = this.items_car_base.map(x => {
         return {
+          full_description: x.full_description,
           description: x.description,
           id: x.id,
           quantity: 0,
@@ -496,6 +579,7 @@ export default {
           .then(response => {
             this.items_car = response.data.data.items.map(x => {
               return {
+                full_description: x.full_description,
                 description: x.description,
                 id: x.id,
                 quantity: 0,

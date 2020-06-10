@@ -30,3 +30,15 @@ a {
     text-decoration: none;
     color: var(--f7-color-blue);
 }
+
+.page.page-red {
+  background: #D01A0B;
+  background-image: linear-gradient(#D01A0B,#a91509);
+}
+
+.color-red {
+  --f7-theme-color: #D01A0B;
+  --f7-theme-color-rgb: 208, 26, 11;
+  --f7-theme-color-shade: #a91509;
+  --f7-theme-color-tint: #f22311;
+}

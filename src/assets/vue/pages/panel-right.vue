@@ -1,26 +1,24 @@
 <template>
-  <f7-page>
-    <f7-block-title>Acciones</f7-block-title>
+  <f7-page class="panel-dark">
     <f7-block>
+      <f7-row>
+        <f7-col width="30">
+          <p class="text-color-white text-align-right"><f7-icon material="check_circle" size="44px"></f7-icon></p>
+        </f7-col>
+        <f7-col width="70">
+          <p class="text-color-white text-align-right">{{user}} <br> {{email}}</p>
+        </f7-col>
+      </f7-row>
+    </f7-block>
+    <hr>
+
+    <div class="footer">
       <f7-block>
         <f7-button class="button-fill" color="teal" @click="go">Configuración</f7-button>
       </f7-block>
       <f7-block>
-        <f7-button class="button-fill" color="blue" @click="logout">Cerrar Sesión</f7-button>
+        <f7-button class="button-fill" color="red" @click="logout">Cerrar Sesión</f7-button>
       </f7-block>
-      <!--<p>
-         hola mundo cristian:
-        <f7-link panel-close>close me</f7-link>. You can put here anything.
-      </p>-->
-    </f7-block>
-    <!--<f7-block-title>Main View Navigation</f7-block-title>
-    <f7-list>
-      <f7-list-item link="/about/" title="About" panel-close></f7-list-item>
-      <f7-list-item link="/form/" title="Form" panel-close></f7-list-item>
-    </f7-list>-->
-
-    <div class="footer">
-        <img class="center margin-bottom" width="200px" :src="logoban" alt="FacturaloPeru App" />
     </div>
   </f7-page>
 </template>
@@ -38,12 +36,12 @@
 }
 </style>
 <script>
-  import logo from "assets/images/facturaloperu.png";
   export default {
     components: {},
     data: function() {
       return {
-        logoban: logo,
+        email: localStorage.user_email,
+        user: localStorage.user_name,
       }
     },
     methods: {

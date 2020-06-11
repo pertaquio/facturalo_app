@@ -1,5 +1,5 @@
 <template>
-  <f7-page>
+  <f7-page class="panel-dark">
     <f7-block-title>Configuración</f7-block-title>
     <div class="list">
       <ul>
@@ -48,9 +48,11 @@
     </div>
     <f7-block>
       <f7-button class="button-fill" color="green" @click="submit" outline>Guardar</f7-button>
+
     </f7-block>
     <div class="footer">
       <f7-block-title>FacturaloPeru APP</f7-block-title>
+      <f7-button class="button-fill panel-previous" color="red" @click="back">Volver</f7-button>
     </div>
   </f7-page>
 </template>
@@ -122,7 +124,10 @@ export default {
       localStorage.user_email = email;
 
       localStorage.api_url = this.form.url;
-    }
+    },
+    back() {
+      this.$f7router.navigate("/panel-right/");
+    },
   }
 };
 </script>

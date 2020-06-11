@@ -32,13 +32,36 @@ a {
 }
 
 .page.page-red {
-  background: #D01A0B;
-  background-image: linear-gradient(#D01A0B,#a91509);
+  background: #d61a0c;
+  background-image: linear-gradient(0deg, #d61a0c 50%, #df1318 90%, #940005);
 }
 
+.page.panel-dark {
+  background: #0f233c;
+}
+
+.panel.panel-right {
+  max-height: 500px;
+  top: 50px;
+}
+
+
 .color-red {
-  --f7-theme-color: #D01A0B;
-  --f7-theme-color-rgb: 208, 26, 11;
-  --f7-theme-color-shade: #a91509;
-  --f7-theme-color-tint: #f22311;
+  --f7-theme-color: #d61a0c;
+  --f7-theme-color-rgb: 214, 26, 12;
+  --f7-theme-color-shade: #af150a;
+  --f7-theme-color-tint: #f22819;
+}
+.color-red-secondary {
+  --f7-theme-color: #fc0303;
+  --f7-theme-color-rgb: 252, 3, 3;
+  --f7-theme-color-shade: #d40303;
+  --f7-theme-color-tint: #fc2b2b;
+}
+
+.color-blue {
+  --f7-theme-color: #0f233c;
+  --f7-theme-color-rgb: 15, 35, 60;
+  --f7-theme-color-shade: #07101b;
+  --f7-theme-color-tint: #17365d;
 }

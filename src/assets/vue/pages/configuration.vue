@@ -1,58 +1,77 @@
 <template>
   <f7-page class="panel-dark">
-    <f7-block-title>Configuración</f7-block-title>
-    <div class="list">
-      <ul>
-        <li class="item-content item-input item-input-with-info">
-          <div class="item-inner">
-            <div class="item-title item-label">Email</div>
-            <div class="item-input-wrap">
-              <input type="email" placeholder="Tu email" required validate v-model="form.email" />
-              <span class="input-clear-button"></span>
-              <div class="item-input-info">Default "required" validation</div>
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input item-input-with-info">
-          <div class="item-inner">
-            <div class="item-title item-label">Contraseña</div>
-            <div class="item-input-wrap">
-              <input
-                type="password"
-                placeholder="Tu contraseña"
-                required
-                validate
-                v-model="form.password"
-              />
-              <span class="input-clear-button"></span>
-              <!--<div class="item-input-info">Default "required" validation</div> -->
-            </div>
-          </div>
-        </li>
-        <li class="item-content item-input item-input-with-info">
-          <div class="item-inner">
-            <div class="item-title item-label">URL</div>
-            <div class="item-input-wrap">
-              <input
-                type="url"
-                placeholder="https://demo.facturador.pro"
-                required
-                validate
-                v-model="form.url"
-              />
-              <span class="input-clear-button"></span>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
     <f7-block>
-      <f7-button class="button-fill" color="green" @click="submit" outline>Guardar</f7-button>
-
+      <p center class="text-color-white">
+        <f7-icon material="settings" class="padding-right padding-left"></f7-icon>
+        Configuración
+      </p>
+    </f7-block>
+    <hr>
+    <f7-block>
+      <f7-card color="red">
+        <f7-card-content>
+          <f7-row no-gap>
+            <f7-col>
+              <form class="form-store-data" id="demo-form">
+                <f7-list no-hairlines-md>
+                  <f7-list-input
+                    outline
+                    floating-label
+                    type="text"
+                    clear-button
+                    label="Correo"
+                    placeholder="Correo"
+                    name="name"
+                    required
+                    validate
+                    :value="form.email"
+                    @input="form.email = $event.target.value"
+                  >
+                  </f7-list-input>
+                  <f7-list-input
+                    outline
+                    floating-label
+                    type="password"
+                    clear-button
+                    label="Contraseña"
+                    placeholder="Contraseña"
+                    name="password"
+                    required
+                    :value="form.password"
+                    @input="form.password = $event.target.value"
+                  >
+                  </f7-list-input>
+                  <f7-list-input
+                    outline
+                    floating-label
+                    type="url"
+                    clear-button
+                    label="URL"
+                    placeholder="https://demo.facturador.pro"
+                    required
+                    validate
+                    :value="form.url"
+                    @input="form.url = $event.target.value"
+                  >
+                  </f7-list-input>
+                </f7-list>
+              </form>
+            </f7-col>
+          </f7-row>
+        </f7-card-content>
+      </f7-card>
     </f7-block>
     <div class="footer">
-      <f7-block-title>FacturaloPeru APP</f7-block-title>
-      <f7-button class="button-fill panel-previous" color="red" @click="back">Volver</f7-button>
+      <f7-block>
+        <f7-button class="trasnparent" color="white" @click="submit">
+          <f7-icon material="save" size="20"></f7-icon>
+          Guardar
+        </f7-button>
+        <f7-button class="trasnparent panel-previous" color="white" @click="back">
+          <f7-icon material="keyboard_arrow_left" size="20"></f7-icon>
+          Volver
+        </f7-button>
+      </f7-block>
     </div>
   </f7-page>
 </template>

@@ -65,3 +65,9 @@ a {
   --f7-theme-color-shade: #07101b;
   --f7-theme-color-tint: #17365d;
 }
+
+.bg-red-dark {
+  background-color: #af150a;
+  min-height: 80px;
+}
+

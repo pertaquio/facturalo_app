@@ -14,10 +14,14 @@
 
     <div class="footer">
       <f7-block>
-        <f7-button class="button-fill" color="teal" @click="go">Configuración</f7-button>
-      </f7-block>
-      <f7-block>
-        <f7-button class="button-fill" color="red" @click="logout">Cerrar Sesión</f7-button>
+        <f7-button transparent color="white" @click="go">
+          <f7-icon material="settings" size="20"></f7-icon>
+          Configuración
+        </f7-button>
+        <f7-button transparent color="white" @click="logout">
+          <f7-icon material="timer_off" size="20"></f7-icon>
+          Cerrar Sesión
+        </f7-button>
       </f7-block>
     </div>
   </f7-page>

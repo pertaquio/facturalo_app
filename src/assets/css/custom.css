@@ -71,3 +71,17 @@ a {
   min-height: 80px;
 }
 
+.card-100 {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  bottom: 0px;
+}
+
+.toolbar-inner a {
+  font-size: 8px;
+}

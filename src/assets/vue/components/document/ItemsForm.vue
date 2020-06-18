@@ -1,10 +1,10 @@
 <template>
-  <f7-page>
+  <f7-page class="page-red" color="white">
     <f7-fab
       @click="sheetConfirm = !sheetConfirm"
       position="right-bottom"
       slot="fixed"
-      color="green"
+      color="blue"
     >
       <f7-icon color="white" material="check"></f7-icon>
       <f7-badge style="margin-left: 68%;font-size: 15px" color="orange">
@@ -12,124 +12,98 @@
       </f7-badge>
     </f7-fab>
 
-    <!--<f7-fab @click="addForm = !addForm" position="left-bottom" slot="fixed" color="orange">
-      <f7-icon color="white" material="add"></f7-icon>
-    </f7-fab>-->
-    <!-- <f7-fab @click="filteCart_b = !filteCart_b" position="left-bottom" slot="fixed" color="orange">
-      <f7-icon color="white" material="shopping_cart"></f7-icon>
-      <f7-badge style="margin-left: 68%;font-size: 15px" color="red">{{countCar}}</f7-badge>
-    </f7-fab>-->
-
-    <!--<f7-navbar>
-      <input
-        style="margin:4%;width:70%"
-        type="search"
-        placeholder="Buscar producto.."
-        v-model="search_item"
-      />
-      <f7-button @click="addForm = !addForm" style="margin:2%;width:30%" raised>Nuevo</f7-button>
-    </f7-navbar>-->
-
-    <div class="navbar color-theme-white no-shadow theme-dark">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner sliding">
-        <div class="left">
-          <a href="#" @click="closePopup" class="link">
+    <f7-block>
+      <f7-row>
+        <f7-col width="70">
+          <a @click="closePopup" class="link text-color-white">
             <i class="icon icon-back"></i>
-            <span class="if-not-md">Back</span>
+            <span class="">Listado de Productos</span>
           </a>
-        </div>
-        <div class="title">Productos
-          
-        </div>
-        <div class="left">
-          <a href="#" class="link navbar-tooltip">
+        </f7-col>
+        <f7-col width="20">
+          <a href="#" class="link navbar-tooltip text-color-white">
             <i class="icon f7-icons if-not-md">info</i>
             <i class="icon material-icons if-md">info_outline</i>
           </a>
-        </div>
-        <div class="right">
-          <a @click="addForm = !addForm" href="#" class="link">
-            <f7-icon material="add"></f7-icon>
-          </a>
-        </div>
-      </div>
-    </div>
+        </f7-col>
+        <f7-col width="10">
+          <f7-link @click="addForm = !addForm" class="text-color-white text-align-right" open-panel="right" icon="fas fa-plus"></f7-link>
+        </f7-col>
+      </f7-row>
+    </f7-block>
 
-    <f7-block style="padding:0px">
-      <div class="searchbar searchbar-inline" style="margin:4%">
-        <div class="searchbar-input-wrap">
-          <input
-            type="search"
-            placeholder="Buscar producto.."
-            style="font-size:12px"
-            v-model="search_item"
-          />
-          <i class="searchbar-icon"></i>
-          <span class="input-clear-button"></span>
+    <f7-card class="card-100 padding no-shadow" color="red" style="min-height: 90%">
+      <f7-block style="padding:0px">
+        <div class="searchbar searchbar-inline" style="margin:4%">
+          <div class="searchbar-input-wrap">
+            <input
+              type="search"
+              placeholder="Buscar"
+              style="font-size:12px"
+              v-model="search_item"
+            />
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
         </div>
-      </div>
 
-      <!-- <div class="col-30">
-          <button @click="searchItems" class="col button button-small button-fill">Buscar</button>
-        </div>-->
-
-      <div class="list inset ">
-        <p v-if="items_car.length == 0">
-          No tienes productos agregados
-        </p>
-        <ul>
-          <li v-for="(item, index) in items_car" :key="index">
-            <div class="item-content">
-              <div
-                @click="add(index)"
-                class="item-media"
-                style="min-width: 0px !important;"
-              >
-                <f7-icon
-                  :material="
-                    item.quantity > 0 ? 'check_box' : 'check_box_outline_blank'
-                  "
-                ></f7-icon>
-              </div>
-              <div class="item-inner">
-                <div class="item-title">
-                  <div class="item-header"></div>
-                  {{ item.full_description }}
-                  <div class="item-footer">S/. {{ item.sale_unit_price }}</div>
+        <div class="list inset ">
+          <p v-if="items_car.length == 0">
+            No tienes productos agregados
+          </p>
+          <ul>
+            <li v-for="(item, index) in items_car" :key="index">
+              <div class="item-content">
+                <div
+                  @click="add(index)"
+                  class="item-media"
+                  style="min-width: 0px !important;"
+                >
+                  <f7-icon
+                    :material="
+                      item.quantity > 0 ? 'check_box' : 'check_box_outline_blank'
+                    "
+                  ></f7-icon>
                 </div>
+                <div class="item-inner">
+                  <div class="item-title">
+                    <div class="item-header"></div>
+                    {{ item.full_description }}
+                    <div class="item-footer">S/. {{ item.sale_unit_price }}</div>
+                  </div>
 
-                <div class="item-after" style="width: 101px;">
-                  <div
-                    class="stepper stepper-raised stepper-init stepper-small"
-                  >
+                  <div class="item-after" style="width: 101px;">
                     <div
-                      class="stepper-button-minus"
-                      @click="calculate(-1, index)"
-                    ></div>
-                    <div class="stepper-input-wrap">
-                      <input
-                        type="text"
-                        :value="item.quantity"
-                        min="0"
-                        max="100"
-                        step="1"
-                        readonly
-                      />
+                      class="stepper stepper-raised stepper-init stepper-small"
+                    >
+                      <div
+                        class="stepper-button-minus"
+                        @click="calculate(-1, index)"
+                      ></div>
+                      <div class="stepper-input-wrap">
+                        <input
+                          type="text"
+                          :value="item.quantity"
+                          min="0"
+                          max="100"
+                          step="1"
+                          readonly
+                        />
+                      </div>
+                      <div
+                        @click="calculate(1, index)"
+                        class="stepper-button-plus"
+                      ></div>
                     </div>
-                    <div
-                      @click="calculate(1, index)"
-                      class="stepper-button-plus"
-                    ></div>
                   </div>
                 </div>
               </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </f7-block>
-    <br><br>
+            </li>
+          </ul>
+        </div>
+      </f7-block>
+    </f7-card>
+
     <f7-sheet
       style="height:55%;"
       class="demo-sheet"
@@ -301,7 +275,7 @@ export default {
     }
   },
   mounted(){
-    
+
     this.$f7.tooltip.create({
       targetEl: '.navbar-tooltip',
       text: 'El código interno es obligatorio para visualizar los productos'
@@ -388,7 +362,7 @@ export default {
         .then(response => {
 
           self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
-          
+
           if(response.data.success){
 
             this.initForm()
@@ -408,7 +382,7 @@ export default {
 
         })
         .catch(error => {
-          
+
           // console.log( error.response.data.message)
           if (error.response.status === 422) {
               let errors = error.response.data.message
@@ -441,16 +415,16 @@ export default {
       if(errors.description){
         message += `${errors.description[0]} <br>`
       }
-      
+
       if(errors.sale_unit_price){
         message += `${errors.sale_unit_price[0]} <br>`
       }
-      
+
       if(message != ''){
         error = {
           success: false,
           message: message
-        } 
+        }
       }
 
       return error

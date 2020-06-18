@@ -1,62 +1,59 @@
 <template>
-  <f7-page>
-    <div class="navbar color-theme-white no-shadow theme-dark">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner sliding">
-        <div class="left">
-          <a href="#" @click="closePopup" class="link">
+  <f7-page class="page-red" color="white">
+    <f7-block>
+      <f7-row>
+        <f7-col width="90">
+          <a @click="closePopup" class="link text-color-white">
             <i class="icon icon-back"></i>
-            <span class="if-not-md">Back</span>
+            <span class="">Listado de clientes</span>
           </a>
-        </div>
-        <div class="title">Cliente</div>
-        <div class="right">
-          <a @click="addForm = !addForm" href="#" class="link">
-            <f7-icon material="add"></f7-icon>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <f7-block style="padding:0px">
-      <div class="searchbar searchbar-inline" style="margin:4%">
-        <div class="searchbar-input-wrap">
-          <input type="search" placeholder="Buscar cliente.." v-model="search_item" />
-          <i class="searchbar-icon"></i>
-          <span class="input-clear-button"></span>
-        </div>
-      </div>
-      <div class="list inset">
-        <ul>
-          <li v-for="(item, index) in items" :key="index">
-            <a @click="selected(item)" href="#" class="item-content" style="color:#212121">
-              <div class="item-media">
-                <f7-icon :material="item.selected ? 'check_box' : 'check_box_outline_blank'"></f7-icon>
-              </div>
-              <div class="item-inner">
-                <div class="item-title">{{item.name}}</div>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
+        </f7-col>
+        <f7-col width="10">
+          <f7-link @click="addForm = !addForm" class="text-color-white text-align-right" open-panel="right" icon="fas fa-plus"></f7-link>
+        </f7-col>
+      </f7-row>
     </f7-block>
+
+    <f7-card class="card-100 padding no-shadow" color="red" style="min-height: 90%">
+      <f7-block style="padding:0px">
+        <div class="searchbar searchbar-inline padding">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Buscar cliente.." v-model="search_item" />
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+        </div>
+        <div class="list inset">
+          <ul>
+            <li v-for="(item, index) in items" :key="index">
+              <a @click="selected(item)" href="#" class="item-content" style="color:#212121">
+                <div class="item-media">
+                  <f7-icon :material="item.selected ? 'check_box' : 'check_box_outline_blank'"></f7-icon>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">
+                    {{item.name}}<br>
+                    <small><span v-if="item.identity_document_type_id == '6'">RUC: </span>{{item.number}}</small>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </f7-block>
+    </f7-card>
 
     <f7-sheet
       style="height:85%;"
       class="demo-sheet"
       :opened="addForm"
-      @sheet:closed="addForm = false"
-    >
-      <f7-toolbar>
-        <div class="left"></div>
-        <div class="right">
-          <f7-link sheet-close>Cancelar</f7-link>
-        </div>
-      </f7-toolbar>
+      @sheet:closed="addForm = false">
       <!-- Scrollable sheet content -->
       <f7-page-content>
-        <f7-block style="margin-top: 0px !important; ">
+        <f7-block class="text-align-right">
+          <f7-link sheet-close class="no-padding text-color-red"><f7-icon material="close"></f7-icon></f7-link>
+        </f7-block>
+        <f7-block style="margin-top: 0px !important; " color="red">
           <form class="list no-hairlines-md" id="demo-form-customer">
             <ul>
               <li class="item-content item-input">
@@ -89,10 +86,10 @@
                       </div>
                     </div>
                     <div class="col-25">
-                      <button @click="searchServiceNumberByType" class="col button button-outline">
-                        <template v-if="form.identity_document_type_id === '6'">SUNAT</template>
-                        <template v-if="form.identity_document_type_id === '1'">RENIEC</template>
-                      </button>
+                      <f7-button @click="searchServiceNumberByType" class="col" icon="fas fa-search fa-fw" fill color="red">
+                          <template v-if="form.identity_document_type_id === '6'">SUNAT</template>
+                          <template v-if="form.identity_document_type_id === '1'">RENIEC</template>
+                      </f7-button>
                     </div>
                   </div>
                 </div>
@@ -149,7 +146,7 @@
               </li>
 
               <li class="item-content item-input">
-                <f7-button style="width: 50%;" fill @click="submit">Guardar</f7-button>
+                <f7-button style="width: 40%;" fill @click="submit">Guardar</f7-button>
               </li>
             </ul>
           </form>
@@ -233,7 +230,7 @@ export default {
         percentage_perception: 0,
         more_address: []
       };
-      
+
     },
     cleanItemsSelected(){
       this.items.forEach(item => (item.selected = false));
@@ -284,7 +281,7 @@ export default {
 
         })
         .catch(error => {
-          
+
           // console.log( error.response.data.message)
           if (error.response.status === 422) {
               let errors = error.response.data.message
@@ -404,9 +401,9 @@ export default {
 
           await this.$http.get(`${this.returnBaseUrl()}/document/search-customers?${parameters}`, this.getHeaderConfig())
             .then(response => {
- 
+
               this.items = response.data.data.customers
-            
+
           })
             .catch(err => {
               alert('Error')

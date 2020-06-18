@@ -1,85 +1,78 @@
 <template>
   <f7-page class="page-red" color="white">
-    <f7-fab
-      @click="sheetConfirm = !sheetConfirm"
-      position="right-bottom"
-      slot="fixed"
-      color="blue"
-    >
-      <f7-icon color="white" material="check"></f7-icon>
-      <f7-badge style="margin-left: 68%;font-size: 15px" color="orange">
-        {{ countCar }}
-      </f7-badge>
-    </f7-fab>
 
     <f7-block>
       <f7-row>
-        <f7-col width="70">
+        <f7-col width="80" class="text-color-white">
           <a @click="closePopup" class="link text-color-white">
             <i class="icon icon-back"></i>
-            <span class="">Listado de Productos</span>
           </a>
+          Listado de Productos
         </f7-col>
-        <f7-col width="20">
+        <f7-col width="10">
           <a href="#" class="link navbar-tooltip text-color-white">
             <i class="icon f7-icons if-not-md">info</i>
             <i class="icon material-icons if-md">info_outline</i>
           </a>
         </f7-col>
         <f7-col width="10">
-          <f7-link @click="addForm = !addForm" class="text-color-white text-align-right" open-panel="right" icon="fas fa-plus"></f7-link>
+          <a href="#" class="link" @click="sheetConfirm = !sheetConfirm">
+            <f7-icon color="white" material="shopping_cart">
+              <f7-badge color="blue">
+                {{ countCar }}
+              </f7-badge>
+            </f7-icon>
+          </a>
         </f7-col>
       </f7-row>
     </f7-block>
 
     <f7-card class="card-100 padding no-shadow" color="red" style="min-height: 90%">
       <f7-block style="padding:0px">
-        <div class="searchbar searchbar-inline" style="margin:4%">
-          <div class="searchbar-input-wrap">
-            <input
-              type="search"
-              placeholder="Buscar"
-              style="font-size:12px"
-              v-model="search_item"
-            />
-            <i class="searchbar-icon"></i>
-            <span class="input-clear-button"></span>
-          </div>
-        </div>
+        <f7-row>
+          <f7-col width="75">
+            <div class="searchbar searchbar-inline" style="margin:4%">
+              <div class="searchbar-input-wrap">
+                <input
+                  type="search"
+                  placeholder="Buscar"
+                  style="font-size:12px"
+                  v-model="search_item"
+                />
+                <i class="searchbar-icon"></i>
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </f7-col>
+          <f7-col width="15" class="text-align-center">
+            <f7-button @click="addForm = !addForm" color="blue" fill small open-panel="right" icon="fas fa-plus"></f7-button>
+            <span class="" style="font-size: 10px;line-height: 10px !important;">NUEVO</span>
+          </f7-col>
+        </f7-row>
 
         <div class="list inset ">
           <p v-if="items_car.length == 0">
             No tienes productos agregados
           </p>
           <ul>
-            <li v-for="(item, index) in items_car" :key="index">
-              <div class="item-content">
+            <li v-for="(item, index) in items_car" :key="index" class="list-documents">
+              <div class="item-content padding-horizontal margin-vertical">
                 <div
                   @click="add(index)"
                   class="item-media"
-                  style="min-width: 0px !important;"
-                >
-                  <f7-icon
-                    :material="
-                      item.quantity > 0 ? 'check_box' : 'check_box_outline_blank'
-                    "
-                  ></f7-icon>
+                  style="min-width: 0px !important;">
+                  <f7-icon :material="item.quantity > 0 ? 'check_box' : 'check_box_outline_blank'" class="text-color-blue"></f7-icon>
                 </div>
                 <div class="item-inner">
-                  <div class="item-title">
-                    <div class="item-header"></div>
+                  <div class="item-title text-color-blue" style="font-size: .9em">
                     {{ item.full_description }}
-                    <div class="item-footer">S/. {{ item.sale_unit_price }}</div>
+                    <div class="item-footer text-color-blue">S/. {{ item.sale_unit_price }}</div>
                   </div>
 
                   <div class="item-after" style="width: 101px;">
-                    <div
-                      class="stepper stepper-raised stepper-init stepper-small"
-                    >
-                      <div
-                        class="stepper-button-minus"
-                        @click="calculate(-1, index)"
-                      ></div>
+                    <div class="stepper stepper-raised stepper-init stepper-small bg-color-white">
+                      <div class="stepper-button-minus"
+                        @click="calculate(-1, index)"></div>
                       <div class="stepper-input-wrap">
                         <input
                           type="text"
@@ -108,16 +101,12 @@
       style="height:55%;"
       class="demo-sheet"
       :opened="addForm"
-      @sheet:closed="addForm = false"
-    >
-      <f7-toolbar>
-        <div class="left"></div>
-        <div class="right">
-          <f7-link sheet-close>Cancelar</f7-link>
-        </div>
-      </f7-toolbar>
+      @sheet:closed="addForm = false">
       <f7-page-content>
-        <f7-block style="margin-top: 0px !important; ">
+        <f7-block class="text-align-right no-margin-vertical no-padding-vertical">
+          <f7-link small sheet-close class="no-margin no-padding text-color-red"><f7-icon material="close"></f7-icon></f7-link>
+        </f7-block>
+        <f7-block style="margin-top: 0px !important;" color="red">
           <form class="list no-hairlines-md" id="demo-form-item">
             <ul>
               <li class="item-content item-input">
@@ -195,18 +184,12 @@
       :opened="sheetConfirm"
       @sheet:closed="sheetConfirm = false"
     >
-      <f7-toolbar>
-        <div class="left"></div>
-        <div class="right">
-          <f7-link @click="cancel" sheet-close>Cancelar</f7-link>
-        </div>
-      </f7-toolbar>
       <f7-page-content>
-        <f7-block>
-          <div class="data-table">
-            <f7-button color="green" @click="send" small outline
-              >Confirmar</f7-button
-            >
+        <f7-block class="shadow text-align-right no-margin-vertical no-padding-vertical">
+          <f7-link sheet-close class="no-padding text-color-red"><f7-icon material="close"></f7-icon></f7-link>
+        </f7-block>
+        <f7-block color="red">
+          <div class="data-table margin-bottom">
             <table>
               <thead>
                 <tr>
@@ -224,6 +207,9 @@
               </tbody>
             </table>
           </div>
+          <f7-button color="red" @click="send" small fill>
+            Confirmar
+          </f7-button>
         </f7-block>
       </f7-page-content>
     </f7-sheet>
@@ -361,7 +347,7 @@ export default {
         .post(`${this.returnBaseUrl()}/item`, this.form, this.getHeaderConfig())
         .then(response => {
 
-          self.$f7.dialog.alert(`${response.data.msg}`, "Facturador PRO APP");
+          self.$f7.dialog.alert(`${response.data.msg}`, "Mensaje");
 
           if(response.data.success){
 
@@ -389,7 +375,7 @@ export default {
 
               let validator = this.validationErros(errors)
               if(!validator.success){
-                self.$f7.dialog.alert(`Validaciones: <br>${validator.message}`, "Facturador PRO APP");
+                self.$f7.dialog.alert(`Validaciones: <br>${validator.message}`, "Mensaje");
               }
 
           } else {

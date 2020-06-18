@@ -30,7 +30,7 @@
     <f7-block>
       <f7-row>
         <f7-col width="90">
-          <a class="link back text-color-white">
+          <a href="/" class="link text-color-white">
             <i class="icon icon-back"></i>
             <span class="">Listado de comprobantes</span>
           </a>

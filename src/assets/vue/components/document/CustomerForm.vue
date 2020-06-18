@@ -50,7 +50,7 @@
       @sheet:closed="addForm = false">
       <!-- Scrollable sheet content -->
       <f7-page-content>
-        <f7-block class="text-align-right">
+        <f7-block class="text-align-right no-margin-vertical no-padding-vertical">
           <f7-link sheet-close class="no-padding text-color-red"><f7-icon material="close"></f7-icon></f7-link>
         </f7-block>
         <f7-block style="margin-top: 0px !important; " color="red">

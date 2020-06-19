@@ -164,8 +164,8 @@ export default {
                 250,
                 0
               ],
-              backgroundColor: "rgb(255, 99, 132)",
-              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "red",
+              borderColor: "red",
               borderWidth: 1,
               fill: false,
               lineTension: 0
@@ -198,8 +198,8 @@ export default {
                 8205.9,
                 10414.46
               ],
-              backgroundColor: "rgb(54, 162, 235)",
-              borderColor: "rgb(54, 162, 235)",
+              backgroundColor: "blue",
+              borderColor: "blue",
               borderWidth: 1,
               fill: false,
               lineTension: 0

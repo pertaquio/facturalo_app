@@ -31,7 +31,7 @@
         <f7-col width="90">
           <a class="link back text-color-white">
             <i class="icon icon-back"></i>
-            <span class="">Nota de Venta</span>
+            <span class="">Pedido</span>
           </a>
         </f7-col>
         <f7-col width="10">
@@ -47,8 +47,7 @@
     <f7-popup
       class="demo-popup"
       :opened="popupCustomerOpened"
-      @popup:closed="popupCustomerOpened = false"
-    >
+      @popup:closed="popupCustomerOpened = false">
       <customer-form
         :codeType="codeType"
         :customerId="form.customer_id"
@@ -66,13 +65,9 @@
               <f7-col width="50">
                 <div class="item-content item-input">
                   <div class="item-inner">
-                    <div class="item-title item-label">Serie</div>
-                    <div class="item-input-wrap input-dropdown-wrap">
-                      <select v-model="form.series_id" placeholder="Please choose..." >
-                        <template v-for="(row, index) in series">
-                          <option :value="row.id" :key="index">{{row.number}}</option>
-                        </template>
-                      </select>
+                    <div class="item-title item-label">Fecha Vencimiento</div>
+                    <div class="item-input-wrap">
+                      <input name="date" v-model="form.date_of_due" type="date" />
                     </div>
                   </div>
                 </div>
@@ -80,9 +75,9 @@
               <f7-col width="50">
                 <div class="item-content item-input">
                   <div class="item-inner">
-                    <div class="item-title item-label">Fecha Emisión</div>
+                    <div class="item-title item-label">Fecha de Entrega</div>
                     <div class="item-input-wrap">
-                      <input name="date" v-model="form.date_of_issue" type="date" />
+                      <input name="date" v-model="form.delivery_date" type="date" />
                     </div>
                   </div>
                 </div>
@@ -185,6 +180,7 @@
                 </f7-col>
               </f7-row>
             </li>
+
           </ul>
         </form>
       </f7-block>
@@ -192,48 +188,8 @@
   </f7-page>
 </template>
 
-<style scoped>
-
-.navbar-cus{
-   background:#17a2b8;
-   color:white
-}
-.m-text {
-  text-align: left;
-  font-size: 12px;
-  font-weight: bold;
-}
-.m-text-r {
-  text-align: center;
-}
-.footer-text {
-  position: absolute;
-  margin-top: 2%;
-  width: 50%;
-  padding-left: 1%;
-}
-.footer-data {
-  width: 50%;
-  color: #fff;
-  background: #17a2b8;
-  margin: auto;
-  border-right: 30px solid #fff;
-  border-left: 30px solid #fff;
-  border-bottom: 73px solid transparent;
-  text-align: center;
-}
-.footer {
-  text-align: center;
-  z-index: 9999;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  color: white;
-  text-align: center;
-}
-</style>
 <script>
+const url = "https://demo.facturador.pro/api";
 import moment from "moment";
 import _ from "lodash";
 import ItemsForm from "components/document/ItemsForm";
@@ -241,7 +197,7 @@ import CustomerForm from "components/document/CustomerForm";
 import { auth } from "mixins_/auth";
 
 export default {
-  name: "FormSaleNote",
+  name: "FormOrderNote",
   components: { ItemsForm, CustomerForm },
   mixins: [auth],
   data: function() {
@@ -254,32 +210,16 @@ export default {
       customers: [],
       form: {},
       popupOpened: false,
-      series:[]
+      api_url: localStorage.api_url
     };
   },
   computed: {},
-  async created() {
-    await this.initForm();
-    await this.getTables();
-    await this.getSeries()
+  created() {
+    this.initForm();
+    this.getTables();
   },
 
   methods: {
-    async getSeries() {
-
-      const self = this;
-      self.$f7.preloader.show();
-
-      await this.$http.get(`${this.returnBaseUrl()}/sale-note/series`, this.getHeaderConfig()).then(response => {
-          this.series = response.data;
-          this.form.series_id = (this.series.length > 0) ? this.series[0].id : null
-        })
-        .catch(err => {})
-        .then(() => {
-          self.$f7.preloader.hide();
-        })
-
-    },
     addCustomer(row) {
       this.popupCustomerOpened = false;
       this.form.customer_id = row.id;
@@ -287,11 +227,11 @@ export default {
         codigo_tipo_documento_identidad: row.identity_document_type_id,
         numero_documento: row.number,
         apellidos_y_nombres_o_razon_social: row.name,
-        codigo_pais: row.country_id,
-        ubigeo: row.district_id ? row.district_id : '150101',
+        codigo_pais: "PE",
+        ubigeo: "150101",
         direccion: row.address,
         correo_electronico: row.email,
-        telefono: row.telephone
+        telefono: "427-1148"
       };
     },
     addItems(rows) {
@@ -306,14 +246,8 @@ export default {
 
     validate() {
       const self = this;
-
-      if (!this.form.series_id) {
-        self.$f7.dialog.alert(`Debe seleccionar una serie.`, "Mensaje");
-        return false;
-      }
-
       if (this.form.items.length == 0) {
-        self.$f7.dialog.alert(`Debe agregar productos.`, "Mensaje");
+        self.$f7.dialog.alert(`Debe agregar productos.`, "Facturador PRO APP");
 
         return false;
       }
@@ -321,7 +255,7 @@ export default {
       if (!this.form.customer_id) {
         self.$f7.dialog.alert(
           `Debe seleccionar un cliente.`,
-          "Mensaje"
+          "Facturador PRO APP"
         );
 
         return false;
@@ -340,19 +274,19 @@ export default {
       self.$f7.preloader.show();
 
       this.$http
-        .post(`${this.returnBaseUrl()}/sale-note`, this.form, this.getHeaderConfig())
+        .post(`${this.returnBaseUrl()}/order-notes`, this.form, this.getHeaderConfig())
         .then(response => {
           let data = response.data;
           if (data.success) {
             this.initForm();
 
             self.$f7.dialog.alert(
-              `Nota de venta registrada`,
-              "Mensaje"
+              `Pedido registrado: PD-${data.data.id}`,
+              "Facturador PRO APP"
             );
             self.$f7router.navigate("/documents/");
           } else {
-            alert("No se registro la Nota de venta");
+            alert("No se registro la Compra");
           }
         })
         .catch(err => {
@@ -414,15 +348,16 @@ export default {
 
     initForm() {
       this.form = {
-        prefix: "NV",
-        series_id: null,
-        establishment_id: null,
+        prefix: "PD",
+        establishment_id: 1,
+        delivery_date: '',
+        date_of_due: '',
         date_of_issue: moment().format("YYYY-MM-DD"),
         time_of_issue: moment().format("HH:mm:ss"),
         customer_id: null,
         currency_type_id: "PEN",
         purchase_order: null,
-        exchange_rate_sale: 0,
+        exchange_rate_sale: 0.01,
         total_prepayment: 0,
         total_charge: 0,
         total_discount: 0,
@@ -456,9 +391,6 @@ export default {
         automatic_date_of_issue: null,
         enabled_concurrency: false
       };
-
-      this.form.series_id = (this.series.length > 0) ? this.series[0].id : null
-
     },
     getTables() {
       const self = this;

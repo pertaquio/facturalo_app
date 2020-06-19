@@ -1,62 +1,55 @@
 <template>
-  <f7-page>
-    <div class="navbar color-theme-white no-shadow theme-dark">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner sliding">
-        <div class="left">
-          <a href="#" @click="closePopup" class="link">
+  <f7-page class="page-red-white" color="white">
+    <f7-block>
+      <f7-row>
+        <f7-col width="90">
+          <a @click="closePopup" class="link text-color-white">
             <i class="icon icon-back"></i>
-            <span class="if-not-md">Back</span>
+            <span class="">Listado de proveedores</span>
           </a>
-        </div>
-        <div class="title">Proveedor</div>
-        <div class="right">
-          <a @click="addForm = !addForm" href="#" class="link">
-            <f7-icon material="add"></f7-icon>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <f7-block style="padding:0px">
-      <div class="searchbar searchbar-inline" style="margin:4%">
-        <div class="searchbar-input-wrap">
-          <input type="search" placeholder="Buscar proveedor.." v-model="search_item" />
-          <i class="searchbar-icon"></i>
-          <span class="input-clear-button"></span>
-        </div>
-      </div>
-      <div class="list inset">
-        <ul>
-          <li v-for="(item, index) in items" :key="index">
-            <a @click="selected(item)" href="#" class="item-content" style="color:#212121">
-              <div class="item-media">
-                <f7-icon :material="item.selected ? 'check_box' : 'check_box_outline_blank'"></f7-icon>
-              </div>
-              <div class="item-inner">
-                <div class="item-title">{{item.name}}</div>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
+        </f7-col>
+        <f7-col width="10">
+          <f7-link @click="addForm = !addForm" class="text-color-white text-align-right" open-panel="right" icon="fas fa-plus"></f7-link>
+        </f7-col>
+      </f7-row>
     </f7-block>
+
+    <f7-card class="card-100 padding no-shadow" color="red" style="min-height: 90%">
+      <f7-block style="padding:0px">
+        <div class="searchbar searchbar-inline" style="margin:4%">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Buscar proveedor.." v-model="search_item" />
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+        </div>
+        <div class="list inset">
+          <ul>
+            <li v-for="(item, index) in items" :key="index">
+              <a @click="selected(item)" href="#" class="item-content" style="color:#212121">
+                <div class="item-media">
+                  <f7-icon :material="item.selected ? 'check_box' : 'check_box_outline_blank'"></f7-icon>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">{{item.name}}</div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </f7-block>
+    </f7-card>
 
     <f7-sheet
       style="height:85%;"
       class="demo-sheet"
       :opened="addForm"
-      @sheet:closed="addForm = false"
-    >
-      <f7-toolbar>
-        <div class="left"></div>
-        <div class="right">
-          <f7-link sheet-close>Cancelar</f7-link>
-        </div>
-      </f7-toolbar>
-      <!-- Scrollable sheet content -->
+      @sheet:closed="addForm = false">
       <f7-page-content>
-        <f7-block style="margin-top: 0px !important; ">
+        <f7-block class="text-align-right no-margin-vertical no-padding-vertical">
+          <f7-link sheet-close class="no-padding text-color-red"><f7-icon material="close"></f7-icon></f7-link>
+        </f7-block>
+        <f7-block style="margin-top: 0px !important;" color="red">
           <form class="list no-hairlines-md" id="demo-form-customer">
             <ul>
               <li class="item-content item-input">
@@ -149,7 +142,7 @@
               </li>
 
               <li class="item-content item-input">
-                <f7-button style="width: 50%;" fill @click="submit">Guardar</f7-button>
+                <f7-button style="width: 40%;" fill @click="submit">Guardar</f7-button>
               </li>
             </ul>
           </form>

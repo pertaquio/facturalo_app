@@ -1,6 +1,5 @@
 <template>
   <f7-page class="page-red" color="white">
-    <!-- <f7-navbar class="navbar navbar-red no-shadow" title="CPE" back-link="Back"></f7-navbar> -->
     <f7-block>
       <div class="left">
         <a class="link back text-color-white">
@@ -23,11 +22,6 @@
 
     <f7-block>
       <f7-card v-if="init" class="demo-card-header-pic">
-        <!--<f7-card-header
-          class="no-border"
-          valign="bottom"
-          style=""
-        >Journey To Mountains</f7-card-header>-->
         <f7-card-content>
           <p>
             <span>Comprobante Estado Código:</span>
@@ -54,10 +48,6 @@
             {{report.empresa_condicion_descripcion}}
           </p>
         </f7-card-content>
-        <!--<f7-card-footer>
-          <f7-link>Like</f7-link>
-          <f7-link>Read more</f7-link>
-        </f7-card-footer>-->
       </f7-card>
     </f7-block>
   </f7-page>
@@ -67,8 +57,6 @@
 
 </style>
 <script>
-//const url = "https://demo.facturador.pro/api";
-//const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
 
 import { auth } from "mixins_/auth";
 export default {

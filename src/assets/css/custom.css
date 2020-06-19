@@ -5,10 +5,10 @@
   margin-right: auto;
 }
 .list ul:after {
-  background-color: black;
+  background-color: transparent;
 }
 .links-list a:after, .list .item-inner:after, .simple-list li:after {
-  background-color: black;
+  background-color: transparent;
 }
 .media-list .item-inner, li.media-item .item-inner {
   padding-left: calc(var(--f7-list-item-padding-horizontal) + var(--f7-safe-area-left));
@@ -17,16 +17,93 @@
   padding-left: 0px;
 }
 
-/* Custom color theme */
-.color-blue {
-  --f7-theme-color: #0088cc;
-  --f7-theme-color-rgb: 0, 136, 204;
-  --f7-theme-color-shade: #006da3;
-  --f7-theme-color-tint: #00a3f5;
-}
-
 a {
     cursor: pointer;
     text-decoration: none;
     color: var(--f7-color-blue);
+}
+
+.page.page-red {
+  background: #d61a0c;
+  background-image: linear-gradient(0deg, #d61a0c 50%, #df1318 90%, #940005);
+}
+
+.page-red-white {
+  background: #d61a0c;
+  background-image: linear-gradient(0deg, #fff 50%, #df1318 90%, #940005);
+}
+
+.page.panel-dark {
+  background: #0f233c;
+}
+
+.panel.panel-right {
+  max-height: 500px;
+  top: 50px;
+}
+
+
+.color-red {
+  --f7-theme-color: #d61a0c;
+  --f7-theme-color-rgb: 214, 26, 12;
+  --f7-theme-color-shade: #af150a;
+  --f7-theme-color-tint: #f22819;
+}
+.color-red-secondary {
+  --f7-theme-color: #fc0303;
+  --f7-theme-color-rgb: 252, 3, 3;
+  --f7-theme-color-shade: #d40303;
+  --f7-theme-color-tint: #fc2b2b;
+}
+
+.color-blue {
+  --f7-theme-color: #0f233c;
+  --f7-theme-color-rgb: 15, 35, 60;
+  --f7-theme-color-shade: #07101b;
+  --f7-theme-color-tint: #17365d;
+}
+
+.text-color-blue {
+  color: #0f233c !important;
+}
+
+.bg-red-dark {
+  background-color: #af150a;
+  min-height: 80px;
+}
+
+.card-100 {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  bottom: 0px;
+}
+
+.toolbar-inner a {
+  font-size: 8px;
+}
+
+.list-documents .item-content {
+  background-color: #f5f5f5;
+  border-radius: 15px;
+}
+
+.toolbar-docs a i {
+  color: #fff;
+  background-color: #ccc;
+  padding: 1px 8px;
+  border-radius: 50%;
+}
+
+.toolbar-docs a.tab-link-active i {
+  background-color: #0f233c;
+}
+
+.btn-actions {
+  margin-top: -25px !important;
+  width: 97%;
 }

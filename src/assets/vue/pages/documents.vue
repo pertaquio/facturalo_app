@@ -1,336 +1,453 @@
 <template>
-  <div class="page">
+  <f7-page class="page-red" color="white">
 
-    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" back-link="Back">
-      <f7-nav-title>
-        Listado de comprobantes
-        <f7-badge color="blue">{{ countDoc }}</f7-badge>
-      </f7-nav-title>
-    </f7-navbar>
+    <f7-toolbar tabbar :position="isBottom ? 'bottom' : 'top'" bg-color="white" color="red" class="no-shadow">
+      <f7-link
+        href="/"
+        icon-md="material:home">
+        Inicio
+      </f7-link>
+      <f7-link
+        href="/form-document/01"
+        icon-md="material:insert_drive_file"
+        class="text-align-center">
+        Crear <br> comprobantes
+      </f7-link>
+      <f7-link
+        tab-link-active
+        tab-link="#"
+        icon-md="material:view_stream"
+        class="text-align-center">
+        Listado de <br> comprobantes
+      </f7-link>
+      <f7-link
+        href="/report/"
+        icon-md="material:equalizer">
+        Reportes
+      </f7-link>
+    </f7-toolbar>
 
-    <div class="toolbar tabbar toolbar-bottom tabbar-scrollable">
-      <div class="toolbar-inner">
-        <a href="#tab-1" @click="show(1)" class="tab-link tab-link-active"
-          >Factura</a
-        >
-        <a href="#tab-2" @click="show(2)" class="tab-link">Boleta</a>
-        <a href="#tab-3" @click="show(3)" class="tab-link">Nota</a>
-        <a href="#tab-5" @click="show(5)" class="tab-link">Pedidos</a>
-        <a href="#tab-purchases" @click="show('purchases')" class="tab-link">Compras</a>
-      </div>
-    </div>
-    <div class="tabs-animated-wrap">
-      <div class="tabs">
-        <div id="tab-1" class="page-content tab tab-active">
-          <f7-searchbar
-            placeholder="Buscar"
-            :clear-button="true"
-            search-container=".search-list"
-            search-in=".item-title"
-          ></f7-searchbar>
-          <f7-block-title>Factura Electrónica</f7-block-title>
-          <f7-list media-list class="search-list">
-            <f7-list-item
-              v-for="item in source_fact"
-              :key="item.id"
-              :title="item.number"
-            >
-              <span slot="after">
-                <f7-badge :color="statusColor(item.state_type_description)">
-                  {{ item.state_type_description }}
-                </f7-badge>
-              </span>
-              <span slot="subtitle">
-                <p>{{ item.created_at }}</p>
-                <p>RUC: {{ item.customer_number }}</p>
-                <p>{{ item.customer_name }}</p>
-                <p class="text-align-right" style="font-size: 16px; font-weight: bold">
-                    Total:
-                    {{ item.total }}
-                </p>
-              </span>
-              <span slot="text" class="row" style="width: 100%; padding-top: 0px;">
-                <f7-col width="33">
-                  <f7-button @click="download(item.external_id)" fill color="blue">
-                    <f7-icon material="cloud_download"></f7-icon>
-                  </f7-button>
-                </f7-col>
+    <f7-block>
+      <f7-row>
+        <f7-col width="90">
+          <a href="/" class="link text-color-white">
+            <i class="icon icon-back"></i>
+            <span class="">Listado de comprobantes</span>
+          </a>
+        </f7-col>
+        <f7-col width="10">
+          <f7-link class="panel-open text-color-white text-align-right" open-panel="right" icon="fas fa-bars"></f7-link>
+        </f7-col>
+      </f7-row>
+    </f7-block>
 
-                <f7-col width="33">
-                  <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" fill color="green">
-                    <f7-icon style="font-size: 1.7em;" class="icon fab fa-whatsapp"></f7-icon>
-                  </f7-button>
-                </f7-col>
+    <f7-card class="card-100 padding-top padding-horizontal">
 
-                <f7-col width="33">
-                  <f7-button @click="email(item.id)" fill color="blue">
-                    <f7-icon material="email"></f7-icon>
-                  </f7-button>
-                </f7-col>
-              </span>
-            </f7-list-item>
-          </f7-list>
-        </div>
-        <div id="tab-2" class="page-content tab">
-          <f7-searchbar
-            placeholder="Buscar"
-            :clear-button="true"
-            search-container=".search-list"
-            search-in=".item-title"
-          ></f7-searchbar>
-          <f7-block-title>Boleta Electrónica</f7-block-title>
-          <f7-list media-list class="search-list">
-            <f7-list-item
-              v-for="item in source_bol"
-              :key="item.id"
-              :title="item.number"
-            >
-              <span slot="after">
-                <f7-badge :color="statusColor(item.state_type_description)">
-                  {{ item.state_type_description }}
-                </f7-badge>
-              </span>
-              <span slot="subtitle">
-                <p>{{ item.created_at }}</p>
-                <p>RUC: {{ item.customer_number }}</p>
-                <p>{{ item.customer_name }}</p>
-                <p class="text-align-right" style="font-size: 16px; font-weight: bold">
-                    Total:
-                    {{ item.total }}
-                </p>
-              </span>
-              <span slot="text" class="row" style="width: 100%; padding-top: 0px;">
-                <f7-col width="33">
-                  <f7-button @click="download(item.external_id)" fill color="blue">
-                    <f7-icon material="cloud_download"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" fill color="green">
-                    <f7-icon style="font-size: 1.7em;" class="icon fab fa-whatsapp"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="email(item.id)" fill color="blue">
-                    <f7-icon material="email"></f7-icon>
-                  </f7-button>
-                </f7-col>
-              </span>
-            </f7-list-item>
-          </f7-list>
-        </div>
-        <div id="tab-3" class="page-content tab">
-          <f7-searchbar
-            placeholder="Buscar"
-            :clear-button="true"
-            search-container=".search-list"
-            search-in=".item-title"
-          ></f7-searchbar>
-          <f7-block-title>Nota de Venta</f7-block-title>
-          <f7-list media-list class="search-list">
-            <f7-list-item
-              v-for="item in source_nota"
-              :key="item.id"
-              :title="item.identifier"
-            >
-              <span slot="after">
-                <f7-badge :color="statusColor(item.state_type_description)">
-                  {{ item.state_type_description }}
-                </f7-badge>
-              </span>
-              <span slot="subtitle">
-                <p>{{ item.created_at }}</p>
-                <p>RUC: {{ item.customer_number }}</p>
-                <p>{{ item.customer_name }}</p>
-                <p class="text-align-right" style="font-size: 16px; font-weight: bold">
-                    Total:
-                    {{ item.total }}
-                </p>
-              </span>
-              <span slot="text" class="row" style="width: 100%; padding-top: 0px;">
-                <f7-col width="33">
-                  <f7-button @click="download(item.external_id)" fill color="blue">
-                    <f7-icon material="cloud_download"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" fill color="green">
-                    <f7-icon style="font-size: 1.7em;" class="icon fab fa-whatsapp"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="email(item.id)" fill color="blue">
-                    <f7-icon material="email"></f7-icon>
-                  </f7-button>
-                </f7-col>
-              </span>
-            </f7-list-item>
-          </f7-list>
-        </div>
-        <div id="tab-5" class="page-content tab">
-          <f7-searchbar
-            placeholder="Buscar"
-            :clear-button="true"
-            search-container=".search-list"
-            search-in=".item-title"
-          ></f7-searchbar>
-          <f7-block-title>Pedido de Venta</f7-block-title>
-          <f7-list media-list class="search-list">
-            <f7-list-item
-              v-for="item in source_order_note"
-              :key="item.id"
-              :title="item.identifier"
-            >
-              <span slot="after">
-                <f7-badge :color="statusColor(item.state_type_description)">
-                  {{ item.state_type_description }}
-                </f7-badge>
-              </span>
-              <span slot="subtitle">
-                <p>{{ item.created_at }}</p>
-                <p>RUC: {{ item.customer_number }}</p>
-                <p>{{ item.customer_name }}</p>
-                <p class="text-align-right" style="font-size: 16px; font-weight: bold">
-                    Total:
-                    {{ item.total }}
-                </p>
-              </span>
-              <span slot="text" class="row" style="width: 100%; padding-top: 0px;">
-                <f7-col width="33">
-                  <f7-button @click="download(item.external_id)" fill color="blue">
-                    <f7-icon material="cloud_download"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" fill color="green">
-                    <f7-icon style="font-size: 1.7em;" class="icon fab fa-whatsapp"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="email(item.id)" fill color="blue">
-                    <f7-icon material="email"></f7-icon>
-                  </f7-button>
-                </f7-col>
-              </span>
-            </f7-list-item>
-          </f7-list>
-        </div>
-        <div id="tab-purchases" class="page-content tab">
-          <f7-searchbar
-            placeholder="Buscar"
-            :clear-button="true"
-            search-container=".search-list"
-            search-in=".item-title"
-          ></f7-searchbar>
-          <f7-block-title>Pedido de Venta</f7-block-title>
-          <f7-list media-list class="search-list">
-            <f7-list-item
-              v-for="item in source_purchases"
-              :key="item.id"
-              :title="item.number"
-            >
-              <span slot="after">
-                <f7-badge :color="statusColor(item.state_type_description)">
-                  {{ item.state_type_description }}
-                </f7-badge>
-              </span>
-              <span slot="subtitle">
-                <p>{{ item.created_at }}</p>
-                <p>RUC: {{ item.customer_number }}</p>
-                <p>{{ item.customer_name }}</p>
-                <p class="text-align-right" style="font-size: 16px; font-weight: bold">
-                    Total:
-                    {{ item.total }}
-                </p>
-              </span>
-              <span slot="text" class="row" style="width: 100%; padding-top: 0px;">
-                <f7-col width="33">
-                  <f7-button @click="download(item.external_id)" fill color="blue">
-                    <f7-icon material="cloud_download"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" fill color="green">
-                    <f7-icon style="font-size: 1.7em;" class="icon fab fa-whatsapp"></f7-icon>
-                  </f7-button>
-                </f7-col>
-
-                <f7-col width="33">
-                  <f7-button @click="email(item.id)" fill color="blue">
-                    <f7-icon material="email"></f7-icon>
-                  </f7-button>
-                </f7-col>
-              </span>
-            </f7-list-item>
-          </f7-list>
+      <div class="toolbar tabbar tabbar-labels no-shadow bg-color-white color-blue" style="z-index: auto;">
+        <div class="toolbar-inner toolbar-docs">
+          <a href="#tab-invoices" @click="show('invoices')" class="tab-link bg-color-white tab-link-active">
+            <f7-icon class="fas fa-file" size="12"></f7-icon>
+            Factura
+          </a>
+          <a href="#tab-tickets" @click="show('tickets')" class="tab-link bg-color-white">
+            <f7-icon class="fas fa-file text-color-white" size="12"></f7-icon>
+            Boleta
+          </a>
+          <a href="#tab-notes" @click="show('notes')" class="tab-link bg-color-white">
+            <f7-icon class="fas fa-file" size="12"></f7-icon>
+            Nota
+          </a>
+          <a href="#tab-order-notes" @click="show('order_notes')" class="tab-link bg-color-white">
+            <f7-icon class="fas fa-file" size="12"></f7-icon>
+            Pedidos
+          </a>
+          <a href="#tab-purchases" @click="show('purchases')" class="tab-link bg-color-white">
+            <f7-icon class="fas fa-file" size="12"></f7-icon>
+            Compras
+          </a>
         </div>
       </div>
-    </div>
+      <div class="tabs-animated-wrap">
+        <div class="tabs">
+          <div id="tab-invoices" class="page-content tab tab-active">
+            <f7-searchbar
+              placeholder="Buscar"
+              :clear-button="true"
+              search-container=".search-list"
+              search-in=".item-title, .item-after"
+            ></f7-searchbar>
+            <f7-list class="searchbar-not-found">
+              <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
+            </f7-list>
+            <f7-list media-list class="search-list margin-horizontal">
+              <f7-list-item
+                v-for="item in source_invoice"
+                :key="item.id"
+                class="list-documents margin-bottom">
+                <span slot="title" style="font-size: 11px;">
+                  <strong>{{ item.customer_name }}</strong>
+                  <br>
+                  RUC: {{ item.customer_number }}
+                </span>
+                <span slot="after">
+                  {{item.number}}
+                </span>
+                <span slot="subtitle">
+                  <f7-block>
+                    <f7-row>
+                      <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
+                        <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
+                        <span style="font-size: 16px; font-weight: bold">
+                            Total:
+                            {{ item.total }}
+                        </span>
+                      </f7-col>
+                      <f7-col width="40" class="text-align-right" style="padding-top: 15px;">
+                        <f7-row>
+                          <f7-col width="100">
+                            <f7-badge :color="statusColor(item.state_type_description)" style="width: 100%">
+                              {{ item.state_type_description }}
+                            </f7-badge>
+                          </f7-col>
+                          <f7-col width="33">
+                            <f7-button @click="download(item.external_id)" color="red">
+                              <f7-icon material="cloud_download"></f7-icon>
+                            </f7-button>
+                          </f7-col>
 
-    <f7-sheet
-      class="demo-sheet"
-      :opened="sendMailOpen"
-      @sheet:closed="
-        sendMailOpen = false;
-        initformEmail();
-      "
-    >
-      <f7-toolbar>
-        <div class="left"></div>
-        <div class="right">
-          <f7-link sheet-close>Cancelar</f7-link>
-        </div>
-      </f7-toolbar>
-      <!-- Scrollable sheet content -->
-      <f7-page-content>
-        <f7-block>
-          <div class="list no-hairlines-md">
-            <ul>
-              <li class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">E-mail</div>
-                  <div class="item-input-wrap">
-                    <input
-                      v-model="form_email.email"
-                      type="email"
-                      placeholder="Your e-mail"
-                    />
-                    <span class="input-clear-button"></span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-inner">
-                  <div class="item-input-wrap">
-                    <f7-button style="width: 104%;" @click="sendEmail" outline
-                      >Enviar</f7-button
-                    >
-                  </div>
-                </div>
-              </li>
-            </ul>
+                          <f7-col width="33">
+                            <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" color="red">
+                              <f7-icon style="font-size: 1.5em;" class="icon fab fa-whatsapp"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="email(item.id)" color="red" style="padding-left: 0px;">
+                              <f7-icon material="email"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+                        </f7-row>
+                      </f7-col>
+                    </f7-row>
+                  </f7-block>
+                </span>
+              </f7-list-item>
+            </f7-list>
           </div>
-        </f7-block>
-      </f7-page-content>
-    </f7-sheet>
-  </div>
-</template>
+          <div id="tab-tickets" class="page-content tab">
+            <f7-searchbar
+              placeholder="Buscar"
+              :clear-button="true"
+              search-container=".search-list"
+              search-in=".item-title, .item-after"
+            ></f7-searchbar>
+            <f7-list class="searchbar-not-found">
+              <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
+            </f7-list>
+            <f7-list media-list class="search-list margin-horizontal">
+              <f7-list-item
+                v-for="item in source_ticket"
+                :key="item.id"
+                class="list-documents margin-bottom">
+                <span slot="title" style="font-size: 11px;">
+                  <strong>{{ item.customer_name }}</strong>
+                  <br>
+                  RUC: {{ item.customer_number }}
+                </span>
+                <span slot="after">
+                  {{item.number}}
+                </span>
+                <span slot="subtitle">
+                  <f7-block>
+                    <f7-row>
+                      <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
+                        <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
+                        <span style="font-size: 16px; font-weight: bold">
+                            Total:
+                            {{ item.total }}
+                        </span>
+                      </f7-col>
+                      <f7-col width="40" class="text-align-right" style="padding-top: 15px;">
+                        <f7-row>
+                          <f7-col width="100">
+                            <f7-badge :color="statusColor(item.state_type_description)" style="width: 100%">
+                              {{ item.state_type_description }}
+                            </f7-badge>
+                          </f7-col>
+                          <f7-col width="33">
+                            <f7-button @click="download(item.external_id)" color="red">
+                              <f7-icon material="cloud_download"></f7-icon>
+                            </f7-button>
+                          </f7-col>
 
-<style scoped>
-  li {
-    background: var(--f7-color-white-shade);
-  }
-  li:nth-child(odd) {
-    background: var(--f7-color-white-tint);
-  }
-</style>
+                          <f7-col width="33">
+                            <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" color="red">
+                              <f7-icon style="font-size: 1.5em;" class="icon fab fa-whatsapp"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="email(item.id)" color="red" style="padding-left: 0px;">
+                              <f7-icon material="email"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+                        </f7-row>
+                      </f7-col>
+                    </f7-row>
+                  </f7-block>
+                </span>
+              </f7-list-item>
+            </f7-list>
+          </div>
+          <div id="tab-notes" class="page-content tab">
+            <f7-searchbar
+              placeholder="Buscar"
+              :clear-button="true"
+              search-container=".search-list"
+              search-in=".item-title, .item-after"
+            ></f7-searchbar>
+            <f7-list class="searchbar-not-found">
+              <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
+            </f7-list>
+            <f7-list media-list class="search-list margin-horizontal">
+              <f7-list-item
+                v-for="item in source_note"
+                :key="item.id"
+                class="list-documents margin-bottom">
+                <span slot="title" style="font-size: 11px;">
+                  <strong>{{ item.customer_name }}</strong>
+                  <br>
+                  RUC: {{ item.customer_number }}
+                </span>
+                <span slot="after">
+                  {{item.identifier}}
+                </span>
+                <span slot="subtitle">
+                  <f7-block>
+                    <f7-row>
+                      <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
+                        <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
+                        <span style="font-size: 16px; font-weight: bold">
+                            Total:
+                            {{ item.total }}
+                        </span>
+                      </f7-col>
+                      <f7-col width="40" class="text-align-right" style="padding-top: 15px;">
+                        <f7-row>
+                          <f7-col width="100">
+                            <f7-badge :color="statusColor(item.state_type_description)" style="width: 100%">
+                              {{ item.state_type_description }}
+                            </f7-badge>
+                          </f7-col>
+                          <f7-col width="33">
+                            <f7-button @click="download(item.external_id)" color="red">
+                              <f7-icon material="cloud_download"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" color="red">
+                              <f7-icon style="font-size: 1.5em;" class="icon fab fa-whatsapp"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="email(item.id)" color="red" style="padding-left: 0px;">
+                              <f7-icon material="email"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+                        </f7-row>
+                      </f7-col>
+                    </f7-row>
+                  </f7-block>
+                </span>
+              </f7-list-item>
+            </f7-list>
+          </div>
+          <div id="tab-order-notes" class="page-content tab">
+            <f7-searchbar
+              placeholder="Buscar"
+              :clear-button="true"
+              search-container=".search-list"
+              search-in=".item-title, .item-after"
+            ></f7-searchbar>
+            <f7-list class="searchbar-not-found">
+              <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
+            </f7-list>
+            <f7-list media-list class="search-list margin-horizontal">
+              <f7-list-item
+                v-for="item in source_order_note"
+                :key="item.id"
+                class="list-documents margin-bottom">
+                <span slot="title" style="font-size: 11px;">
+                  <strong>{{ item.customer_name }}</strong>
+                  <br>
+                  RUC: {{ item.customer_number }}
+                </span>
+                <span slot="after">
+                  {{item.identifier}}
+                </span>
+                <span slot="subtitle">
+                  <f7-block>
+                    <f7-row>
+                      <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
+                        <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
+                        <span style="font-size: 16px; font-weight: bold">
+                            Total:
+                            {{ item.total }}
+                        </span>
+                      </f7-col>
+                      <f7-col width="40" class="text-align-right" style="padding-top: 15px;">
+                        <f7-row>
+                          <f7-col width="100">
+                            <f7-badge :color="statusColor(item.state_type_description)" style="width: 100%">
+                              {{ item.state_type_description }}
+                            </f7-badge>
+                          </f7-col>
+                          <f7-col width="33">
+                            <f7-button @click="download(item.external_id)" color="red">
+                              <f7-icon material="cloud_download"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" color="red">
+                              <f7-icon style="font-size: 1.5em;" class="icon fab fa-whatsapp"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="email(item.id)" color="red" style="padding-left: 0px;">
+                              <f7-icon material="email"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+                        </f7-row>
+                      </f7-col>
+                    </f7-row>
+                  </f7-block>
+                </span>
+              </f7-list-item>
+            </f7-list>
+          </div>
+          <div id="tab-purchases" class="page-content tab">
+            <f7-searchbar
+              placeholder="Buscar"
+              :clear-button="true"
+              search-container=".search-list"
+              search-in=".item-title, .item-after"
+            ></f7-searchbar>
+            <f7-list class="searchbar-not-found">
+              <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
+            </f7-list>
+            <f7-list media-list class="search-list margin-horizontal">
+              <f7-list-item
+                v-for="item in source_purchases"
+                :key="item.id"
+                class="list-documents margin-bottom">
+                <span slot="title" style="font-size: 11px;">
+                  <strong>{{ item.supplier_name }}</strong>
+                  <br>
+                  RUC: {{ item.supplier_number }}
+                </span>
+                <span slot="after">
+                  {{item.number}}
+                </span>
+                <span slot="subtitle">
+                  <f7-block>
+                    <f7-row>
+                      <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
+                        <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
+                        <span style="font-size: 16px; font-weight: bold">
+                            Total:
+                            {{ item.total }}
+                            <span v-if="item.currency_type_id == 'PEN'">./S</span>
+                            <span v-if="item.currency_type_id == 'USD'">$</span>
+                        </span>
+                      </f7-col>
+                      <f7-col width="40" class="text-align-right" style="padding-top: 15px;">
+                        <f7-row>
+                          <f7-col width="100">
+                            <f7-badge :color="statusColor(item.state_type_description)" style="width: 100%">
+                              {{ item.state_type_description }}
+                            </f7-badge>
+                          </f7-col>
+                          <f7-col width="33">
+                            <f7-button @click="download(item.external_id)" color="red">
+                              <f7-icon material="cloud_download"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" color="red">
+                              <f7-icon style="font-size: 1.5em;" class="icon fab fa-whatsapp"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+
+                          <f7-col width="33">
+                            <f7-button @click="email(item.id)" color="red" style="padding-left: 0px;">
+                              <f7-icon material="email"></f7-icon>
+                            </f7-button>
+                          </f7-col>
+                        </f7-row>
+                      </f7-col>
+                    </f7-row>
+                  </f7-block>
+                </span>
+              </f7-list-item>
+            </f7-list>
+          </div>
+        </div>
+      </div>
+
+      <f7-sheet
+        class="demo-sheet"
+        :opened="sendMailOpen"
+        @sheet:closed="
+          sendMailOpen = false;
+          initformEmail();
+        "
+      >
+        <f7-toolbar>
+          <div class="left"></div>
+          <div class="right">
+            <f7-link sheet-close>Cancelar</f7-link>
+          </div>
+        </f7-toolbar>
+        <!-- Scrollable sheet content -->
+        <f7-page-content>
+          <f7-block>
+            <div class="list no-hairlines-md">
+              <ul>
+                <li class="item-content item-input item-input-outline">
+                  <div class="item-inner">
+                    <div class="item-title item-floating-label">E-mail</div>
+                    <div class="item-input-wrap">
+                      <input
+                        v-model="form_email.email"
+                        type="email"
+                        placeholder="Your e-mail"
+                      />
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <f7-button style="width: 104%;" @click="sendEmail" outline
+                        >Enviar</f7-button
+                      >
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </f7-block>
+        </f7-page-content>
+      </f7-sheet>
+    </f7-card>
+  </f7-page>
+</template>
 
 <script>
 //const url = "https://demo.facturador.pro/api";
@@ -345,12 +462,13 @@ export default {
     // Must return an object
     return {
       sendMailOpen: false,
+      isBottom: true,
       source: [],
       sourceClone: [],
       text_seacrh: "",
-      source_fact: [],
-      source_bol: [],
-      source_nota: [],
+      source_invoice: [],
+      source_ticket: [],
+      source_note: [],
       source_order_note: [],
       source_purchases: [],
       form_email: {},
@@ -374,19 +492,19 @@ export default {
     show(type) {
       const self = this;
       switch (type) {
-        case 1:
-          self.count = self.source_fact.length;
+        case 'invoices':
+          self.count = self.source_invoice.length;
           break;
-        case 2:
-          self.count = self.source_bol.length;
+        case 'tickets':
+          self.count = self.source_ticket.length;
           break;
-        case 3:
-          self.count = self.source_nota.length;
+        case 'notes':
+          self.count = self.source_note.length;
           break;
         case 'purchases':
           self.count = self.source_purchases.length;
           break;
-        case 5:
+        case 'order_notes':
           self.count = self.source_order_note.length;
           break;
       }
@@ -499,8 +617,8 @@ export default {
       });
     },
     applyFilters() {
-      this.source_fact = _.filter(this.source, { document_type_id: "01" });
-      this.source_bol = _.filter(this.source, { document_type_id: "03" });
+      this.source_invoice = _.filter(this.source, { document_type_id: "01" });
+      this.source_ticket = _.filter(this.source, { document_type_id: "03" });
 
       this.show(1);
       //this.source_nota =  _.filter(this.source, { document_type_id: '01' });
@@ -578,7 +696,7 @@ export default {
       this.$http
         .get(`${this.returnBaseUrl()}/sale-note/lists`, this.getHeaderConfig())
         .then(response => {
-          self.source_nota = response.data.data;
+          self.source_note = response.data.data;
         })
         .catch(err => {})
         .then(() => {});
@@ -607,7 +725,7 @@ export default {
     statusColor(status) {
       switch (status){
         case 'Registrado':
-          status = 'blue'
+          status = 'gray'
           break;
         case 'Aceptado':
           status = 'green'
@@ -617,6 +735,9 @@ export default {
           break;
         case 'Por anular':
           status = 'orange'
+          break;
+        case 'Rechazado':
+          status = 'black'
           break;
         default:
           status = 'green'

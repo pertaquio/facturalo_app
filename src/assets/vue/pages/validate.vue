@@ -1,25 +1,27 @@
 <template>
-  <f7-page>
-    <f7-navbar class="navbar color-theme-white no-shadow theme-dark" title="CPE" back-link="Back"></f7-navbar>
-    <f7-block-title>
-      <p>Escanea Qr y Codigo de Barras.</p>
+  <f7-page class="page-red" color="white">
+    <f7-block>
+      <div class="left">
+        <a class="link back text-color-white">
+          <i class="icon icon-back"></i>
+          <span class="if-not-md">Back</span>
+        </a>
+      </div>
+    </f7-block>
+    <f7-block-title class="text-align-center text-color-white">
+      <p>Escanea Qr y Código de Barras.</p>
     </f7-block-title>
 
     <f7-block>
       <f7-row>
         <f7-col>
-          <f7-button class="button-fill" @click="scan" outline>Escanear</f7-button>
+          <f7-button class="button-fill" @click="scan" color="blue">Escanear</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
 
     <f7-block>
       <f7-card v-if="init" class="demo-card-header-pic">
-        <!--<f7-card-header
-          class="no-border"
-          valign="bottom"
-          style=""
-        >Journey To Mountains</f7-card-header>-->
         <f7-card-content>
           <p>
             <span>Comprobante Estado Código:</span>
@@ -46,24 +48,15 @@
             {{report.empresa_condicion_descripcion}}
           </p>
         </f7-card-content>
-        <!--<f7-card-footer>
-          <f7-link>Like</f7-link>
-          <f7-link>Read more</f7-link>
-        </f7-card-footer>-->
       </f7-card>
     </f7-block>
   </f7-page>
 </template>
 
 <style  scoped>
-.navbar-cus{
-   background:#17a2b8;
-   color:white
-}
+
 </style>
 <script>
-//const url = "https://demo.facturador.pro/api";
-//const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
 
 import { auth } from "mixins_/auth";
 export default {

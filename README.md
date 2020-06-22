@@ -10,6 +10,7 @@
 ### Documentación
 
 * Generar [APK](https://docs.google.com/document/d/1uvFXSzvconJ14bvQ_0aeEgiHi3mDIlJGYYz8ODLUZjE/edit)
+* Actualizando https://docs.google.com/document/d/14tM5YKt6GhhNwyEQA5b_EjMUC72XqGPXEPsfo-RDGFM/edit?usp=sharing
 
 ### Manual de usuario
 

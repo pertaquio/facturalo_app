@@ -93,7 +93,7 @@
                   {{item.number}}
                 </span>
                 <span slot="subtitle">
-                  <f7-block>
+                  <f7-block class="no-padding">
                     <f7-row>
                       <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
                         <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
@@ -158,7 +158,7 @@
                   {{item.number}}
                 </span>
                 <span slot="subtitle">
-                  <f7-block>
+                  <f7-block class="no-padding">
                     <f7-row>
                       <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
                         <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
@@ -223,7 +223,7 @@
                   {{item.identifier}}
                 </span>
                 <span slot="subtitle">
-                  <f7-block>
+                  <f7-block class="no-padding">
                     <f7-row>
                       <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
                         <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
@@ -288,7 +288,7 @@
                   {{item.identifier}}
                 </span>
                 <span slot="subtitle">
-                  <f7-block>
+                  <f7-block class="no-padding">
                     <f7-row>
                       <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
                         <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>
@@ -353,7 +353,7 @@
                   {{item.number}}
                 </span>
                 <span slot="subtitle">
-                  <f7-block>
+                  <f7-block class="no-padding">
                     <f7-row>
                       <f7-col width="60" class="text-align-left" style="border-right: 1px solid #ccc">
                         <p><f7-icon icon="fas fa-fw fa-calendar-alt" color="red"></f7-icon>{{ item.created_at }}</p>

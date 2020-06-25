@@ -28,7 +28,7 @@
       </f7-row>
       <f7-row>
         <f7-col width="33">
-          <f7-card @click.native="go('cpe')" class="bg-red-dark">
+          <f7-card @click.native="go('cpe')" class="bg-red-dark" style="margin: 1px;">
             <div style="float:right;margin-top:-20px;margin-right: -5px;background-color: #0f233c; border-radius: 50%;padding:8px;" color="blue">
               <f7-icon material="center_focus_strong" size="30px" color="white"></f7-icon>
             </div>
@@ -38,7 +38,7 @@
           </f7-card>
         </f7-col>
         <f7-col width="33">
-          <f7-card @click.native="go('report')" class="bg-red-dark">
+          <f7-card @click.native="go('report')" class="bg-red-dark" style="margin: 1px;">
             <div style="float:right;margin-top:-20px;margin-right: -5px;background-color: #0f233c; border-radius: 50%;padding:8px;" color="blue">
               <f7-icon material="equalizer" size="30px" color="white"></f7-icon>
             </div>
@@ -48,11 +48,11 @@
           </f7-card>
         </f7-col>
         <f7-col width="33">
-          <f7-card @click.native="go('ls_doc')" class="bg-red-dark">
+          <f7-card @click.native="go('ls_doc')" class="bg-red-dark" style="margin: 1px;">
             <div style="float:right;margin-top:-20px;margin-right: -5px;background-color: #0f233c; border-radius: 50%;padding:8px;" color="blue">
               <f7-icon material="view_stream" size="30px" color="white"></f7-icon>
             </div>
-            <f7-card-content class="text-align-center">
+            <f7-card-content class="text-align-center" style="padding: 15px;">
               <p style="font-size: .7em" class="padding-top text-color-white">LISTA DE COMPROBANTES</p>
             </f7-card-content>
           </f7-card>

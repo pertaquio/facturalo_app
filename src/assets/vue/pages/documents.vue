@@ -240,7 +240,7 @@
                             </f7-badge>
                           </f7-col>
                           <f7-col width="33">
-                            <f7-button @click="download(item.external_id)" color="red">
+                            <f7-button @click="download(item.external_id, 'sale-notes')" color="red">
                               <f7-icon material="cloud_download"></f7-icon>
                             </f7-button>
                           </f7-col>
@@ -305,7 +305,7 @@
                             </f7-badge>
                           </f7-col>
                           <f7-col width="33">
-                            <f7-button @click="download(item.external_id)" color="red">
+                            <f7-button @click="download(item.external_id, 'order-notes')" color="red">
                               <f7-icon material="cloud_download"></f7-icon>
                             </f7-button>
                           </f7-col>
@@ -371,19 +371,19 @@
                               {{ item.state_type_description }}
                             </f7-badge>
                           </f7-col>
-                          <f7-col width="33">
+                          <!-- <f7-col width="33">
                             <f7-button @click="download(item.external_id)" color="red">
                               <f7-icon material="cloud_download"></f7-icon>
                             </f7-button>
-                          </f7-col>
+                          </f7-col> -->
 
-                          <f7-col width="33">
+                          <f7-col width="50">
                             <f7-button @click="whatsap(item.customer_telephone, item.external_id)" class="block" color="red">
                               <f7-icon style="font-size: 1.5em;" class="icon fab fa-whatsapp"></f7-icon>
                             </f7-button>
                           </f7-col>
 
-                          <f7-col width="33">
+                          <f7-col width="50">
                             <f7-button @click="email(item.id)" color="red" style="padding-left: 0px;">
                               <f7-icon material="email"></f7-icon>
                             </f7-button>
@@ -547,7 +547,7 @@ export default {
               let number = (dialog.$el.find('.dialog-wasap').val()).toString()
 
               if (number.length == 9) {
-                let link_pdf = `https://demo.facturador.pro/print/document/${external_id}/a4`;
+                let link_pdf = `${self.returnBaseUrl()}/print/document/${external_id}/a4`;
                 let message = `Hola, revisa tu comprobante ingresando a este link ${link_pdf}`;
                 let message_ = message.split(" ").join("%20");
                 window.open(`https://wa.me/51${number}/?text=${message_}`, "_system");

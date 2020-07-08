@@ -280,7 +280,19 @@ export default {
     },
     addItems(rows) {
       this.popupOpened = false;
-      this.form.items = rows;
+      if(this.form.items.length === 0) {
+        this.form.items = rows;
+      } else {
+        rows.map(row => {
+          const key = _.findKey(this.form.items, item => item.item_id === row.item_id);
+          if(key) {
+            this.form.items[key].quantity += row.quantity;
+          } else {
+            this.form.items.push(row);
+          }
+        });
+      }
+      // this.form.items = rows;
       this.calculateTotal();
     },
     cancel() {

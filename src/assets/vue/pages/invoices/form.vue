@@ -313,20 +313,36 @@ export default {
       this.form.serie_documento = (this.series.length > 0) ? this.series[0].number : null
     },
     deleteItem(id) {
-      this.$refs.form_items_car.delete_parent(id);
+      this.form.items = _.filter(this.form.items, item => item.item_id !== id);
+      // this.$refs.form_items_car.delete_parent(id);
     },
     addItems(rows) {
 
       // console.log(rows)
+      
+
+      /* rows.forEach(record => {
+
+        contex.form.items.push(record)
+
+      }); */
+
       let contex = this
 
       contex.popupOpened = false;
 
-      rows.forEach(record => {
-
-        contex.form.items.push(record)
-
-      });
+      if(this.form.items.length === 0) {
+        this.form.items = rows;
+      } else {
+        rows.map(row => {
+          const key = _.findKey(this.form.items, item => item.item_id === row.item_id);
+          if(key) {
+            this.form.items[key].quantity += row.quantity;
+          } else {
+            this.form.items.push(row);
+          }
+        });
+      }
 
       this.calculateTotal();
     },

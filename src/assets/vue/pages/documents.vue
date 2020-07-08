@@ -79,7 +79,11 @@
             <f7-list class="searchbar-not-found">
               <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
             </f7-list>
-            <f7-list media-list class="search-list margin-horizontal">
+            <f7-list 
+              media-list 
+              virtual-list 
+              class="search-list margin-horizontal"
+            >
               <f7-list-item
                 v-for="item in source_invoice"
                 :key="item.id"
@@ -144,7 +148,11 @@
             <f7-list class="searchbar-not-found">
               <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
             </f7-list>
-            <f7-list media-list class="search-list margin-horizontal">
+            <f7-list 
+              media-list 
+              virtual-list 
+              class="search-list margin-horizontal"
+            >
               <f7-list-item
                 v-for="item in source_ticket"
                 :key="item.id"
@@ -209,7 +217,7 @@
             <f7-list class="searchbar-not-found">
               <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
             </f7-list>
-            <f7-list media-list class="search-list margin-horizontal">
+            <f7-list media-list virtual-list class="search-list margin-horizontal">
               <f7-list-item
                 v-for="item in source_note"
                 :key="item.id"
@@ -274,7 +282,7 @@
             <f7-list class="searchbar-not-found">
               <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
             </f7-list>
-            <f7-list media-list class="search-list margin-horizontal">
+            <f7-list media-list virtual-list class="search-list margin-horizontal">
               <f7-list-item
                 v-for="item in source_order_note"
                 :key="item.id"
@@ -339,7 +347,7 @@
             <f7-list class="searchbar-not-found">
               <f7-list-item title="No se encontraron resultados" class="padding-left margin-left"></f7-list-item>
             </f7-list>
-            <f7-list media-list class="search-list margin-horizontal">
+            <f7-list media-list virtual-list class="search-list margin-horizontal">
               <f7-list-item
                 v-for="item in source_purchases"
                 :key="item.id"

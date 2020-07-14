@@ -90,51 +90,43 @@
 </style>
 
 <script>
+// VForm
+import Form from 'vform';
+// Axios
+import axios from 'axios';
+
 export default {
   name: "Configuration",
   components: {},
   data: function() {
     return {
-      form: {}
+      form: new Form({
+        email:     localStorage.user_email,
+        password:  null,
+        url:       localStorage.api_url,
+        api_token: localStorage.api_token,
+      }),
     };
   },
-  created() {
-    this.initForm();
-  },
   methods: {
-    initForm() {
-      this.form = {
-        email: localStorage.user_email,
-        password: "",
-        url: localStorage.api_url
-      };
-    },
-    submit() {
-      if (!this.form.email || !this.form.password || !this.form.url) {
-        return;
-      }
+    async submit() {
+      this.$f7.preloader.show();
 
-      this.$http
-        .post(`${this.form.url}/api/login`, {
-          email: this.form.email,
-          password: this.form.password
-        })
-        .then(response => {
-
-          let data = response.data;
-          if (data.success) {
-            this.saveToken(data.token, data.name, data.email);
-            this.initForm();
-            location.reload();
-          } else {
-            alert("Usuario o Contraseña incorrecta.");
+      this.form.post(`${localStorage.api_url}/api/config_user`)
+        .then((response) => {
+          this.$f7.preloader.hide();
+          if(response.data.data) {
+            const data = response.data.data;
+            Object.keys(data).forEach(key => {
+              localStorage[key] = data[key]
+            });
+            alert("Datos actualizados");
           }
         })
-        .catch(err => {
-          alert("No se logro conexion con la URL, verifique la URL.");
-        })
-        .then(() => {
-          self.$f7.preloader.hide();
+        .catch((error) => {
+          this.$f7.preloader.hide();
+          alert("Ocurrio un error");
+          console.log(error);
         });
     },
     saveToken(token, name, email) {

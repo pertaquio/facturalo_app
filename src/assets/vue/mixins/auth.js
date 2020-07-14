@@ -14,7 +14,7 @@ export const auth = {
     },
 
     returnBaseUrl() {
-      return localStorage.api_url ?  localStorage.api_url  + '/api' : 'https://demo.facturador.pro/api'
+      return `${localStorage.api_url}/api`;
     }
 
   }

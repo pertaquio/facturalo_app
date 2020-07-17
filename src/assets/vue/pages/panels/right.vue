@@ -57,6 +57,7 @@
         localStorage.removeItem("user_name");
         localStorage.removeItem("user_email");
         localStorage.removeItem('api_url')
+        localStorage.removeItem('url_logo')
         location.reload();
         // this.$f7router.navigate("/");
       }

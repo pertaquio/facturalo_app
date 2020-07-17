@@ -4,7 +4,7 @@
     <f7-popup class="demo-popup" :opened="splash" @popup:closed="popupOpened = false">
       <f7-page style="background:#676666">
         <f7-block>
-          <img class="center" :src="fp_logo_white" alt />
+          <img  :width="width_img" :height="height_img" class="center" :src="fp_logo_white" alt />
         </f7-block>
       </f7-page>
     </f7-popup>
@@ -13,7 +13,7 @@
       <f7-row>
         <f7-col width="70">
           <p class="text-align-center">
-            <img :src="fp_logo_white" alt="FacturaloPeru" width="70%" />
+            <img :src="fp_logo_white" alt="FacturaloPeru" width="60%" />
           </p>
         </f7-col>
         <f7-col width="20">
@@ -137,11 +137,21 @@
         user: "",
         password: "",
         splash: true,
-        isOffline: false
+        isOffline: false,
+        width_img: '',
+        height_img: '',
+
       };
     },
     created() {
       // this.verifytoken();
+
+      if(localStorage.url_logo){
+        this.fp_logo_white = localStorage.url_logo
+        this.width_img = 100
+        this.height_img = 100
+      }
+
       var self = this;
       window.addEventListener("online", function() {
         self.isOffline = false;

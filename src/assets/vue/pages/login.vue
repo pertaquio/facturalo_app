@@ -99,12 +99,17 @@
     computed: {},
     methods: {
 
-      saveToken(token, name, email) {
+      saveToken(token, name, email, ruc = null, logo = null) {
         localStorage.api_token = token;
         localStorage.user_name = name;
         localStorage.user_email = email;
 
         localStorage.api_url = this.url
+        if(ruc && logo)
+        {
+          localStorage.ruc = ruc
+          localStorage.url_logo = `${this.url}/storage/uploads/logos/${logo}`
+        }
       },
       login() {
         if (!this.email || !this.password || !this.url) {
@@ -123,7 +128,7 @@
           .then(response => {
             let data = response.data;
             if (data.success) {
-              self.saveToken(data.token, data.name, data.email);
+              self.saveToken(data.token, data.name, data.email, data.ruc, data.logo);
               self.$f7router.navigate("/");
             } else {
               alert("Usuario o Password incorrectos.");

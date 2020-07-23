@@ -155,7 +155,7 @@
                     <tr v-for="(row, index) in form.items" :key="index">
                       <td class="numeric-cell">
                         <f7-icon
-                          @click.native="deleteItem(row.item_id)"
+                          @click.native="deleteItem(row.item_id, index)"
                           color="red"
                           material="cancel"
                         ></f7-icon>
@@ -312,8 +312,10 @@ export default {
     initSeries(){
       this.form.serie_documento = (this.series.length > 0) ? this.series[0].number : null
     },
-    deleteItem(id) {
+    deleteItem(id, index) {
+      this.form.items.splice(index, 1);
       this.$refs.form_items_car.delete_parent(id);
+      this.calculateTotal()
     },
     addItems(rows) {
 

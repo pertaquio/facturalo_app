@@ -319,17 +319,11 @@ export default {
     },
     addItems(rows) {
 
-      // console.log(rows)
       let contex = this
-
       contex.popupOpened = false;
-
       rows.forEach(record => {
-
         contex.form.items.push(record)
-
       });
-
       this.calculateTotal();
     },
     addCustomer(row) {

@@ -294,8 +294,11 @@ export default {
       };
     },
     addItems(rows) {
-      this.popupOpened = false;
-      this.form.items = rows;
+      let contex = this
+      contex.popupOpened = false;
+      rows.forEach(record => {
+        contex.form.items.push(record)
+      });
       this.calculateTotal();
     },
     cancel() {

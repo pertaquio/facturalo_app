@@ -86,7 +86,7 @@
                       </div>
                     </div>
                     <div class="col-25">
-                      <f7-button @click="searchServiceNumberByType" class="col" icon="fas fa-search fa-fw" fill color="red">
+                      <f7-button style="font-size: 12px;" @click="searchServiceNumberByType" class="col" icon="fas fa-search fa-fw" fill color="red">
                           <template v-if="form.identity_document_type_id === '6'">SUNAT</template>
                           <template v-if="form.identity_document_type_id === '1'">RENIEC</template>
                       </f7-button>
@@ -364,30 +364,51 @@ export default {
         identity_document_type_name = "dni";
       }
       //this.loading_search = true;
-      let response = await this.$http.get(
-        `${this.returnBaseUrl()}/services/${identity_document_type_name}/${
-          this.form.number
-        }`,
-        this.getHeaderConfig()
-      );
 
-      if (response.data.success) {
-        let data = response.data.data;
-        this.form.name = data.name;
-        this.form.trade_name = data.trade_name;
-        this.form.address = data.address;
-        this.form.department_id = data.department_id;
-        this.form.province_id = data.province_id;
-        this.form.district_id = data.district_id;
-        this.form.phone = data.phone;
+      try{
+        let {data} = await this.$http.get(`${this.returnBaseUrl()}/service/${identity_document_type_name}/${this.form.number}`,this.getHeaderConfig());
 
-        this.$f7.dialog.alert(`Datos encontrados.`, "Facturador PRO APP");
-      } else {
+        if (data.success) {
+
+          let resource = data.data;
+
+          if(identity_document_type_name == 'ruc')
+          {
+            this.form.name = resource.nombre_o_razon_social;
+            this.form.trade_name = resource.nombre_o_razon_social;
+            this.form.address = resource.direccion_completa;
+
+            const [dept, province, distr] = resource.ubigeo
+
+            this.form.department_id = dept;
+            this.form.province_id = province;
+            this.form.district_id = distr;
+            this.form.phone = null;
+          }
+          else if(identity_document_type_name == 'dni')
+          {
+            this.form.name = resource.nombre_completo;
+            this.form.trade_name = null;
+            this.form.address = null;
+            this.form.department_id = null;
+            this.form.province_id = null;
+            this.form.district_id = null;
+            this.form.phone = null;
+          }
+          this.$f7.dialog.alert(`Datos encontrados.`, "Facturador PRO APP");
+        } else {
+          this.$f7.dialog.alert(`No hay datos.`, "Facturador PRO APP");
+        }
+
+      }
+      catch(error)
+      {
         this.$f7.dialog.alert(`No hay datos.`, "Facturador PRO APP");
       }
-      //this.loading_search = false;
-
-      this.$f7.preloader.hide();
+      finally{
+        this.$f7.preloader.hide();
+      }
+      
     },
     async searchCustomers()
     {

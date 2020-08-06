@@ -90,7 +90,7 @@
       return {
         email: "demo@gmail.com",
         password: "123456",
-        url: "https://demo.facturador.pro",
+        url: "https://demo.facturalo.pro",
         fp_logo_dark: FpLogoDark,
         fp_logo_white: null,
 

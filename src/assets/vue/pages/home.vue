@@ -4,7 +4,7 @@
     <f7-popup class="demo-popup" :opened="splash" @popup:closed="popupOpened = false">
       <f7-page style="background:#676666">
         <f7-block>
-          <img  :width="width_img" :height="height_img" class="center" :src="fp_logo_white" alt />
+          <img v-if="fp_logo_white" :width="width_img" :height="height_img" class="center" :src="fp_logo_white" alt />
         </f7-block>
       </f7-page>
     </f7-popup>
@@ -13,7 +13,7 @@
       <f7-row>
         <f7-col width="70">
           <p class="text-align-center">
-            <img :src="fp_logo_white" alt="FacturaloPeru" width="60%" />
+            <img v-if="fp_logo_white" :src="fp_logo_white" alt="FacturaloPeru" width="60%" />
           </p>
         </f7-col>
         <f7-col width="20">
@@ -124,16 +124,15 @@
 <script>
   import logo from "assets/images/logo9_b.png";
   import FpLogoDark from "assets/images/facturaloperu.png";
-  import FpLogoWhite from "assets/images/fp_logo_white.png";
-  const url = "https://demo.facturador.pro/api";
-  const token = "hcTC1Up87AYr3p4D5jY1APRPwYZ7wXGxBSJL1yUwzynIIPcnyb";
+  //import FpLogoWhite from "assets/images/fp_logo_white.png";
+
   export default {
     components: {},
     data: function() {
       // Must return an object
       return {
         fp_logo_dark: FpLogoDark,
-        fp_logo_white: FpLogoWhite,
+        fp_logo_white: null,
         user: "",
         password: "",
         splash: true,

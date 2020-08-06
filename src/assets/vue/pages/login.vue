@@ -4,7 +4,7 @@
       <f7-row>
         <f7-col width="100">
           <p class="text-align-center">
-            <img :src="fp_logo_white" alt="FacturaloPeru" width="60%" />
+            <img v-if="fp_logo_white" :src="fp_logo_white" alt="FacturaloPeru" width="60%" />
           </p>
           <p class="text-align-center text-color-white padding-top">BIENVENIDO</p>
         </f7-col>
@@ -81,7 +81,7 @@
 
   import { auth } from "mixins_/auth";
   import FpLogoDark from "assets/images/facturaloperu.png";
-  import FpLogoWhite from "assets/images/fp_logo_white.png";
+  //import FpLogoWhite from "assets/images/fp_logo_white.png";
 
   export default {
     mixins: [auth],
@@ -92,10 +92,23 @@
         password: "123456",
         url: "https://demo.facturador.pro",
         fp_logo_dark: FpLogoDark,
-        fp_logo_white: FpLogoWhite,
+        fp_logo_white: null,
+
+
       };
     },
-    created() {},
+    created() {
+      if(localStorage.url_logo)
+      {
+        this.fp_logo_white = localStorage.url_logo
+      }
+
+      if(localStorage.api_url)
+      {
+        this.url = localStorage.api_url
+      }
+      
+    },
     computed: {},
     methods: {
 
@@ -109,6 +122,7 @@
         {
           localStorage.ruc = ruc
           localStorage.url_logo = `${this.url}/storage/uploads/logos/${logo}`
+          this.fp_logo_white = `${this.url}/storage/uploads/logos/${logo}`
         }
       },
       login() {
